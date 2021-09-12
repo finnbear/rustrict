@@ -1,6 +1,3 @@
-#![feature(hash_set_entry)]
-#![feature(drain_filter)]
-
 use crate::buffer_proxy_iterator::BufferProxyIterator;
 use crate::mtch::*;
 use crate::radix::*;
@@ -447,23 +444,23 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let spy = &self.buffer;
             let censor_first_character = self.censor_first_character;
             let censor_replacement = self.censor_replacement;
-            self.pending_commit.drain_filter(|pending| {
+            self.pending_commit.retain(|pending| {
                 // Cancel due to false positive.
                 if let Some(start) = drain_start {
                     if pending.start >= start {
-                        return true;
+                        return false;
                     }
                 }
 
                 // Can pre-commit due to lack of false positive matches.
                 if pending.end < safety_end {
                     pending.commit(weights, spy, censor_first_character, censor_replacement);
-                    return true;
+                    return false;
                 }
 
                 // At this point, don't know whether this match will be committed or cancelled, so
-                // don't drain it.
-                false
+                // return.
+                true
             });
 
             // Yield one character if possible.
