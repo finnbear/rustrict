@@ -49,6 +49,6 @@ impl FromIterator<(&'static str, [i8; 4])> for Tree {
 
 impl Node {
     pub fn is_word(&self) -> bool {
-        self.weights.iter().any(|&w| w != 0)
+        self.weights != [0; 4]
     }
 }

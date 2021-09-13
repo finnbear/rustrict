@@ -1,3 +1,5 @@
+#![cfg_attr(test, feature(test))]
+
 use crate::buffer_proxy_iterator::BufferProxyIterator;
 use crate::mtch::*;
 use crate::radix::*;
@@ -339,20 +341,22 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
         }) {
             let pos = self.buffer.index();
 
-            if let Some(pos) = pos {
-                // Seed a new match for every character read.
-                self.matches.insert(Match {
-                    node: &TREE.root,
-                    start: pos,      // will immediately be incremented if match is kept.
-                    end: usize::MAX, // sentinel.
-                    last: 0 as char, // sentinel.
-                    space_before: self.separate,
-                    space_after: false, // unknown at this time.
-                    spaces: 0,
-                });
-            }
-
             let skippable = c.is_punctuation() || c.is_separator();
+
+            if let Some(pos) = pos {
+                if !skippable {
+                    // Seed a new match for every character read.
+                    self.matches.insert(Match {
+                        node: &TREE.root,
+                        start: pos, // will immediately be incremented if match is kept.
+                        end: usize::MAX, // sentinel.
+                        last: 0 as char, // sentinel.
+                        space_before: self.separate,
+                        space_after: false, // unknown at this time.
+                        spaces: 0,
+                    });
+                }
+            }
 
             /*
             let skippable = match c {
@@ -411,6 +415,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         if next.is_word() {
                             let length = pos.unwrap() - next_m.start;
                             if next_m.node.weights.iter().any(|&w| w < 0) {
+                                // Is false positive, so invalidate internal matches.
                                 if next_m.spaces == 0 && !self.ignore_false_positives {
                                     drain_start = Some(
                                         drain_start
@@ -546,9 +551,11 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 
 #[cfg(test)]
 mod tests {
+    extern crate test;
     use crate::{Censor, CensorIter, CensorStr, Type};
     use std::fs::File;
     use std::io::BufReader;
+    use test::Bencher;
 
     #[allow(dead_code)]
     fn find_detection(text: &str) {
@@ -679,6 +686,18 @@ mod tests {
             correct_positive as f32 / total_positive as f32,
             correct_negative as f32 / total_negative as f32
         );
+    }
+
+    #[allow(soft_unstable)]
+    #[bench]
+    fn bench_is_inappropriate(b: &mut Bencher) {
+        b.iter(|| test::black_box("hello fuck world shit").is_inappropriate());
+    }
+
+    #[allow(soft_unstable)]
+    #[bench]
+    fn bench_censor(b: &mut Bencher) {
+        b.iter(|| test::black_box("hello fuck world shit").censor());
     }
 }
 
