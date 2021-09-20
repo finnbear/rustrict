@@ -110,10 +110,10 @@ bitflags! {
         /// Cover your eyes!
         const SEVERE    = 0b100100100100;
 
-        // The default `Type`, meaning profane, offensive, sexual, or severely mean.
+        /// The default `Type`, meaning profane, offensive, sexual, or severely mean.
         const INAPPROPRIATE = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | (Self::MEAN.bits & Self::SEVERE.bits);
 
-        // Any type of detection. This will be expanded to cover all future types.
+        /// Any type of detection. This will be expanded to cover all future types.
         const ANY = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | Self::MEAN.bits;
     }
 }
@@ -131,12 +131,14 @@ impl Type {
 }
 
 impl Default for Type {
+    /// Returns a reasonable default for censoring or blocking.
     fn default() -> Self {
         Self::INAPPROPRIATE
     }
 }
 
 impl<'a> Censor<Chars<'a>> {
+    /// Creates a `Censor` from a `&str`, ready to censor or analyze it.
     pub fn from_str(s: &'a str) -> Self {
         Self::new(s.chars())
     }
@@ -538,12 +540,16 @@ impl CensorStr for &str {
 pub trait CensorIter {
     type Iterator: Iterator<Item = char>;
 
+    /// Iteratively censor characters, yielding (except accents) those that are not inappropriate, and replacing
+    /// those that are with `'*'`.
     fn censor(self) -> Self::Iterator;
 }
 
 impl<I: Iterator<Item = char> + Clone> CensorIter for I {
     type Iterator = Censor<I>;
 
+    /// Censors text, keeping (except accents) those that are not inappropriate, and replacing
+    /// those that are with `'*'`.
     fn censor(self) -> Self::Iterator {
         Censor::new(self)
     }
