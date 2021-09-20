@@ -56,7 +56,7 @@ lazy_static! {
 /// Censor is a flexible profanity filter that can analyze and/or censor arbitrary text.
 ///
 /// You can also make use of `Censor` via traits `CensorStr` and `CensorIter`, which allow inline
-/// checking and purification of `&str` and `Iterator<Item = char>` respectively.
+/// checking and censoring of `&str` and `Iterator<Item = char>` respectively.
 pub struct Censor<I: Iterator<Item = char>> {
     /// Options
     ignore_false_positives: bool,
@@ -145,7 +145,7 @@ impl<'a> Censor<Chars<'a>> {
 }
 
 impl<I: Iterator<Item = char>> Censor<I> {
-    /// Allocates a new purifier for analyzing and/or censoring text.
+    /// Allocates a new `Censor` for analyzing and/or censoring text.
     pub fn new(text: I) -> Self {
         let (buffer, chars) = Self::buffers_from(text);
 
@@ -203,7 +203,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
         )
     }
 
-    /// Resets the purifier with new text. Does not change any configured options.
+    /// Resets the `Censor` with new text. Does not change any configured options.
     /// This avoids reallocation of internal buffers on the heap.
     pub fn reset(&mut self, text: I) {
         let (buffer, chars) = Self::buffers_from(text);
@@ -644,9 +644,9 @@ mod tests {
         let (_, _) = Censor::new("abcd".chars())
             .with_censor_replacement('?')
             .censor_and_analyze();
-        let mut purifier = Censor::from_str("abcd");
-        let _ = purifier.censor();
-        let _ = purifier.analyze();
+        let mut censor = Censor::from_str("abcd");
+        let _ = censor.censor();
+        let _ = censor.analyze();
         let (_, _) = Censor::from_str("HELLO crap WORLD!").censor_and_analyze();
     }
 
