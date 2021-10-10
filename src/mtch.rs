@@ -1,5 +1,6 @@
 use crate::buffer_proxy_iterator::BufferProxyIterator;
 use crate::radix::Node;
+use crate::{weights_to_type, Type};
 use std::hash::{Hash, Hasher};
 
 #[derive(Clone)]
@@ -35,6 +36,7 @@ impl Match {
         &self,
         weights: &mut [i8; 4],
         spy: &BufferProxyIterator<I>,
+        censor_threshold: Type,
         censor_first_character: bool,
         censor_replacement: char,
     ) {
@@ -43,6 +45,11 @@ impl Match {
             && self.spaces as usize + 4 > self.node.depth as usize
         {
             // Match isn't strong enough.
+            return;
+        }
+
+        if weights_to_type(&self.node.weights).isnt(censor_threshold) {
+            // Match isn't severe enough.
             return;
         }
 

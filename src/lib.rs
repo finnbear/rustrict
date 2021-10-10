@@ -304,21 +304,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
     /// Converts internal weights to a `Type`.
     fn analysis(&self) -> Type {
-        let mut result = 0;
-        for (i, &weight) in self.weights.iter().enumerate() {
-            let severity: u32 = if weight >= 3 {
-                0b100 // severe
-            } else if weight == 2 {
-                0b010 // moderate
-            } else if weight == 1 {
-                0b001 // mild
-            } else {
-                0 // none
-            };
-
-            result |= severity << (i * 3)
-        }
-        Type { bits: result }
+        weights_to_type(&self.weights)
     }
 
     fn ensure_done(&mut self) {
@@ -326,6 +312,24 @@ impl<I: Iterator<Item = char>> Censor<I> {
             while let Some(_) = self.next() {}
         }
     }
+}
+
+fn weights_to_type(weights: &[i8; 4]) -> Type {
+    let mut result = 0;
+    for (i, &weight) in weights.iter().enumerate() {
+        let severity: u32 = if weight >= 3 {
+            0b100 // severe
+        } else if weight == 2 {
+            0b010 // moderate
+        } else if weight == 1 {
+            0b001 // mild
+        } else {
+            0 // none
+        };
+
+        result |= severity << (i * 3)
+    }
+    Type { bits: result }
 }
 
 impl<I: Iterator<Item = char>> Iterator for Censor<I> {
@@ -449,6 +453,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
 
             let weights = &mut self.weights;
             let spy = &self.buffer;
+            let censor_threshold = self.censor_threshold;
             let censor_first_character = self.censor_first_character;
             let censor_replacement = self.censor_replacement;
             self.pending_commit.retain(|pending| {
@@ -461,7 +466,13 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
 
                 // Can pre-commit due to lack of false positive matches.
                 if pending.end < safety_end {
-                    pending.commit(weights, spy, censor_first_character, censor_replacement);
+                    pending.commit(
+                        weights,
+                        spy,
+                        censor_threshold,
+                        censor_first_character,
+                        censor_replacement,
+                    );
                     return false;
                 }
 
@@ -492,6 +503,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             pending.commit(
                 &mut self.weights,
                 &self.buffer,
+                self.censor_threshold,
                 self.censor_first_character,
                 self.censor_replacement,
             );
@@ -621,6 +633,9 @@ mod tests {
             .censor();
 
         assert_eq!(censored, "HELLO f### S### WORLD!");
+
+        // Minor mean-ness is not considered inappropriate
+        assert_eq!("fcking coward".censor(), "f***** coward");
     }
 
     #[test]
