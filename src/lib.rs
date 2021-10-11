@@ -680,7 +680,7 @@ mod tests {
             let record = line.unwrap();
             let truth = record[0].parse::<i8>().unwrap() == 1;
             let text = &record[1];
-            let prediction = text.is_inappropriate();
+            let prediction = text.is(Type::ANY);
             //assert_eq!(is(text), is(text), "With ({})", text);
             if prediction == truth {
                 if truth {
