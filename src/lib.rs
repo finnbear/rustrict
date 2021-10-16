@@ -60,7 +60,7 @@ lazy_static! {
 pub struct Censor<I: Iterator<Item = char>> {
     /// Options
     ignore_false_positives: bool,
-    censor_first_character: bool,
+    censor_first_character_threshold: Type,
     //preserve_accents: bool,
     censor_replacement: char,
     censor_threshold: Type,
@@ -152,7 +152,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
         Self {
             // Default options
             ignore_false_positives: false,
-            censor_first_character: false,
+            censor_first_character_threshold: Type::OFFENSIVE & Type::SEVERE,
             //preserve_accents: false,
             censor_replacement: '*',
             censor_threshold: Default::default(),
@@ -238,11 +238,15 @@ impl<I: Iterator<Item = char>> Censor<I> {
         self
     }
 
-    /// Censor all characters e.g. "****," instead of all but the first e.g. "f***."
+    /// Censor all characters e.g. "xxxx," instead of all but the first e.g. "fxxx," if the word
+    /// meets this threshold.
     ///
     /// The default is `false`.
-    pub fn with_censor_first_character(&mut self, censor_first_character: bool) -> &mut Self {
-        self.censor_first_character = censor_first_character;
+    pub fn with_censor_first_character_threshold(
+        &mut self,
+        censor_first_character_threshold: Type,
+    ) -> &mut Self {
+        self.censor_first_character_threshold = censor_first_character_threshold;
         self
     }
 
@@ -454,7 +458,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let weights = &mut self.weights;
             let spy = &self.buffer;
             let censor_threshold = self.censor_threshold;
-            let censor_first_character = self.censor_first_character;
+            let censor_first_character_threshold = self.censor_first_character_threshold;
             let censor_replacement = self.censor_replacement;
             self.pending_commit.retain(|pending| {
                 // Cancel due to false positive.
@@ -470,7 +474,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         weights,
                         spy,
                         censor_threshold,
-                        censor_first_character,
+                        censor_first_character_threshold,
                         censor_replacement,
                     );
                     return false;
@@ -504,7 +508,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 &mut self.weights,
                 &self.buffer,
                 self.censor_threshold,
-                self.censor_first_character,
+                self.censor_first_character_threshold,
                 self.censor_replacement,
             );
         }
@@ -628,11 +632,11 @@ mod tests {
 
     #[test]
     fn censor() {
-        let censored = Censor::from_str("HELLO fučk Shit WORLD!")
+        let censored = Censor::from_str("HELLO fučk Shit nigga WORLD!")
             .with_censor_replacement('#')
             .censor();
 
-        assert_eq!(censored, "HELLO f### S### WORLD!");
+        assert_eq!(censored, "HELLO f### S### ##### WORLD!");
 
         // Minor mean-ness is not considered inappropriate
         assert_eq!("fcking coward".censor(), "f***** coward");

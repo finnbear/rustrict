@@ -37,7 +37,7 @@ impl Match {
         weights: &mut [i8; 4],
         spy: &BufferProxyIterator<I>,
         censor_threshold: Type,
-        censor_first_character: bool,
+        censor_first_character_threshold: Type,
         censor_replacement: char,
     ) {
         //let length = m.end - m.start;
@@ -48,13 +48,19 @@ impl Match {
             return;
         }
 
-        if weights_to_type(&self.node.weights).isnt(censor_threshold) {
+        let typ = weights_to_type(&self.node.weights);
+
+        if typ.isnt(censor_threshold) {
             // Match isn't severe enough.
             return;
         }
 
         // Censor.
-        let offset = if censor_first_character { 0 } else { 1 };
+        let offset = if typ.is(censor_first_character_threshold) {
+            0
+        } else {
+            1
+        };
         spy.censor(self.start + offset..=self.end, censor_replacement);
 
         // Apply weights.
