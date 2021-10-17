@@ -9,6 +9,7 @@ ap
 ar
 arsehole
 asshole
+assholes
 ates
 ays
 b
@@ -20,6 +21,7 @@ bitcho
 bitchy
 blackbutt
 blackcock
+blow job
 blueballs
 bn
 boobie(.*)
@@ -82,6 +84,7 @@ haters
 hellhole
 hic
 hoes
+honkies
 hs
 ht
 ic

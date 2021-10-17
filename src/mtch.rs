@@ -48,10 +48,15 @@ impl Match {
             return;
         }
 
+        // Apply weights.
+        for (i, weight) in self.node.weights.iter().enumerate() {
+            weights[i] = weights[i].saturating_add(*weight);
+        }
+
         let typ = weights_to_type(&self.node.weights);
 
         if typ.isnt(censor_threshold) {
-            // Match isn't severe enough.
+            // Match isn't severe enough to censor.
             return;
         }
 
@@ -62,11 +67,6 @@ impl Match {
             1
         };
         spy.censor(self.start + offset..=self.end, censor_replacement);
-
-        // Apply weights.
-        for (i, weight) in self.node.weights.iter().enumerate() {
-            weights[i] = weights[i].saturating_add(*weight);
-        }
     }
 }
 

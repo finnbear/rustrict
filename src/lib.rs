@@ -417,7 +417,9 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     if let Some(next) = m.node.children.get(&c) {
                         let next_m = Match {
                             node: next,
-                            spaces: m.spaces.saturating_add(self.separate as u8),
+                            spaces: m
+                                .spaces
+                                .saturating_add((self.separate && !c.is_whitespace()) as u8),
                             last: c,
                             ..m
                         };
@@ -548,7 +550,7 @@ impl CensorStr for &str {
     }
 
     fn is(self, threshold: Type) -> bool {
-        Censor::new(self.chars()).analyze().is(threshold)
+        Censor::from_str(self).analyze().is(threshold)
     }
 }
 
@@ -620,10 +622,11 @@ mod tests {
         );
 
         for (case, truth) in cases {
-            let prediction = case.is_inappropriate();
-            if !truth {
-                //assert_eq!(case, case.chars().censor().collect::<String>());
-            }
+            let prediction = case.is(Type::ANY);
+
+            //let (censored, analysis) = Censor::from_str(case).with_censor_threshold(Type::ANY).censor_and_analyze();
+            //println!("\"{}\" -> \"{}\" ({}, {})", case, censored, prediction, analysis.is(Type::ANY));
+
             if prediction != truth {
                 panic!("FAIL: Predicted {} for {}", prediction, case);
             }

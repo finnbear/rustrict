@@ -130,3 +130,12 @@ fn is_blacklisted(phrase: &str) -> bool {
             .unwrap_or(false)
     })
 }
+
+#[allow(dead_code)]
+fn is_sus(phrase: &str) -> bool {
+    BLACKLIST.iter().any(|p| {
+        p.find(phrase.trim_end_matches('s'))
+            .map(|m| m.start() == 0 && m.end() == phrase.len())
+            .unwrap_or(false)
+    })
+}
