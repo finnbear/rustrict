@@ -1,7 +1,7 @@
 [package]
 name = "rustrict"
 authors = ["Finn Bear"]
-version = "0.1.6"
+version = "0.1.7"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/finnbear/rustrict/"
@@ -15,6 +15,10 @@ path = "src/lib.rs"
 name = "false_positive_finder"
 path = "src/false_positive_finder.rs"
 required-features = ["find_false_positives"]
+
+[[bin]]
+name = "replacement_finder"
+path = "src/replacement_finder.rs"
 
 [features]
 find_false_positives = ["regex", "indicatif", "rayon"]

@@ -13,6 +13,7 @@ Cargo.lock
 test.csv
 src/dictionary.txt
 src/dictionary_common.txt
+src/unicode_confusables.txt
 
 .idea
 *.iml
