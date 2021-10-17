@@ -19,9 +19,11 @@ required-features = ["find_false_positives"]
 [[bin]]
 name = "replacement_finder"
 path = "src/replacement_finder.rs"
+required-features = ["find_replacements"]
 
 [features]
 find_false_positives = ["regex", "indicatif", "rayon"]
+find_replacements = []
 
 [dependencies]
 bitflags = "1.3.2"
