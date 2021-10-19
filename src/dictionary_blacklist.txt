@@ -156,6 +156,7 @@ shits
 shiite
 shithead
 shitt(.*)
+shut up
 sluts
 slutt(.*)
 spunked
