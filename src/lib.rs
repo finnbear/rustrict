@@ -352,9 +352,10 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let pos = self.buffer.index();
 
             let skippable = c.is_punctuation() || c.is_separator();
+            let replacement = REPLACEMENTS.get(&c);
 
             if let Some(pos) = pos {
-                if !skippable {
+                if !(skippable && replacement.is_none()) {
                     // Seed a new match for every character read.
                     self.matches.insert(Match {
                         node: &TREE.root,
@@ -390,11 +391,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let mut safety_end = usize::MAX;
 
             mem::swap(&mut self.matches, &mut self.matches_tmp);
-            for c in REPLACEMENTS
-                .get(&c)
-                .unwrap_or(&&*c.encode_utf8(&mut [0; 4]))
-                .chars()
-            {
+            for c in replacement.unwrap_or(&&*c.encode_utf8(&mut [0; 4])).chars() {
                 for m in self.matches_tmp.iter() {
                     let m = m.clone();
 
@@ -417,9 +414,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     if let Some(next) = m.node.children.get(&c) {
                         let next_m = Match {
                             node: next,
-                            spaces: m
-                                .spaces
-                                .saturating_add((self.separate && !c.is_whitespace()) as u8),
+                            spaces: m.spaces.saturating_add((self.separate && c != ' ') as u8),
                             last: c,
                             ..m
                         };
