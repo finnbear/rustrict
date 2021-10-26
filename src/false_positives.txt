@@ -445,6 +445,14 @@ ball sym
 ball syn
 ball syr
 ball syst
+ball za
+ball zdnet
+ball zea
+ball zer
+ball zimb
+ball zinc
+ball zo
+ball zs
 ballsier
 ballsiest
 ballstock
@@ -458,10 +466,12 @@ banus
 barnes punk
 barriers punk
 barse
+baseball zdnet
 baseballs
 basemen
 bases punk
 basilicock
+basketball zdnet
 basketballs
 baskets punk
 bass hat
@@ -486,6 +496,7 @@ benedick
 bereshith
 bes punk
 betes punk
+betwit
 bewhore
 bibcock
 bicched
@@ -699,6 +710,7 @@ brothellike
 brushite
 bs punk
 bucks punk
+budget lost
 bug ger
 buggered
 buggeries
@@ -720,7 +732,9 @@ buttinski
 buttinsky
 buttle
 buttling
-buttock
+buttocked
+buttocker
+buttocks
 button
 buttress
 buttstock
@@ -802,7 +816,6 @@ chinkier
 chinkiest
 chinking
 chinkle
-chinks
 chinky
 choes
 chonkey
@@ -1155,7 +1168,6 @@ dvds punk
 dyked
 dykehopper
 dyker
-dykes
 eagles punk
 earmuff
 earners punk
@@ -1235,7 +1247,6 @@ faqs punk
 farse
 fascista
 fascisti
-fascists
 fastballs
 fawkener
 feastful
@@ -1295,9 +1306,11 @@ floodcock
 florists punk
 folks punk
 fonts punk
+football zdnet
 footballs
 forces punk
 forebreast
+forget lost
 four some
 foursomes
 frape
@@ -1343,6 +1356,7 @@ garse
 gastful
 gastrogenital
 gates punk
+gaynesses
 gaysome
 gearset
 gees punk
@@ -1360,7 +1374,6 @@ gents punk
 genuine gros
 gers punk
 gests punk
-get lost
 gets punk
 ghastful
 ghettoed
@@ -1525,6 +1538,9 @@ hoarwort
 hoary
 hobbies punk
 hoeshin
+holocaustal
+holocaustic
+holocausts
 holosericeous
 hommock
 homoanisaldehyde
@@ -1743,6 +1759,7 @@ http ricky
 humbugger
 hygiene gros
 hypersexual
+i am gay
 ianus
 ices punk
 ich ink
@@ -1771,6 +1788,7 @@ if rick
 ife late
 ife latter
 igarape
+im gay
 imagine gros
 immune gros
 impregnant
@@ -1841,7 +1859,8 @@ jerkwater
 jerky
 jestful
 jets punk
-jews punk
+jewship
+jewstone
 jigaboos
 jitterbugger
 jizzen
@@ -2207,6 +2226,7 @@ nincompoop
 nine gros
 nipissing
 nipples punk
+nitwit
 noncock
 nondegenerate
 nonejaculatory
@@ -2223,6 +2243,7 @@ nos punk
 nosegays
 notes punk
 notidanus
+notwithstanding
 nows punk
 nu de
 nurses punk
@@ -2255,6 +2276,7 @@ one gros
 ones punk
 oons punk
 oots punk
+ootwith
 op rick
 openings punk
 opponents punk
@@ -2279,6 +2301,7 @@ outers punk
 outsuck
 outwatch
 outwater
+outwit
 overdamn
 overfagged
 overfagging
@@ -2298,6 +2321,7 @@ packs punk
 paddlecock
 paganalia
 pagne gros
+paintball zdnet
 palaeoniscum
 palebreast
 pandanales
@@ -3077,6 +3101,7 @@ sociosexual
 socks punk
 sofa get
 sofa got
+softball zdnet
 softballs
 solanal
 soldiers punk
@@ -3086,6 +3111,7 @@ sonic ca
 sons punk
 sophomore
 sophomoric
+sortwith
 sourballs
 sources punk
 species punk
@@ -3182,6 +3208,7 @@ tanks punk
 tapisser
 tapissier
 tarbuttite
+target lost
 tarse
 tates punk
 tats punk
@@ -3672,6 +3699,16 @@ twatterlight
 twattle
 twattling
 twigger
+twitch
+twite
+twitlark
+twits
+twitted
+twitten
+twitter
+twitting
+twittle
+twitty
 tycoon
 tympanal
 tyson gay
@@ -3781,6 +3818,7 @@ vixens
 voip rick
 voip ricky
 volcanus
+volleyball zdnet
 volleyballs
 volunteers punk
 voters punk
@@ -3793,6 +3831,7 @@ vulvate
 waesuck
 walks punk
 wambutti
+wantwit
 wap rick
 wards punk
 warnings punk
@@ -3803,12 +3842,12 @@ watts punk
 ways punk
 weathercock
 weeks punk
+weightwith
 welsh aging
 whatever
 wheellike
 whipcracker
 whisterpoop
-white trash
 whittler
 wiggeries
 wiggery
@@ -3816,6 +3855,7 @@ winds punk
 wine gros
 wines punk
 wings punk
+winterdykes
 wisecracker
 wiss punk
 wistful

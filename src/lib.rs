@@ -691,7 +691,7 @@ mod tests {
                     correct_negative += 1;
                 }
             } else if text.len() < 100 {
-                //println!("{}: {}", truth, text);
+                println!("{}: {}", truth, text);
                 if prediction {
                     //find_detection(text);
                 }
