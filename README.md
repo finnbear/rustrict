@@ -3,7 +3,7 @@
 `rustrict` is a profanity filter for Rust. 
 
 When evaluated against the first 100,000 items of [this list](https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv),
-it has **90.97% accuracy** (91% positive accuracy, 91% negative accuracy), as of version `0.1.16`. Much of the inaccuracy is due to
+it has **90.97% accuracy** (91% positive accuracy, 91% negative accuracy). Much of the inaccuracy is due to
 differences of opinion of what is inappropriate/spam.
 
 ## Features
@@ -12,7 +12,7 @@ differences of opinion of what is inappropriate/spam.
 - Multiple levels (mild, moderate, severe)
 - Resistant to evasion
   - Repeated characters (like "craaaap")
-  - Confusable characters (like `ᑭ` vs `P`)
+  - Confusable characters (like 'ᑭ' vs 'P')
   - Spacing (like "c r a p")
   - Accents (like "pÓöp")
   - Self-censoring (like "f*ck")
@@ -20,17 +20,15 @@ differences of opinion of what is inappropriate/spam.
   - One word (like "**ass**assin")
   - Two words (like "pu**sh it**")
 - Flexible
-  - Censor
-  - Analyze
-  - Input `&str`
-  - Input `Iterator<Type = char>`
+  - Censor and/or analyze
+  - Input `&str` or `Iterator<Type = char>`
   - Plenty of options
 - Not horribly slow (processes text at around 481 kbps)
 
 ## Setup
 
 ```toml
-rustrict = "0.1.16"
+rustrict = "0.1.17"
 ```
 
 ## Usage

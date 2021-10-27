@@ -387,13 +387,15 @@ impl<I: Iterator<Item = char>> Censor<I> {
         let percent_self_censoring = 100 * self.self_censoring as u16 / total;
 
         // Assess amount of spam.
-        let spam = Type::SPAM
-            & match percent_spam {
-                70..=u16::MAX => Type::SEVERE,
-                50..=69 => Type::MODERATE,
-                30..=49 => Type::MILD,
-                0..=34 => Type::NONE,
-            };
+        let spam = if percent_spam >= 70 && self.last_pos >= 20 {
+            Type::SPAM & Type::SEVERE
+        } else if percent_spam >= 50 && self.last_pos >= 10 {
+            Type::SPAM & Type::MODERATE
+        } else if percent_spam >= 30 {
+            Type::SPAM & Type::MILD
+        } else {
+            Type::NONE
+        };
 
         // Assess amount of self-censoring.
         let self_censoring = if !self.ignore_self_censoring && percent_self_censoring > 20 {
