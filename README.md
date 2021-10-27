@@ -23,12 +23,12 @@ differences of opinion of what is inappropriate/spam.
   - Censor and/or analyze
   - Input `&str` or `Iterator<Type = char>`
   - Plenty of options
-- Not horribly slow (processes text at around 481 kbps)
+- Not horribly slow (processes text at around 450 kbps)
 
 ## Setup
 
 ```toml
-rustrict = "0.1.17"
+rustrict = "0.1.18"
 ```
 
 ## Usage
