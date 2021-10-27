@@ -373,7 +373,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
         // Total opportunities for spam and self censoring. A bias is added so that a few words in a
         // relatively short string won't create massive percentages.
-        let total = (self.last_pos + 6).min(u16::MAX as usize) as u16;
+        let total = self.last_pos.saturating_add(6).min(u16::MAX as usize) as u16;
 
         // Total spam.
         let spam = self
@@ -701,6 +701,8 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 mod tests {
     extern crate test;
     use crate::{Censor, CensorIter, CensorStr, Type};
+    use rand::{thread_rng, Rng};
+    use std::time::{Duration, Instant};
     use test::Bencher;
 
     #[allow(dead_code)]
@@ -744,8 +746,10 @@ mod tests {
         );
 
         for (case, truth) in cases {
+            /*
             #[cfg(debug_assertions)]
             println!("Case: \"{}\"", case);
+             */
 
             let prediction = case.is(Type::ANY);
 
@@ -845,10 +849,53 @@ mod tests {
         );
     }
 
+    #[test]
+    fn bandwidth() {
+        let mut length = 10;
+        let mut rng = thread_rng();
+        const TARGET_ELAPSED: Duration = Duration::from_millis(100);
+        loop {
+            const CHARSET: &str = "     .,_-\"'AAAABCDEEEEEFGHIJKLMNOOPQRSTUVWXYZaaaabcdeeeefghijklmnoooopqrstuvwxyz0123456789";
+
+            let mut string = String::with_capacity(length);
+
+            for _ in 0..length {
+                string.push(
+                    CHARSET
+                        .chars()
+                        .nth(rng.gen_range(0..CHARSET.chars().count()))
+                        .unwrap(),
+                );
+            }
+
+            let now = Instant::now();
+
+            let (_, _) = Censor::from_str(&string).censor_and_analyze();
+
+            let elapsed = now.elapsed();
+
+            if elapsed >= TARGET_ELAPSED {
+                println!(
+                    "Bandwidth is {} bytes per second",
+                    length as f32 * (TARGET_ELAPSED.as_secs_f32() / elapsed.as_secs_f32())
+                );
+                break;
+            }
+
+            length *= 2;
+        }
+    }
+
     #[allow(soft_unstable)]
     #[bench]
     fn bench_is_inappropriate(b: &mut Bencher) {
         b.iter(|| test::black_box("hello fuck world shit").is_inappropriate());
+    }
+
+    #[allow(soft_unstable)]
+    #[bench]
+    fn bench_is_inappropriate_long(b: &mut Bencher) {
+        b.iter(|| test::black_box("hello fuck world shit hello fuck world shit hello fuck world shit hello fuck world shit hello fuck world shit hello fuck world shit hello fuck world shit").is_inappropriate());
     }
 
     #[allow(soft_unstable)]
