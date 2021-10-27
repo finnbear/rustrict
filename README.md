@@ -3,13 +3,13 @@
 `rustrict` is a profanity filter for Rust. 
 
 When evaluated against the first 100,000 items of [this list](https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv),
-it has **91.68% accuracy** (89% positive accuracy, 92% negative accuracy), as of version `0.1.14`. Much of the inaccuracy is due to
-differences of opinion of what is inappropriate.
+it has **90.97% accuracy** (91% positive accuracy, 91% negative accuracy), as of version `0.1.15`. Much of the inaccuracy is due to
+differences of opinion of what is inappropriate/spam.
 
 ## Setup
 
 ```toml
-rustrict = "0.1.14"
+rustrict = "0.1.15"
 ```
 
 ## Usage
@@ -47,6 +47,7 @@ let (censored, analysis) = Censor::from_str("123 Crap")
     .with_censor_threshold(Type::INAPPROPRIATE)
     .with_censor_first_character_threshold(Type::OFFENSIVE & Type::SEVERE)
     .with_ignore_false_positives(false)
+    .with_ignore_self_censoring(false)
     .with_censor_replacement('*')
     .censor_and_analyze();
 

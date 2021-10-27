@@ -5,9 +5,9 @@ use std::hash::{Hash, Hasher};
 
 #[derive(Clone)]
 pub(crate) struct Match {
+    /// The word being matched.
     pub(crate) node: &'static Node,
-    /// stores the index in the string when this match was created.
-    /// this is ignored by Eq and Hash operations
+    /// Stores the index in the string when this match was created.
     pub(crate) start: usize,
     // Stores the index in the string when this match was completed.
     pub(crate) end: usize,
@@ -40,6 +40,14 @@ impl Match {
         censor_first_character_threshold: Type,
         censor_replacement: char,
     ) {
+        #[cfg(debug_assertions)]
+        {
+            println!(
+                "matching \"{}\" b={} m={} a={}",
+                self.node.phrase, self.space_before, self.spaces, self.space_after
+            );
+        }
+
         //let length = m.end - m.start;
         if !(self.space_before && self.space_after)
             && self.spaces as usize + 4 > self.node.depth as usize
@@ -72,7 +80,7 @@ impl Match {
 
 impl PartialEq for Match {
     fn eq(&self, other: &Self) -> bool {
-        std::ptr::eq(self.node, other.node)
+        std::ptr::eq(self.node, other.node) && self.space_before == other.space_before
     }
 }
 
@@ -81,5 +89,6 @@ impl Eq for Match {}
 impl Hash for Match {
     fn hash<H: Hasher>(&self, state: &mut H) {
         state.write_usize(self.node as *const _ as usize);
+        state.write_u8(self.space_before as u8);
     }
 }

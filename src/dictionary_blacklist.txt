@@ -17,6 +17,7 @@ bitchain
 bitchar
 bitches(.*)
 bitchi
+bitching
 bitcho
 bitchy
 blackbutt
@@ -121,6 +122,8 @@ nidiot
 ns
 nt
 nude(.*)
+nut case
+nut job
 nv
 o
 ob

@@ -8,6 +8,7 @@ arse,2,0,0,0
 ass,2,0,1,0
 asshat,2,0,0,2
 asshole,2,0,1,2
+asslick,2,0,1,2
 azz,1,0,0,0
 balls,0,0,1,0
 ballz,0,0,1,0
@@ -32,6 +33,7 @@ bugger,2,0,0,0
 bulshit,2,0,0,0
 butt,1,0,0,0
 buttock,1,0,0,0
+buttox,1,0,0,0
 bra,0,0,1,0
 brainless,0,0,0,1
 bxtch,0,2,2,0
@@ -48,6 +50,7 @@ coward,0,0,0,1
 cracker,0,2,0,0
 crap,1,0,0,0
 cum,0,0,3,0
+cnt,0,2,2,0
 cunt,0,2,2,0
 damn,1,0,0,0
 daygo,0,3,0,0
@@ -118,6 +121,7 @@ hate,0,0,0,2
 hell,1,0,0,0
 heshe,0,0,2,0
 hitler,0,2,0,0
+ho,0,2,1,0
 hoar,0,3,2,0
 hoe,0,2,1,0
 hoes,0,2,1,0
@@ -137,6 +141,7 @@ isgay,0,2,0,0
 jackass,1,0,0,1
 jackshit,2,0,0,0
 jerk,0,0,0,1
+jew,0,1,0,0
 jews,0,1,0,0
 jigaboo,0,3,0,0
 jizz,0,0,3,0
@@ -170,6 +175,8 @@ nips,0,0,2,0
 niqq,2,3,0,0
 nude,0,0,3,0
 nudes,0,0,3,0
+nutcase,0,0,0,1
+nutjob,0,0,0,1
 orgasm,0,0,2,0
 peanis,1,0,3,0
 peanus,1,0,3,0
@@ -182,6 +189,7 @@ phuc,2,0,2,0
 phuk,2,0,2,0
 pieceofgarbage,0,0,0,1
 piss,1,0,0,0
+poo,1,0,0,0
 poop,1,0,0,0
 porn,0,0,3,0
 pp,0,0,2,0
@@ -242,6 +250,7 @@ twat,0,0,3,0
 twit,0,0,0,1
 ugly,0,0,0,2
 uncletom,0,2,0,2
+urmom,0,0,1,1
 urmother,0,0,1,1
 useyourhead,0,0,0,1
 vagina,0,0,3,0

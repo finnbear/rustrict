@@ -4,7 +4,7 @@ use lazy_static::lazy_static;
 use rayon::iter::IntoParallelRefIterator;
 use rayon::iter::ParallelIterator;
 use regex::Regex;
-use rustrict::Censor;
+use rustrict::{Censor, Type};
 use std::collections::HashSet;
 use std::fs;
 use std::sync::Mutex;
@@ -42,10 +42,10 @@ lazy_static! {
 }
 
 pub fn is_ignore_fp<C: Iterator<Item = char>>(text: C) -> bool {
-    !Censor::new(text)
+    Censor::new(text)
         .with_ignore_false_positives(true)
         .analyze()
-        .is_empty()
+        .is(Type::PROFANE | Type::OFFENSIVE | Type::SEXUAL | Type::MEAN)
 }
 
 fn maybe_false_positive<C: Iterator<Item = char> + Clone>(word: C) -> Option<String> {

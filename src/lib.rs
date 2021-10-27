@@ -60,6 +60,7 @@ lazy_static! {
 pub struct Censor<I: Iterator<Item = char>> {
     /// Options
     ignore_false_positives: bool,
+    ignore_self_censoring: bool,
     censor_first_character_threshold: Type,
     //preserve_accents: bool,
     censor_replacement: char,
@@ -74,6 +75,14 @@ pub struct Censor<I: Iterator<Item = char>> {
     last_pos: usize,
     /// An accumulation of the different types of inappropriateness.
     weights: [i8; 4],
+    /// Counters (mainly for spam detection).
+    uppercase: u8,
+    repetitions: u8,
+    last: Option<char>,
+    gibberish: u8,
+    replacements: u8,
+    /// How many instances of censor replacement in the raw text?
+    self_censoring: u8,
     /// Where matches are kept after they are complete but may be cancelled due to false positives.
     pending_commit: Vec<Match>,
     /// A buffer of the input that stores unconfirmed characters (may need to censor before flushing).
@@ -95,38 +104,43 @@ bitflags! {
     /// Type is represents a type or severity of inappropriateness. They can be combined with bitwise operators. They are **not** mutually exclusive.
     pub struct Type: u32 {
         /// Bad words.
-        const PROFANE   = 0b000000000111;
+        const PROFANE   = 0b000_000_000_000_111;
         /// Offensive words.
-        const OFFENSIVE = 0b000000111000;
+        const OFFENSIVE = 0b000_000_000_111_000;
         /// Sexual words.
-        const SEXUAL    = 0b000111000000;
+        const SEXUAL    = 0b000_000_111_000_000;
         /// Mean words.
-        const MEAN      = 0b111000000000;
+        const MEAN      = 0b000_111_000_000_000;
+        /// Spam/gibberish/SHOUTING.
+        const SPAM      = 0b111_000_000_000_000;
 
         /// Not that bad.
-        const MILD      = 0b111111111111;
+        const MILD      = 0b111_111_111_111_111;
         /// Bad.
-        const MODERATE  = 0b110110110110;
+        const MODERATE  = 0b110_110_110_110_110;
         /// Cover your eyes!
-        const SEVERE    = 0b100100100100;
+        const SEVERE    = 0b100_100_100_100_100;
 
         /// The default `Type`, meaning profane, offensive, sexual, or severely mean.
         const INAPPROPRIATE = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | (Self::MEAN.bits & Self::SEVERE.bits);
 
         /// Any type of detection. This will be expanded to cover all future types.
-        const ANY = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | Self::MEAN.bits;
+        const ANY = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | Self::MEAN.bits | Self::SPAM.bits;
+
+        /// No type of detection.
+        const NONE = 0;
     }
 }
 
 impl Type {
     /// Returns `true` if and only if self, the analysis result, meets the given threshold.
     pub fn is(self, threshold: Self) -> bool {
-        self & threshold != Type { bits: 0 }
+        self & threshold != Type::NONE
     }
 
     /// Logical opposite of `Self::is`.
     pub fn isnt(self, threshold: Self) -> bool {
-        self & threshold == Type { bits: 0 }
+        self & threshold == Type::NONE
     }
 }
 
@@ -152,6 +166,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
         Self {
             // Default options
             ignore_false_positives: false,
+            ignore_self_censoring: false,
             censor_first_character_threshold: Type::OFFENSIVE & Type::SEVERE,
             //preserve_accents: false,
             censor_replacement: '*',
@@ -160,6 +175,12 @@ impl<I: Iterator<Item = char>> Censor<I> {
             separate: true,
             // Nothing was detected yet.
             weights: [0; 4],
+            uppercase: 0,
+            repetitions: 0,
+            last: None,
+            gibberish: 0,
+            replacements: 0,
+            self_censoring: 0,
             space_apended: false,
             done: false,
             last_pos: usize::MAX,
@@ -205,11 +226,20 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
     /// Resets the `Censor` with new text. Does not change any configured options.
     /// This avoids reallocation of internal buffers on the heap.
+    ///
+    /// TODO: This is untested.
+    #[cfg(feature = "reset_censor")]
     pub fn reset(&mut self, text: I) {
         let (buffer, chars) = Self::buffers_from(text);
 
         self.separate = true;
         self.weights = [0; 4];
+        self.uppercase = 0;
+        self.last = None;
+        self.repetitions = 0;
+        self.gibberish = 0;
+        self.replacements = 0;
+        self.self_censoring = 0;
         self.space_apended = false;
         self.done = false;
         self.last_pos = usize::MAX;
@@ -223,7 +253,9 @@ impl<I: Iterator<Item = char>> Censor<I> {
     /// Selects a threshold to apply while censoring. Only words that meet or exceed the threshold
     /// are censored.
     ///
-    /// The default is `Type::Inappropriate`.
+    /// At present, [`Type::SPAM`] cannot be censored.
+    ///
+    /// The default is [`Type::Inappropriate`].
     pub fn with_censor_threshold(&mut self, censor_threshold: Type) -> &mut Self {
         self.censor_threshold = censor_threshold;
         self
@@ -235,6 +267,20 @@ impl<I: Iterator<Item = char>> Censor<I> {
     /// The default is `false`.
     pub fn with_ignore_false_positives(&mut self, ignore_false_positives: bool) -> &mut Self {
         self.ignore_false_positives = ignore_false_positives;
+        self
+    }
+
+    /// Do not count instances of censor replacement in the input text as possible profanity.
+    ///
+    /// If `false`, the input `"****"` will be assumed to be profane since if censor replacement is
+    /// set to `'*'`. This can help in cases like `"mother******"` where, if the user hadn't self
+    /// censored, the censored version would have been `"m***********"`.
+    ///
+    /// At present, only affects analysis and not censoring.
+    ///
+    /// The default is `false`.
+    pub fn with_ignore_self_censoring(&mut self, ignore_self_censoring: bool) -> &mut Self {
+        self.ignore_self_censoring = ignore_self_censoring;
         self
     }
 
@@ -302,19 +348,61 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
     /// See the documentation of censor and analyze.
     pub fn censor_and_analyze(&mut self) -> (String, Type) {
+        // It is important that censor is called first, so that the input is processed.
         let censored = self.censor();
+        // After that, analysis is ready to call.
         (censored, self.analysis())
     }
 
     /// Converts internal weights to a `Type`.
     fn analysis(&self) -> Type {
-        weights_to_type(&self.weights)
+        weights_to_type(&self.weights) | self.self_censoring_and_spam_detection()
     }
 
     fn ensure_done(&mut self) {
         if !self.done {
             while let Some(_) = self.next() {}
         }
+    }
+
+    fn self_censoring_and_spam_detection(&self) -> Type {
+        if self.last_pos < 6 {
+            // Short strings consisting of a single acronym are problematic percentage-wise.
+            return Type::NONE;
+        }
+
+        // Total opportunities for spam and self censoring. A bias is added so that a few words in a
+        // relatively short string won't create massive percentages.
+        let total = (self.last_pos + 6).min(u16::MAX as usize) as u16;
+
+        // Total spam.
+        let spam = self
+            .uppercase
+            .max(self.repetitions)
+            .max(self.gibberish / 2)
+            .max(self.replacements) as u16;
+
+        // Calculate percents.
+        let percent_spam = 100 * spam / total;
+        let percent_self_censoring = 100 * self.self_censoring as u16 / total;
+
+        // Assess amount of spam.
+        let spam = Type::SPAM
+            & match percent_spam {
+                70..=u16::MAX => Type::SEVERE,
+                50..=69 => Type::MODERATE,
+                30..=49 => Type::MILD,
+                0..=34 => Type::NONE,
+            };
+
+        // Assess amount of self-censoring.
+        let self_censoring = if !self.ignore_self_censoring && percent_self_censoring > 20 {
+            Type::PROFANE & Type::MILD
+        } else {
+            Type::NONE
+        };
+
+        spam | self_censoring
     }
 }
 
@@ -351,8 +439,40 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
         }) {
             let pos = self.buffer.index();
 
-            let skippable = c.is_punctuation() || c.is_separator();
+            let skippable = c.is_punctuation() || c.is_separator() || c.is_other();
             let replacement = REPLACEMENTS.get(&c);
+
+            if (!self.separate || self.last == Some(self.censor_replacement))
+                && c == self.censor_replacement
+            {
+                // Censor replacement found but not beginning of word.
+                self.self_censoring = self.self_censoring.saturating_add(1);
+            }
+
+            if let Some(last) = self.last {
+                if c == last {
+                    self.repetitions = self.repetitions.saturating_add(1);
+                }
+                // Replacement of one letter with another does not imply spam.
+                // Multiple numbers in sequence doesn't either.
+                if replacement.is_some()
+                    && !c.is_ascii_lowercase()
+                    && !(c.is_ascii_digit() && last.is_ascii_digit())
+                {
+                    self.replacements = self.replacements.saturating_add(1);
+                }
+
+                // Characters on the home-row of a QWERTY keyboard.
+                fn is_gibberish(c: char) -> bool {
+                    matches!(c, 'a' | 's' | 'd' | 'f' | 'j' | 'k' | 'l' | ';')
+                }
+
+                // Single gibberish characters don't count. Must have been preceded by another gibberish character.
+                if is_gibberish(c) && is_gibberish(last) {
+                    self.gibberish = self.gibberish.saturating_add(1);
+                }
+            }
+            self.last = Some(c);
 
             if let Some(pos) = pos {
                 if !(skippable && replacement.is_none()) {
@@ -414,13 +534,15 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     if let Some(next) = m.node.children.get(&c) {
                         let next_m = Match {
                             node: next,
-                            spaces: m.spaces.saturating_add((self.separate && c != ' ') as u8),
+                            spaces: m
+                                .spaces
+                                .saturating_add((self.separate && c != ' ' && c != '\'') as u8),
                             last: c,
                             ..m
                         };
 
                         if next.is_word() {
-                            let length = pos.unwrap() - next_m.start;
+                            let length = 1 + pos.unwrap() - next_m.start;
                             if next_m.node.weights.iter().any(|&w| w < 0) {
                                 // Is false positive, so invalidate internal matches.
                                 if next_m.spaces == 0 && !self.ignore_false_positives {
@@ -495,7 +617,11 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     }
                 }
                 if safe {
-                    return self.buffer.spy_next();
+                    let next = self.buffer.spy_next();
+                    if next.map(|c| c.is_ascii_uppercase()).unwrap_or(false) {
+                        self.uppercase = self.uppercase.saturating_add(1);
+                    }
+                    return next;
                 }
             }
         }
@@ -511,6 +637,9 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
         }
 
         if let Some(c) = self.buffer.spy_next() {
+            if c.is_uppercase() {
+                self.uppercase = self.uppercase.saturating_add(1);
+            }
             return Some(c);
         }
 
@@ -572,8 +701,6 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 mod tests {
     extern crate test;
     use crate::{Censor, CensorIter, CensorStr, Type};
-    use std::fs::File;
-    use std::io::BufReader;
     use test::Bencher;
 
     #[allow(dead_code)]
@@ -601,8 +728,8 @@ mod tests {
     }
 
     #[test]
-    fn is_pure() {
-        let mut cases: Vec<(&str, bool)> = Vec::new();
+    fn curated() {
+        let mut cases: Vec<(&str, bool)> = vec![("", false)];
         cases.extend(
             include_str!("test_positive.txt")
                 .split('\n')
@@ -617,6 +744,9 @@ mod tests {
         );
 
         for (case, truth) in cases {
+            #[cfg(debug_assertions)]
+            println!("Case: \"{}\"", case);
+
             let prediction = case.is(Type::ANY);
 
             //let (censored, analysis) = Censor::from_str(case).with_censor_threshold(Type::ANY).censor_and_analyze();
@@ -667,8 +797,12 @@ mod tests {
         let (_, _) = Censor::from_str("HELLO crap WORLD!").censor_and_analyze();
     }
 
+    #[cfg(not(debug_assertions))]
     #[test]
     fn accuracy() {
+        use std::fs::File;
+        use std::io::BufReader;
+
         let file = File::open("test.csv").unwrap();
         let reader = BufReader::new(file);
         let mut csv = csv::Reader::from_reader(reader);
