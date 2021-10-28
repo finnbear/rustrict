@@ -704,6 +704,8 @@ mod tests {
     extern crate test;
     use crate::{Censor, CensorIter, CensorStr, Type};
     use rand::{thread_rng, Rng};
+    use std::fs::File;
+    use std::io::BufReader;
     use std::time::{Duration, Instant};
     use test::Bencher;
 
@@ -806,9 +808,6 @@ mod tests {
     #[cfg(not(debug_assertions))]
     #[test]
     fn accuracy() {
-        use std::fs::File;
-        use std::io::BufReader;
-
         let file = File::open("test.csv").unwrap();
         let reader = BufReader::new(file);
         let mut csv = csv::Reader::from_reader(reader);
@@ -853,38 +852,37 @@ mod tests {
 
     #[test]
     fn bandwidth() {
-        let mut length = 10;
-        let mut rng = thread_rng();
-        const TARGET_ELAPSED: Duration = Duration::from_millis(100);
-        loop {
-            const CHARSET: &str = "     .,_-\"'AAAABCDEEEEEFGHIJKLMNOOPQRSTUVWXYZaaaabcdeeeefghijklmnoooopqrstuvwxyz0123456789";
+        let file = File::open("test.csv").unwrap();
+        let total_len = file.metadata().unwrap().len() as usize;
+        let reader = BufReader::new(file);
+        let mut csv = csv::Reader::from_reader(reader);
 
-            let mut string = String::with_capacity(length);
+        let mut text = String::with_capacity(total_len);
 
-            for _ in 0..length {
-                string.push(
-                    CHARSET
-                        .chars()
-                        .nth(rng.gen_range(0..CHARSET.chars().count()))
-                        .unwrap(),
-                );
+        for line in csv.records().take(100000) {
+            let record = line.unwrap();
+            text.push_str(&record[1]);
+        }
+
+        for power in 1..32 {
+            let len = 2usize.pow(power);
+
+            if len > text.len() {
+                break;
             }
 
             let now = Instant::now();
 
-            let (_, _) = Censor::from_str(&string).censor_and_analyze();
+            let (_, _) = Censor::from_str(&text[0..len]).censor_and_analyze();
 
             let elapsed = now.elapsed();
 
-            if elapsed >= TARGET_ELAPSED {
-                println!(
-                    "Bandwidth is {} bytes per second",
-                    length as f32 * (TARGET_ELAPSED.as_secs_f32() / elapsed.as_secs_f32())
-                );
-                break;
-            }
-
-            length *= 2;
+            println!(
+                "{}, {}, {}",
+                len,
+                elapsed.as_secs_f32(),
+                len as f32 / elapsed.as_secs_f32() / 1000.0 / 1000.0
+            );
         }
     }
 

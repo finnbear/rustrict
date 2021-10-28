@@ -23,7 +23,9 @@ differences of opinion of what is inappropriate/spam.
   - Censor and/or analyze
   - Input `&str` or `Iterator<Type = char>`
   - Plenty of options
-- Not horribly slow (processes text at around 450 kbps)
+- Performant
+  - O(n) analysis and censoring
+  - Specifically, around 4 MB/s
 
 ## Setup
 
