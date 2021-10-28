@@ -79,7 +79,7 @@ assert!(analysis.isnt(Type::PROFANE & Type::SEVERE | Type::SEXUAL));
 ## Comparison
 
 To compare filters, the first 100,000 items of [this list](https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv)
-is used as a dataset. Positive accuracy is the percentage of profanity detected as profanity. Negative accuracy is the percentage of clean text not detected as clean.
+is used as a dataset. Positive accuracy is the percentage of profanity detected as profanity. Negative accuracy is the percentage of clean text detected as clean.
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
