@@ -1,21 +1,19 @@
 # rustrict
 
-`rustrict` is a profanity filter for Rust. 
-
-When evaluated against the first 100,000 items of [this list](https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv),
-it has **90.97% accuracy** (91% positive accuracy, 91% negative accuracy). Much of the inaccuracy is due to
-differences of opinion of what is inappropriate/spam.
+`rustrict` is a sophisticated profanity filter for Rust. 
 
 ## Features
 
 - Multiple types (profane, offensive, sexual, mean, spam)
 - Multiple levels (mild, moderate, severe)
 - Resistant to evasion
+  - Alternative spellings (like "fck")
   - Repeated characters (like "craaaap")
   - Confusable characters (like 'ᑭ' vs 'P')
-  - Spacing (like "c r a p")
+  - Spacing (like "c r_a-p")
   - Accents (like "pÓöp")
   - Self-censoring (like "f*ck")
+  - Battle-tested in [Mk48.io](https://mk48.io)
 - Resistant to false positives
   - One word (like "**ass**assin")
   - Two words (like "pu**sh it**")
@@ -25,13 +23,14 @@ differences of opinion of what is inappropriate/spam.
   - Plenty of options
 - Performant
   - O(n) analysis and censoring
-  - Specifically, around 4 MB/s
+  - No `regex` (uses custom radix trie)
+  - 4 MB/s in `release` mode
+  - 150 KB/s in `debug` mode
 
-## Setup
+## Limitations
 
-```toml
-rustrict = "0.1.18"
-```
+- English only
+- Censoring removes diacritics (accents)
 
 ## Usage
 
@@ -76,6 +75,16 @@ assert_eq!(censored, "123 C***");
 assert!(analysis.is(Type::INAPPROPRIATE));
 assert!(analysis.isnt(Type::PROFANE & Type::SEVERE | Type::SEXUAL));
 ```
+
+## Comparison
+
+To compare filters, the first 100,000 items of [this list](https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv)
+is used as a dataset. Positive accuracy is the percentage of profanity detected as profanity. Negative accuracy is the percentage of clean text not detected as clean.
+
+| Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
+|-------|----------|-------------------|-------------------|------|
+| [rustrict](https://crates.io/crates/rustrict) | 90.97% | 90.71% | 91.04% | 7s |
+| [censor](https://github.com/kaikalii/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development
 

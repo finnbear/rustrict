@@ -701,12 +701,13 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 
 #[cfg(test)]
 mod tests {
+    #![allow(unused_imports)]
+
     extern crate test;
     use crate::{Censor, CensorIter, CensorStr, Type};
-    use rand::{thread_rng, Rng};
     use std::fs::File;
     use std::io::BufReader;
-    use std::time::{Duration, Instant};
+    use std::time::Instant;
     use test::Bencher;
 
     #[allow(dead_code)]
@@ -808,6 +809,37 @@ mod tests {
     #[cfg(not(debug_assertions))]
     #[test]
     fn accuracy() {
+        fn rustrict(s: &str) -> bool {
+            s.is(Type::ANY)
+        }
+
+        fn censor(s: &str) -> bool {
+            use censor::*;
+            let filter = Standard + Sex + Zealous;
+            filter.check(s)
+        }
+
+        println!("| Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |");
+        println!("|-------|----------|-------------------|-------------------|------|");
+        print_accuracy("https://crates.io/crates/rustrict", rustrict);
+        print_accuracy("https://github.com/kaikalii/censor", censor);
+    }
+
+    fn print_accuracy(link: &str, checker: fn(&str) -> bool) {
+        let start = Instant::now();
+        let (total, positive, negative) = accuracy_of(checker);
+        println!(
+            "| [{}]({}) | {:.2}% | {:.2}% | {:.2}% | {:.2}s |",
+            link.split('/').last().unwrap(),
+            link,
+            total * 100.0,
+            positive * 100.0,
+            negative * 100.0,
+            start.elapsed().as_secs()
+        );
+    }
+
+    fn accuracy_of(checker: fn(&str) -> bool) -> (f32, f32, f32) {
         let file = File::open("test.csv").unwrap();
         let reader = BufReader::new(file);
         let mut csv = csv::Reader::from_reader(reader);
@@ -821,7 +853,7 @@ mod tests {
             let record = line.unwrap();
             let truth = record[0].parse::<i8>().unwrap() == 1;
             let text = &record[1];
-            let prediction = text.is(Type::ANY);
+            let prediction = checker(text);
             //assert_eq!(is(text), is(text), "With ({})", text);
             if prediction == truth {
                 if truth {
@@ -830,7 +862,7 @@ mod tests {
                     correct_negative += 1;
                 }
             } else if text.len() < 100 {
-                println!("{}: {}", truth, text);
+                //println!("{}: {}", truth, text);
                 if prediction {
                     //find_detection(text);
                 }
@@ -842,14 +874,14 @@ mod tests {
             }
         }
 
-        println!(
-            "Accuracy: {}, Positive Accuracy: {}, Negative Accuracy: {}",
+        (
             (correct_positive + correct_negative) as f32 / (total_positive + total_negative) as f32,
             correct_positive as f32 / total_positive as f32,
-            correct_negative as f32 / total_negative as f32
-        );
+            correct_negative as f32 / total_negative as f32,
+        )
     }
 
+    #[cfg(not(debug_assertions))]
     #[test]
     fn bandwidth() {
         let file = File::open("test.csv").unwrap();
