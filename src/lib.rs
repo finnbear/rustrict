@@ -822,7 +822,7 @@ mod tests {
         println!("| Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |");
         println!("|-------|----------|-------------------|-------------------|------|");
         print_accuracy("https://crates.io/crates/rustrict", rustrict);
-        print_accuracy("https://github.com/kaikalii/censor", censor);
+        print_accuracy("https://crates.io/crates/censor", censor);
     }
 
     fn print_accuracy(link: &str, checker: fn(&str) -> bool) {
