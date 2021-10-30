@@ -11,7 +11,7 @@ pub(crate) struct Node {
     pub children: FxHashMap<char, Node>,
     pub(crate) weights: [i8; 4],
     pub depth: u8,
-    start: char,
+    #[allow(dead_code)]
     #[cfg(debug_assertions)]
     pub phrase: &'static str,
 }
@@ -25,7 +25,6 @@ impl Tree {
                 children: FxHashMap::default(),
                 weights: [0; 4],
                 depth: (i + 1) as u8,
-                start: word.chars().next().unwrap(),
                 #[cfg(debug_assertions)]
                 phrase: &word[0..=i],
             });
@@ -41,7 +40,6 @@ impl FromIterator<(&'static str, [i8; 4])> for Tree {
                 children: FxHashMap::default(),
                 weights: [0; 4],
                 depth: 0,
-                start: 0 as char,
                 #[cfg(debug_assertions)]
                 phrase: "",
             },

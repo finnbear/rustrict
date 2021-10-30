@@ -28,9 +28,16 @@ lazy_static! {
                 && !is_ignore_fp(w.chars())
         })
         .collect();
+    static ref PROFANITY: Vec<&'static str> = include_str!("profanity.csv")
+        .split("\n")
+        .filter(|l| !l.is_empty())
+        .skip(1)
+        .map(|l| &l[..l.find(',').unwrap()])
+        .collect();
     static ref BLACKLIST: Vec<Regex> = include_str!("profanity.csv")
         .split("\n")
         .filter(|l| !l.is_empty())
+        .skip(1)
         .map(|l| &l[..l.find(',').unwrap()])
         .chain(
             include_str!("dictionary_blacklist.txt")
@@ -88,6 +95,12 @@ fn maybe_false_positive<C: Iterator<Item = char> + Clone>(word: C) -> Option<Str
 }
 
 fn main() {
+    for word in DICTIONARY.iter() {
+        if is_sus(word) {
+            println!("\"{}\" is suspiciously like a profanity", word);
+        }
+    }
+
     let progress = ProgressBar::new(DICTIONARY.len() as u64);
 
     let false_positives: HashSet<String> = DICTIONARY
@@ -133,9 +146,6 @@ fn is_blacklisted(phrase: &str) -> bool {
 
 #[allow(dead_code)]
 fn is_sus(phrase: &str) -> bool {
-    BLACKLIST.iter().any(|p| {
-        p.find(phrase.trim_end_matches('s'))
-            .map(|m| m.start() == 0 && m.end() == phrase.len())
-            .unwrap_or(false)
-    })
+    let trimmed = phrase.trim_end_matches('s');
+    PROFANITY.iter().any(|&p| p == trimmed)
 }

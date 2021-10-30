@@ -321,7 +321,7 @@ arseniuret
 arsenization
 arseno
 arsenyl
-arses
+arsesmart
 articles punk
 artisanal
 artists punk
@@ -590,7 +590,6 @@ blow mexico
 blow meyer
 blowballs
 blowcock
-blowjobs
 bluebreast
 bo nerve
 bo nervous
@@ -602,7 +601,6 @@ bobstay
 bodegon
 bol lock
 bol look
-bollocks
 bon er
 bon nerve
 bon nervous
@@ -651,7 +649,6 @@ bone rus
 bone rut
 bone rwanda
 bone rya
-boners
 bonhomous
 bonnering
 boobery
@@ -699,7 +696,8 @@ breastplough
 breastplow
 breastrail
 breastrope
-breasts
+breaststroke
+breastsummer
 breastweed
 breastwise
 breastwood
@@ -719,7 +717,6 @@ bug ger
 buggered
 buggeries
 buggering
-buggers
 buggery
 bugs punk
 builders punk
@@ -739,7 +736,6 @@ buttle
 buttling
 buttocked
 buttocker
-buttocks
 button
 buttress
 buttstock
@@ -779,9 +775,9 @@ cast rate
 castellanus
 castrated
 castrater
-castrates
 casts punk
 cates punk
+catharses
 catnips
 cats punk
 cedes punk
@@ -917,7 +913,20 @@ cockney
 cockpaddle
 cockpit
 cockroach
-cocks
+cockscomb
+cocksfoot
+cockshead
+cockshies
+cockshoot
+cockshot
+cockshut
+cockshy
+cocksparrow
+cockspur
+cockstone
+cocksure
+cockswain
+cocksy
 cocktail
 cockthrowing
 cockup
@@ -932,7 +941,6 @@ columnists punk
 columns punk
 comm ie
 comments punk
-commies
 commissioners punk
 commitments punk
 comp rick
@@ -962,7 +970,6 @@ condominial
 condominiia
 condominiiums
 condominium
-condoms
 conf rick
 conferences punk
 conflicts punk
@@ -988,7 +995,7 @@ coonily
 cooniness
 coonjine
 coonroot
-coons
+coonskin
 coontah
 coontail
 coontie
@@ -1019,14 +1026,12 @@ cowardish
 cowardliness
 cowardly
 cowardness
-cowards
 cowardy
 crack er
 crack ker
 crackerberries
 crackerberry
 crackerjack
-crackers
 crapaud
 crape
 craping
@@ -1082,7 +1087,6 @@ damnonians
 damnonii
 damnosa
 damnous
-damns
 damnum
 damnyankee
 danalite
@@ -1104,7 +1108,6 @@ defensemen
 degenerated
 degenerately
 degenerateness
-degenerates
 degold
 degomme
 degorder
@@ -1149,7 +1152,6 @@ donging
 dongola
 dongolese
 dongon
-dongs
 dos punk
 doubledamn
 dows punk
@@ -1169,7 +1171,8 @@ dumbing
 dumble
 dumbly
 dumbness
-dumbs
+dumbstricken
+dumbstruck
 dumbwaiter
 dumby
 dump rick
@@ -1189,6 +1192,7 @@ echelle
 economies punk
 edges punk
 eds punk
+efecks
 eff finger
 eff ing
 effects punk
@@ -1218,6 +1222,7 @@ environments punk
 eons punk
 eos punk
 eparchate
+epipubes
 epoophoron
 epornitic
 ericas strate
@@ -1255,7 +1260,6 @@ eyeballs
 fackeltanz
 fackings
 fackins
-facks
 fanal
 faqs punk
 farse
@@ -1268,7 +1272,6 @@ fecket
 feckful
 feckless
 feckly
-fecks
 feckulence
 fee late
 fee latter
@@ -1326,7 +1329,6 @@ forces punk
 forebreast
 forget lost
 four some
-foursomes
 frape
 freakdom
 freaked
@@ -1340,7 +1342,6 @@ freaking
 freakish
 freakout
 freakpot
-freaks
 freaky
 french ink
 frequencies punk
@@ -1356,7 +1357,6 @@ frigolabile
 frigor
 frigostable
 frigotherapy
-frigs
 fs punk
 funds punk
 furnishings punk
@@ -1382,7 +1382,6 @@ genips
 genitalia
 genitalic
 genitally
-genitals
 gentianal
 gents punk
 genuine gros
@@ -1396,7 +1395,6 @@ ghettoing
 ghettoization
 ghettoize
 ghettoizing
-ghettos
 gies punk
 gifts punk
 gimcrackery
@@ -1407,7 +1405,6 @@ gobbledegook
 goddammed
 goddamming
 goddammit
-goddams
 good dam
 goofballs
 gorcock
@@ -1448,7 +1445,6 @@ hated
 hateful
 hatel
 hatemonger
-hates
 hats punk
 hatte
 haycock
@@ -1494,7 +1490,6 @@ hellespont
 hellfire
 hellgrammite
 hellhag
-hellholes
 hellhound
 hellicat
 hellier
@@ -1507,7 +1502,7 @@ hellman
 hellness
 hello
 hellroot
-hells
+hellship
 helluo
 helluva
 hellvine
@@ -1549,14 +1544,14 @@ hoarily
 hoariness
 hoarish
 hoarness
-hoars
+hoarse
+hoarstone
 hoarwort
 hoary
 hobbies punk
 hoeshin
 holocaustal
 holocaustic
-holocausts
 holosericeous
 hommock
 homoanisaldehyde
@@ -1705,7 +1700,19 @@ homopolymer
 homopter
 homorelaps
 homorganic
-homos
+homoscedastic
+homoseismal
+homosexual
+homosphere
+homosporous
+homospory
+homosteus
+homostyled
+homostylic
+homostylism
+homostylous
+homostyly
+homosystemic
 homotactic
 homotatic
 homotaxeous
@@ -1744,13 +1751,11 @@ hon key
 honeyballs
 honeysuck
 hongs punk
-honkeys
 hoo ker
 hook er
 hook ker
 hookera
 hookerman
-hookers
 hor ny
 horn ny
 horn ya
@@ -1800,12 +1805,12 @@ idiotizing
 idiotropian
 idiotropic
 idiotry
-idiots
 idiotype
 idiotypic
 if rick
 ife late
 ife latter
+ifecks
 igarape
 im a jew
 im gay
@@ -1816,7 +1821,6 @@ improvements punk
 impuberate
 inc est
 incentives punk
-incests
 incestuous
 inch ink
 includes punk
@@ -1874,14 +1878,13 @@ jerkies
 jerkily
 jerkin
 jerkish
-jerks
+jerksome
 jerkwater
 jerky
 jestful
 jets punk
 jewship
 jewstone
-jigaboos
 jitterbugger
 jizzen
 johns punk
@@ -1893,6 +1896,7 @@ june gros
 justments punk
 kabobs
 kaneshite
+katharses
 kebobs
 keep rick
 kenipsim
@@ -2099,8 +2103,6 @@ mass punk
 massachusetts punk
 master batter
 mastful
-masturbated
-masturbates
 mates punk
 mats punk
 matters punk
@@ -2172,7 +2174,6 @@ moronism
 moronities
 moronity
 moronry
-morons
 moschate
 moss punk
 motes punk
@@ -2190,7 +2191,6 @@ muffin
 muffish
 muffle
 mufflin
-muffs
 muffy
 muircock
 multivibrator
@@ -2230,7 +2230,7 @@ nazify
 naziism
 nazim
 nazir
-nazis
+nazism
 ncaa strategic
 ncaa strategies
 ncaa strategy
@@ -2312,7 +2312,6 @@ orders punk
 organal
 organic ca
 orgasmic
-orgasms
 ornithomorph
 oroanal
 ors punk
@@ -2494,6 +2493,7 @@ pollenigerous
 pollinigerous
 polo ser
 pons punk
+poor nos
 poorness
 poppycock
 pornerastic
@@ -2501,13 +2501,13 @@ pornocracy
 pornocrat
 pornograph
 pornological
-pornos
 porters punk
 possemen
 postanal
 posters punk
 postfurca
 postgenital
+postpubescent
 posts punk
 pothookery
 pots punk
@@ -2522,6 +2522,7 @@ prefacist
 pregenital
 pregnantly
 pregnantness
+prepubescent
 pretardily
 pretardiness
 pretardy
@@ -2545,7 +2546,9 @@ prickly
 prickmadam
 prickmedainty
 prickproof
-pricks
+prickseam
+prickshot
+prickspur
 pricktimber
 prickwood
 pricky
@@ -2803,7 +2806,8 @@ puberties
 puberty
 puberulent
 puberulous
-pubes
+pubescence
+pubescency
 puccoon
 puffballs
 pump rick
@@ -2832,7 +2836,7 @@ queerish
 queerity
 queerly
 queerness
-queers
+queersome
 queery
 ques punk
 questful
@@ -2840,7 +2844,6 @@ quests punk
 quizzes punk
 quotes punk
 raccoon
-racists
 racks punk
 racoon
 rafts punk
@@ -2862,11 +2865,10 @@ rapeful
 rapely
 rapeoil
 raper
-rapes
+rapeseed
 rapeye
 raphanus
 rapids punk
-rapists
 rappe
 rappist
 rases punk
@@ -2885,7 +2887,6 @@ recipients punk
 recock
 rect tum
 rectogenital
-rectums
 redbreast
 reef finger
 reef rick
@@ -2925,7 +2926,6 @@ retarder
 retarding
 retardive
 retardment
-retards
 retardure
 rets punk
 reuters punk
@@ -2974,6 +2974,7 @@ sapsuck
 sarape
 sarsechim
 sarsen
+saturated fat
 saturday
 savings punk
 says punk
@@ -2988,7 +2989,6 @@ scrap
 screens punk
 screwballs
 scribers punk
-scrotums
 scuddick
 scumber
 scumble
@@ -3005,7 +3005,6 @@ scumminess
 scumming
 scummy
 scumproof
-scums
 scuttlebutt
 scyphate
 se men
@@ -3022,7 +3021,6 @@ sellers punk
 semence
 semencinae
 semencontra
-semens
 sement
 semicastrate
 semihorny
@@ -3188,7 +3186,6 @@ spunkily
 spunkiness
 spunking
 spunkless
-spunks
 spunky
 squamigerous
 squawtits
@@ -3213,7 +3210,6 @@ stupidities
 stupidity
 stupidly
 stupidness
-stupids
 sturdied
 sturdier
 sturdiest
@@ -3225,6 +3221,7 @@ subjects punk
 subnude
 subobscure
 subobsolete
+subpubescent
 such ink
 suckable
 suckabob
@@ -3258,6 +3255,7 @@ sweetwater
 swigger
 swordick
 sycock
+synarses
 synclitism
 tacks punk
 tags punk
@@ -3283,7 +3281,6 @@ tents punk
 terrapene
 terror ist
 terroristic
-terrorists
 tests punk
 tetanal
 tetanus
@@ -3302,7 +3299,6 @@ thirstful
 thomomys
 thorny
 three some
-threesomes
 thricecock
 tickets punk
 ticks punk
@@ -3319,7 +3315,6 @@ tons punk
 tos punk
 tos ser
 tosh aging
-tossers
 totanus
 towcock
 towers punk
@@ -3708,11 +3703,13 @@ tramadol future
 tramadol futures
 tramadol fuzzy
 trampcock
+trans fat
 transpenisular
 transpicuity
 transpicuous
 transsexual
 trapballs
+trapes
 trapezate
 trapeze
 trapezia
@@ -3750,14 +3747,12 @@ turdiform
 turdinae
 turdine
 turdoid
-turds
 turdus
 turncock
 turnips
 tussuck
 twank
 twatchel
-twats
 twatterlight
 twattle
 twattling
@@ -3765,7 +3760,6 @@ twigger
 twitch
 twite
 twitlark
-twits
 twitted
 twitten
 twitter
@@ -3843,7 +3837,6 @@ vermigerous
 vers punk
 versemen
 vestments punk
-vibrators
 vibratory
 vids punk
 vies punk
@@ -3878,7 +3871,6 @@ viscum
 vixenish
 vixenlike
 vixenly
-vixens
 voip rick
 voip ricky
 volcanus
@@ -3890,7 +3882,6 @@ votes punk
 vulvae
 vulval
 vulvar
-vulvas
 vulvate
 waesuck
 walks punk
@@ -3952,6 +3943,7 @@ yards punk
 yees punk
 yes punk
 yesturday
+yfacks
 zaddick
 zannichellia
 zestful
