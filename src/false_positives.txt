@@ -477,6 +477,7 @@ basilicock
 basketball zdnet
 basketballs
 baskets punk
+bass face
 bass hat
 bass hole
 bass lick
@@ -671,6 +672,7 @@ boys punk
 brain less
 brainlessly
 brainlessness
+brass face
 brass hat
 brass hole
 brass lick
@@ -1415,6 +1417,7 @@ graduates punk
 grape
 graphomotor
 graphs punk
+grass face
 grass hat
 grass hole
 grass lick
@@ -1501,6 +1504,7 @@ hellkite
 hellman
 hellness
 hello
+hellp
 hellroot
 hellship
 helluo
@@ -1929,6 +1933,7 @@ laocoon
 laos punk
 lapcock
 larghetto
+lass face
 lass hat
 lass hole
 lass lick
@@ -2096,6 +2101,7 @@ marrymuffe
 marse
 marsh aging
 marshite
+mass face
 mass hat
 mass hole
 mass lick
@@ -2360,6 +2366,7 @@ parapegm
 parapet
 parse
 partners punk
+pass face
 pass hat
 pass hole
 pass lick

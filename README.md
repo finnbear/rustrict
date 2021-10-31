@@ -31,6 +31,8 @@
 
 - English only
 - Censoring removes diacritics (accents)
+- Doesn't understand context
+- Cannot add words at runtime
 
 ## Usage
 
@@ -83,7 +85,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.58% | 91.37% | 90.38% | 7s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.57% | 91.38% | 90.37% | 7s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development
