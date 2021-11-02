@@ -15,9 +15,14 @@ impl<V> CharMap<V> {
     }
 
     fn to_common_idx(key: char) -> Option<usize> {
+        /*
         ('a'..='z')
             .contains(&key)
             .then(|| key as usize - 'a' as usize)
+        */
+
+        // A bit faster.
+        ('a' <= key && key <= 'z').then(|| key as usize - 'a' as usize)
     }
 
     fn from_common_idx(idx: usize) -> char {
