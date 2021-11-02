@@ -14,6 +14,7 @@ use unicode_categories::UnicodeCategories;
 use unicode_normalization::{Decompositions, Recompositions, UnicodeNormalization};
 
 mod buffer_proxy_iterator;
+mod char_map;
 mod mtch;
 mod radix;
 
@@ -533,7 +534,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         }
                     }
 
-                    if let Some(next) = m.node.children.get(&c) {
+                    if let Some(next) = m.node.children.get(c) {
                         let next_m = Match {
                             node: next,
                             spaces: m
