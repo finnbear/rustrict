@@ -6,6 +6,7 @@ edition = "2018"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/finnbear/rustrict/"
 description = "rustrict is a profanity filter for Rust"
+exclude = ["fuzz/"]
 
 [lib]
 name = "rustrict"
