@@ -1,0 +1,10 @@
+# https://blog.rust-lang.org/2021/11/01/cve-2021-42574.html
+U+202A
+U+202B
+U+202C
+U+202D
+U+202E
+U+2066
+U+2067
+U+2068
+U+2069

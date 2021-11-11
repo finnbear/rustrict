@@ -51,6 +51,16 @@ lazy_static! {
             (line[..comma].chars().next().unwrap(), &line[comma + 1..])
         })
         .collect();
+    static ref BANNED: FxHashSet<char> = include_str!("banned_chars.txt")
+        .split("\n")
+        .filter(|s| s.starts_with("U+"))
+        .map(|s| {
+            u32::from_str_radix(&s[2..], 16)
+                .ok()
+                .and_then(char::from_u32)
+                .unwrap()
+        })
+        .collect();
 }
 
 /// Censor is a flexible profanity filter that can analyze and/or censor arbitrary text.
@@ -202,10 +212,10 @@ impl<I: Iterator<Item = char>> Censor<I> {
             fn(char) -> ToLowercase,
         >,
     ) {
-        // Detects if a char isn't a diacritical mark (accent), such that such characters may be
+        // Detects if a char isn't a diacritical mark (accent) or banned, such that such characters may be
         // filtered on that basis.
-        fn isnt_mark_nonspacing(c: &char) -> bool {
-            !c.is_mark_nonspacing()
+        fn isnt_mark_nonspacing_or_banned(c: &char) -> bool {
+            !(c.is_mark_nonspacing() || BANNED.contains(&c))
         }
 
         // TODO: Replace Rc via Pin<Self> or otherwise avoid allocation.
@@ -213,7 +223,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
             text
                 // The following three transformers are to ignore diacritical marks.
                 .nfd()
-                .filter(isnt_mark_nonspacing as fn(&char) -> bool)
+                .filter(isnt_mark_nonspacing_or_banned as fn(&char) -> bool)
                 .nfc(),
         );
 
@@ -544,7 +554,6 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         };
 
                         if next.is_word() {
-                            let length = 1 + pos.unwrap() - next_m.start;
                             if next_m.node.weights.iter().any(|&w| w < 0) {
                                 // Is false positive, so invalidate internal matches.
                                 if next_m.spaces == 0 && !self.ignore_false_positives {
@@ -554,7 +563,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                             .unwrap_or(next_m.start),
                                     );
                                 }
-                            } else if length > 1 {
+                            } else {
                                 self.pending_commit.push(Match {
                                     end: pos.unwrap(),
                                     ..next_m
@@ -777,6 +786,12 @@ mod tests {
 
         // Minor mean-ness is not considered inappropriate
         assert_eq!("fcking coward".censor(), "f***** coward");
+    }
+
+    #[test]
+    fn bidirectional() {
+        // Censoring removes direction overrides, so that the text output is the text that was analyzed.
+        assert_eq!("an toidi", "an ‮toidi".censor());
     }
 
     #[test]

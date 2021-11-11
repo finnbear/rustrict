@@ -12,6 +12,7 @@
   - Confusable characters (like 'ᑭ' vs 'P')
   - Spacing (like "c r_a-p")
   - Accents (like "pÓöp")
+  - Bidirectional Unicode ([related reading](https://blog.rust-lang.org/2021/11/01/cve-2021-42574.html))
   - Self-censoring (like "f*ck")
   - Battle-tested in [Mk48.io](https://mk48.io)
 - Resistant to false positives
@@ -31,6 +32,8 @@
 
 - English only
 - Censoring removes diacritics (accents)
+- Does not detect right-to-left profanity while analyzing, so...
+- Censoring forces Unicode to be left-to-right
 - Doesn't understand context
 - Cannot add words at runtime
 
@@ -85,7 +88,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.56% | 91.41% | 90.35% | 7s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.56% | 91.41% | 90.34% | 8s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development
