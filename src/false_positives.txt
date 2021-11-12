@@ -204,7 +204,6 @@ apnic canberra
 apnic cancel
 apnic cancellation
 apnic cancelled
-apnic cancer
 apnic candidate
 apnic candidates
 apnic candle
