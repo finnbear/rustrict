@@ -23,7 +23,7 @@ lazy_static! {
         .skip(1)
         .filter(|line| !line.is_empty())
         .map(|line| {
-            let mut split = line.split(",");
+            let mut split = line.split(',');
             (
                 split.next().unwrap(),
                 [
@@ -37,22 +37,20 @@ lazy_static! {
         .chain(
             include_str!("false_positives.txt")
                 .split('\n')
-                .filter(|line| {
-                    return !line.is_empty();
-                })
+                .filter(|line| !line.is_empty())
                 .map(|line| { (line, [-1; 4],) })
         )
         .collect();
     static ref REPLACEMENTS: FxHashMap<char, &'static str> = include_str!("replacements.csv")
-        .split("\n")
+        .split('\n')
         .filter(|line| !line.is_empty())
         .map(|line| {
-            let comma = line.find(",").unwrap();
+            let comma = line.find(',').unwrap();
             (line[..comma].chars().next().unwrap(), &line[comma + 1..])
         })
         .collect();
     static ref BANNED: FxHashSet<char> = include_str!("banned_chars.txt")
-        .split("\n")
+        .split('\n')
         .filter(|s| s.starts_with("U+"))
         .map(|s| {
             u32::from_str_radix(&s[2..], 16)
@@ -215,7 +213,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
         // Detects if a char isn't a diacritical mark (accent) or banned, such that such characters may be
         // filtered on that basis.
         fn isnt_mark_nonspacing_or_banned(c: &char) -> bool {
-            !(c.is_mark_nonspacing() || BANNED.contains(&c))
+            !(c.is_mark_nonspacing() || BANNED.contains(c))
         }
 
         // TODO: Replace Rc via Pin<Self> or otherwise avoid allocation.
@@ -335,14 +333,15 @@ impl<I: Iterator<Item = char>> Censor<I> {
     ///
     /// If called after analyze or a previous call to censor (except if reset is called in between).
     pub fn censor(&mut self) -> String {
-        if self.buffer.index().is_some() {
-            // The input was at least partially read already.
-            panic!("censor must be called before any other form of processing");
-        }
+        assert!(
+            !self.buffer.index().is_some(),
+            "censor must be called before any other form of processing"
+        );
+
         let size_hint = self.chars.size_hint();
         let initial_cap = size_hint.1.unwrap_or(size_hint.0);
         let mut s = String::with_capacity(initial_cap);
-        while let Some(c) = self.next() {
+        for c in self {
             s.push(c);
         }
         s
@@ -371,7 +370,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
     fn ensure_done(&mut self) {
         if !self.done {
-            while let Some(_) = self.next() {}
+            for _ in self {}
         }
     }
 
@@ -791,7 +790,7 @@ mod tests {
     #[test]
     fn bidirectional() {
         // Censoring removes direction overrides, so that the text output is the text that was analyzed.
-        assert_eq!("an toidi", "an ‮toidi".censor());
+        assert_eq!("an toidi", "an \u{202e}toidi".censor());
     }
 
     #[test]
