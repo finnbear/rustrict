@@ -29,3 +29,4 @@ only one WORD is uppercase
 TWO WORDS are uppercase for emphasis
 hellp me over here
 dig a hole here
+bismarck would be level 7, it would be level 4

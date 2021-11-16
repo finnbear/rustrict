@@ -496,6 +496,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         space_before: self.separate,
                         space_after: false, // unknown at this time.
                         spaces: 0,
+                        replacements: 0,
                     });
                 }
             }
@@ -522,13 +523,15 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let mut safety_end = usize::MAX;
 
             mem::swap(&mut self.matches, &mut self.matches_tmp);
-            for c in replacement.unwrap_or(&&*c.encode_utf8(&mut [0; 4])).chars() {
+            for cr in replacement.unwrap_or(&&*c.encode_utf8(&mut [0; 4])).chars() {
+                // cr is the original character OR a replacement.
+
                 for m in self.matches_tmp.iter() {
                     let m = m.clone();
 
                     safety_end = safety_end.min(m.start);
 
-                    if (skippable || c == m.last) && m.start != pos.unwrap_or(0) {
+                    if (skippable || cr == m.last) && m.start != pos.unwrap_or(0) {
                         // Undo remove.
                         let undo_m = Match {
                             spaces: m.spaces.saturating_add(self.separate as u8),
@@ -542,13 +545,15 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         }
                     }
 
-                    if let Some(next) = m.node.children.get(&c) {
+                    if let Some(next) = m.node.children.get(&cr) {
                         let next_m = Match {
                             node: next,
                             spaces: m
                                 .spaces
-                                .saturating_add((self.separate && c != ' ' && c != '\'') as u8),
-                            last: c,
+                                .saturating_add((self.separate && cr != ' ' && cr != '\'') as u8),
+                            // Considered a replacement if the character matched wasn't the original character.
+                            replacements: m.replacements.saturating_add((cr != c) as u8),
+                            last: cr,
                             ..m
                         };
 
@@ -724,11 +729,25 @@ mod tests {
         let mut start = 0;
         let mut end = text.chars().count();
 
-        while start < end && !text[start..end].is_inappropriate() {
+        while start < end
+            && text
+                .chars()
+                .skip(start)
+                .take(end - start)
+                .collect::<String>()
+                .is_inappropriate()
+        {
             start += 1;
         }
         start -= 1;
-        while start < end && !text[start..end].is_inappropriate() {
+        while start < end
+            && text
+                .chars()
+                .skip(start)
+                .take(end - start)
+                .collect::<String>()
+                .is_inappropriate()
+        {
             end -= 1;
         }
         end += 1;
@@ -739,7 +758,13 @@ mod tests {
             print!("^");
         }
         print!(" ");
-        println!("({})", String::from(&text[start..end]));
+        println!(
+            "({})",
+            text.chars()
+                .skip(start)
+                .take(end - start)
+                .collect::<String>()
+        );
     }
 
     #[test]
@@ -770,6 +795,9 @@ mod tests {
             //println!("\"{}\" -> \"{}\" ({}, {})", case, censored, prediction, analysis.is(Type::ANY));
 
             if prediction != truth {
+                if prediction {
+                    find_detection(case);
+                }
                 panic!("FAIL: Predicted {} for {}", prediction, case);
             }
         }
