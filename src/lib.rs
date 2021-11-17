@@ -159,6 +159,75 @@ impl Default for Type {
     }
 }
 
+/// This serves as replacement for Debug that isn't blocked by
+/// https://github.com/bitflags/bitflags/issues/218
+#[cfg(test)]
+impl std::fmt::Display for Type {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        fn description(bits: u32) -> &'static str {
+            if bits & 0b100 != 0 {
+                "severely"
+            } else if bits & 0b010 != 0 {
+                "moderately"
+            } else if bits & 0b001 != 0 {
+                "mildly"
+            } else {
+                "not"
+            }
+        }
+        let mut count = 0;
+        if *self & Self::PROFANE != Type::empty() {
+            if count > 0 {
+                write!(f, ", ")?;
+            }
+            write!(f, "{} profane", description((*self & Self::PROFANE).bits()))?;
+            count += 1;
+        }
+        if *self & Self::OFFENSIVE != Type::empty() {
+            if count > 0 {
+                write!(f, ", ")?;
+            }
+            write!(
+                f,
+                "{} offensive",
+                description((*self & Self::OFFENSIVE).bits() >> 3)
+            )?;
+            count += 1;
+        }
+        if *self & Self::SEXUAL != Type::empty() {
+            if count > 0 {
+                write!(f, ", ")?;
+            }
+            write!(
+                f,
+                "{} sexual",
+                description((*self & Self::SEXUAL).bits() >> 6)
+            )?;
+            count += 1;
+        }
+        if *self & Self::MEAN != Type::empty() {
+            if count > 0 {
+                write!(f, ", ")?;
+            }
+            write!(f, "{} mean", description((*self & Self::MEAN).bits() >> 9))?;
+            count += 1;
+        }
+        if *self & Self::SPAM != Type::empty() {
+            if count > 0 {
+                write!(f, ", ")?;
+            }
+            write!(f, "{} spam", description((*self & Self::SPAM).bits() >> 12))?;
+            count += 1;
+        }
+
+        if count == 0 {
+            write!(f, "no detections")
+        } else {
+            write!(f, "")
+        }
+    }
+}
+
 impl<'a> Censor<Chars<'a>> {
     /// Creates a `Censor` from a `&str`, ready to censor or analyze it.
     pub fn from_str(s: &'a str) -> Self {
@@ -713,6 +782,7 @@ mod tests {
 
     extern crate test;
     use crate::{Censor, CensorIter, CensorStr, Type};
+    use bitflags::_core::ops::Not;
     use std::fs::File;
     use std::io::BufReader;
     use std::time::Instant;
@@ -720,26 +790,49 @@ mod tests {
 
     #[allow(dead_code)]
     fn find_detection(text: &str) {
-        println!("{}", text);
-        let mut start = 0;
-        let mut end = text.chars().count();
+        let holistic = Censor::from_str(text).analyze();
 
-        while start < end && !text[start..end].is_inappropriate() {
-            start += 1;
+        if holistic & Type::SPAM.not() != Type::NONE {
+            println!("{}", text);
+
+            // There was some non-spam detection.
+            let mut start = 0;
+            let mut end = text.chars().count();
+
+            while start < end
+                && Censor::new(text.chars().skip(start).take(end - start))
+                    .analyze()
+                    .is(Type::ANY)
+            {
+                start += 1;
+            }
+            start = start.saturating_sub(1);
+            while start < end
+                && Censor::new(text.chars().skip(start).take(end - start))
+                    .analyze()
+                    .is(Type::ANY)
+            {
+                end -= 1;
+            }
+            end += 1;
+            for _ in 0..start {
+                print!("-");
+            }
+            for _ in start..end {
+                print!("^");
+            }
+            print!(" ");
+            println!(
+                "(\"{}\" is {})",
+                text.chars()
+                    .skip(start)
+                    .take(end - start)
+                    .collect::<String>(),
+                holistic
+            );
+        } else {
+            println!("{} ({})", text, holistic);
         }
-        start -= 1;
-        while start < end && !text[start..end].is_inappropriate() {
-            end -= 1;
-        }
-        end += 1;
-        for _ in 0..start {
-            print!("-");
-        }
-        for _ in start..end {
-            print!("^");
-        }
-        print!(" ");
-        println!("({})", String::from(&text[start..end]));
     }
 
     #[test]
@@ -820,7 +913,6 @@ mod tests {
         let (_, _) = Censor::from_str("HELLO crap WORLD!").censor_and_analyze();
     }
 
-    #[cfg(not(debug_assertions))]
     #[test]
     fn accuracy() {
         fn rustrict(s: &str) -> bool {
@@ -835,13 +927,13 @@ mod tests {
 
         println!("| Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |");
         println!("|-------|----------|-------------------|-------------------|------|");
-        print_accuracy("https://crates.io/crates/rustrict", rustrict);
-        print_accuracy("https://crates.io/crates/censor", censor);
+        print_accuracy("https://crates.io/crates/rustrict", rustrict, false);
+        print_accuracy("https://crates.io/crates/censor", censor, false);
     }
 
-    fn print_accuracy(link: &str, checker: fn(&str) -> bool) {
+    fn print_accuracy(link: &str, checker: fn(&str) -> bool, find_detections: bool) {
         let start = Instant::now();
-        let (total, positive, negative) = accuracy_of(checker);
+        let (total, positive, negative) = accuracy_of(checker, find_detections);
         println!(
             "| [{}]({}) | {:.2}% | {:.2}% | {:.2}% | {:.2}s |",
             link.split('/').last().unwrap(),
@@ -853,7 +945,7 @@ mod tests {
         );
     }
 
-    fn accuracy_of(checker: fn(&str) -> bool) -> (f32, f32, f32) {
+    fn accuracy_of(checker: fn(&str) -> bool, find_detections: bool) -> (f32, f32, f32) {
         let file = File::open("test.csv").unwrap();
         let reader = BufReader::new(file);
         let mut csv = csv::Reader::from_reader(reader);
@@ -875,10 +967,10 @@ mod tests {
                 } else {
                     correct_negative += 1;
                 }
-            } else if text.len() < 100 {
-                //println!("{}: {}", truth, text);
+            } else if find_detections && text.len() < 100 {
+                println!("{}: {}", truth, text);
                 if prediction {
-                    //find_detection(text);
+                    find_detection(text);
                 }
             }
             if truth {
