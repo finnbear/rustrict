@@ -1,7 +1,7 @@
 *,aeiou
 
-u,uv
-v,uv
+u,v
+v,u
 
 !,li
 @,a

@@ -44,7 +44,12 @@ fn main() {
         .collect();
 
     let mut writer = Writer::from_path("src/replacements.csv").unwrap();
-    for (find, replace) in replacements {
+    for (find, mut replace) in replacements {
+        // Keep original character accessible.
+        if find.is_digit(36) && !find.is_ascii_uppercase() {
+            replace.push(find);
+        }
+
         writer.write_record(&[&find.to_string(), &replace]).unwrap();
     }
     writer.flush().unwrap();

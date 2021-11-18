@@ -60,7 +60,7 @@ impl Match {
 
         // Apply weights.
         for (i, weight) in self.node.weights.iter().enumerate() {
-            weights[i] = weights[i].saturating_add(*weight);
+            weights[i] = weights[i].max(*weight);
         }
 
         let typ = weights_to_type(&self.node.weights);
