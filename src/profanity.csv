@@ -1,4 +1,6 @@
 word,profane,offensive,sexual,mean
+卍,0,2,0,0
+卐,0,2,0,0
 adolf,0,2,0,0
 ahole,2,0,1,2
 anal,2,0,2,0
@@ -123,6 +125,7 @@ fucc,2,0,2,0
 fucing,2,0,3,0
 fuck,2,0,2,0
 fucked,2,0,2,0
+fucker,2,0,0,2
 fudgepacker,0,0,3,0
 fuk,2,0,2,0
 fukk,2,0,2,0
@@ -143,6 +146,7 @@ getlost,0,0,0,2
 ghetto,0,2,0,0
 goddam,1,1,0,0
 handjob,0,0,3,0
+heil hitler,0,3,0,0
 hate,0,0,0,2
 hell,1,0,0,0
 her bob,0,0,3,0
@@ -163,6 +167,7 @@ horseshit,2,0,0,0
 gooch,0,0,2,0
 idiot,0,0,0,1
 imbecil,0,0,0,2
+incel,0,1,2,1
 incest,0,0,3,0
 isgay,0,2,0,0
 jackass,1,0,0,1
@@ -253,6 +258,7 @@ sexy,0,0,1,0
 shager,0,0,3,0
 shaging,0,0,3,0
 shit,2,0,0,0
+shiter,2,0,0,2
 sht,2,0,0,0
 shut the f up,1,0,0,2
 shutup,0,0,0,2

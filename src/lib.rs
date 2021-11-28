@@ -878,6 +878,12 @@ mod tests {
 
         // Minor mean-ness is not considered inappropriate
         assert_eq!("fcking coward".censor(), "f***** coward");
+
+        let censored = Censor::from_str("卍")
+            .with_censor_first_character_threshold(Type::NONE)
+            .censor();
+
+        assert_eq!(censored, "*");
     }
 
     #[test]

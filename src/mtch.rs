@@ -53,6 +53,7 @@ impl Match {
         //let length = m.end - m.start;
         if !(self.space_before && self.space_after)
             && self.spaces as usize + 4 > self.node.depth as usize
+            && self.node.depth > 1
         {
             // Match isn't strong enough.
             return;
@@ -71,7 +72,7 @@ impl Match {
         }
 
         // Censor.
-        let offset = if typ.is(censor_first_character_threshold) {
+        let offset = if typ.is(censor_first_character_threshold) || self.node.depth == 1 {
             0
         } else {
             1
