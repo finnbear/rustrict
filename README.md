@@ -14,6 +14,7 @@
   - Accents (like "pÓöp")
   - Bidirectional Unicode ([related reading](https://blog.rust-lang.org/2021/11/01/cve-2021-42574.html))
   - Self-censoring (like "f*ck")
+  - Safe phrase list for known bad actors
   - Battle-tested in [Mk48.io](https://mk48.io)
 - Resistant to false positives
   - One word (like "**ass**assin")
@@ -81,6 +82,20 @@ assert!(analysis.is(Type::INAPPROPRIATE));
 assert!(analysis.isnt(Type::PROFANE & Type::SEVERE | Type::SEXUAL));
 ```
 
+If you cannot afford to let anything slip though, or have reason to believe a particular user
+is trying to evade the filter, you can check if their input matches a [short list of safe strings](src/safe.txt):
+
+```rust
+use rustrict::{CensorStr, Type};
+
+assert!("Hello there!".is(Type::SAFE));
+assert!("nice work.".is(Type::SAFE));
+assert!("yes".is(Type::SAFE));
+assert!("NVM".is(Type::SAFE));
+assert!("gtg".is(Type::SAFE));
+assert!("not a common phrase".isnt(Type::SAFE));
+```
+
 ## Comparison
 
 To compare filters, the first 100,000 items of [this list](https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv)
@@ -88,7 +103,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.55% | 91.50% | 90.32% | 8s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.78% | 91.46% | 90.61% | 8s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development

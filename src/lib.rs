@@ -17,6 +17,8 @@ mod buffer_proxy_iterator;
 mod mtch;
 mod radix;
 
+const FALSE_POSITIVE_WEIGHT: i8 = -1;
+
 lazy_static! {
     static ref TREE: Tree = include_str!("profanity.csv")
         .split('\n')
@@ -32,13 +34,20 @@ lazy_static! {
                     split.next().unwrap().parse().unwrap(),
                     split.next().unwrap().parse().unwrap(),
                 ],
+                false,
             )
         })
+        .chain(
+            include_str!("safe.txt")
+                .split('\n')
+                .filter(|line| !line.is_empty() && !line.starts_with('#'))
+                .map(|line| { (line, [0; 4], true) })
+        )
         .chain(
             include_str!("false_positives.txt")
                 .split('\n')
                 .filter(|line| !line.is_empty())
-                .map(|line| { (line, [-1; 4],) })
+                .map(|line| { (line, [FALSE_POSITIVE_WEIGHT; 4], false) })
         )
         .collect();
     static ref REPLACEMENTS: FxHashMap<char, &'static str> = include_str!("replacements.csv")
@@ -91,6 +100,8 @@ pub struct Censor<I: Iterator<Item = char>> {
     replacements: u8,
     /// How many instances of censor replacement in the raw text?
     self_censoring: u8,
+    /// Is the input completely safe
+    safe: bool,
     /// Where matches are kept after they are complete but may be cancelled due to false positives.
     pending_commit: Vec<Match>,
     /// A buffer of the input that stores unconfirmed characters (may need to censor before flushing).
@@ -103,7 +114,7 @@ pub struct Censor<I: Iterator<Item = char>> {
         fn(char) -> ToLowercase,
     >,
     /// Whether already appended a space at the end.
-    space_apended: bool,
+    space_appended: bool,
     /// Whether all processing of characters has completed.
     done: bool,
 }
@@ -112,27 +123,31 @@ bitflags! {
     /// Type is represents a type or severity of inappropriateness. They can be combined with bitwise operators. They are **not** mutually exclusive.
     pub struct Type: u32 {
         /// Bad words.
-        const PROFANE   = 0b000_000_000_000_111;
+        const PROFANE   = 0b0_000_000_000_000_111;
         /// Offensive words.
-        const OFFENSIVE = 0b000_000_000_111_000;
+        const OFFENSIVE = 0b0_000_000_000_111_000;
         /// Sexual words.
-        const SEXUAL    = 0b000_000_111_000_000;
+        const SEXUAL    = 0b0_000_000_111_000_000;
         /// Mean words.
-        const MEAN      = 0b000_111_000_000_000;
+        const MEAN      = 0b0_000_111_000_000_000;
         /// Spam/gibberish/SHOUTING.
-        const SPAM      = 0b111_000_000_000_000;
+        const SPAM      = 0b0_111_000_000_000_000;
+
+        /// One of a very small number of safe phases.
+        /// Recommended to enforce this on users who repeatedly evade the filter.
+        const SAFE      = 0b1_000_000_000_000_000;
 
         /// Not that bad.
-        const MILD      = 0b111_111_111_111_111;
+        const MILD      = 0b0_111_111_111_111_111;
         /// Bad.
-        const MODERATE  = 0b110_110_110_110_110;
+        const MODERATE  = 0b0_110_110_110_110_110;
         /// Cover your eyes!
-        const SEVERE    = 0b100_100_100_100_100;
+        const SEVERE    = 0b0_100_100_100_100_100;
 
         /// The default `Type`, meaning profane, offensive, sexual, or severely mean.
         const INAPPROPRIATE = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | (Self::MEAN.bits & Self::SEVERE.bits);
 
-        /// Any type of detection. This will be expanded to cover all future types.
+        /// Any type of detection (except SAFE). This will be expanded to cover all future types.
         const ANY = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | Self::MEAN.bits | Self::SPAM.bits;
 
         /// No type of detection.
@@ -258,7 +273,8 @@ impl<I: Iterator<Item = char>> Censor<I> {
             gibberish: 0,
             replacements: 0,
             self_censoring: 0,
-            space_apended: false,
+            safe: false,
+            space_appended: false,
             done: false,
             last_pos: usize::MAX,
             matches: FxHashSet::default(),
@@ -317,7 +333,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
         self.gibberish = 0;
         self.replacements = 0;
         self.self_censoring = 0;
-        self.space_apended = false;
+        self.space_appended = false;
         self.done = false;
         self.last_pos = usize::MAX;
         self.matches.clear();
@@ -434,7 +450,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
     /// Converts internal weights to a `Type`.
     fn analysis(&self) -> Type {
-        weights_to_type(&self.weights) | self.self_censoring_and_spam_detection()
+        weights_to_type(&self.weights) | self.safe_self_censoring_and_spam_detection()
     }
 
     fn ensure_done(&mut self) {
@@ -443,10 +459,12 @@ impl<I: Iterator<Item = char>> Censor<I> {
         }
     }
 
-    fn self_censoring_and_spam_detection(&self) -> Type {
+    fn safe_self_censoring_and_spam_detection(&self) -> Type {
+        let safe = if self.safe { Type::SAFE } else { Type::NONE };
+
         if self.last_pos < 6 {
             // Short strings consisting of a single acronym are problematic percentage-wise.
-            return Type::NONE;
+            return safe;
         }
 
         // Total opportunities for spam and self censoring. A bias is added so that a few words in a
@@ -482,7 +500,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
             Type::NONE
         };
 
-        spam | self_censoring
+        safe | spam | self_censoring
     }
 }
 
@@ -509,35 +527,40 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
 
     /// Retrieves the next (potentially censored) character.
     fn next(&mut self) -> Option<Self::Item> {
-        while let Some(c) = self.chars.next().or_else(|| {
-            if self.space_apended {
+        while let Some(raw_c) = self.chars.next().or_else(|| {
+            if self.space_appended {
                 None
             } else {
-                self.space_apended = true;
+                self.space_appended = true;
                 Some(' ')
             }
         }) {
+            if !self.space_appended && raw_c != '!' && raw_c != '.' && raw_c != '?' {
+                // The input is not over yet, so any previous notion of safety is irrelevant.
+                self.safe = false;
+            }
+
             let pos = self.buffer.index();
 
-            let skippable = c.is_punctuation() || c.is_separator() || c.is_other();
-            let replacement = REPLACEMENTS.get(&c);
+            let skippable = raw_c.is_punctuation() || raw_c.is_separator() || raw_c.is_other();
+            let replacement = REPLACEMENTS.get(&raw_c);
 
             if (!self.separate || self.last == Some(self.censor_replacement))
-                && c == self.censor_replacement
+                && raw_c == self.censor_replacement
             {
                 // Censor replacement found but not beginning of word.
                 self.self_censoring = self.self_censoring.saturating_add(1);
             }
 
             if let Some(last) = self.last {
-                if c == last {
+                if raw_c == last {
                     self.repetitions = self.repetitions.saturating_add(1);
                 }
                 // Replacement of one letter with another does not imply spam.
                 // Multiple numbers in sequence doesn't either.
                 if replacement.is_some()
-                    && !c.is_ascii_lowercase()
-                    && !(c.is_ascii_digit() && last.is_ascii_digit())
+                    && !raw_c.is_ascii_lowercase()
+                    && !(raw_c.is_ascii_digit() && last.is_ascii_digit())
                 {
                     self.replacements = self.replacements.saturating_add(1);
                 }
@@ -548,11 +571,11 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 }
 
                 // Single gibberish characters don't count. Must have been preceded by another gibberish character.
-                if is_gibberish(c) && is_gibberish(last) {
+                if is_gibberish(raw_c) && is_gibberish(last) {
                     self.gibberish = self.gibberish.saturating_add(1);
                 }
             }
-            self.last = Some(c);
+            self.last = Some(raw_c);
 
             if let Some(pos) = pos {
                 if !(skippable && replacement.is_none()) {
@@ -591,7 +614,10 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let mut safety_end = usize::MAX;
 
             mem::swap(&mut self.matches, &mut self.matches_tmp);
-            for c in replacement.unwrap_or(&&*c.encode_utf8(&mut [0; 4])).chars() {
+            for c in replacement
+                .unwrap_or(&&*raw_c.encode_utf8(&mut [0; 4]))
+                .chars()
+            {
                 for m in self.matches_tmp.iter() {
                     let m = m.clone();
 
@@ -600,7 +626,9 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     if (skippable || c == m.last) && m.start != pos.unwrap_or(0) {
                         // Undo remove.
                         let undo_m = Match {
-                            spaces: m.spaces.saturating_add(self.separate as u8),
+                            spaces: m.spaces.saturating_add(
+                                ((c == ' ' || c != raw_c) && self.separate && c != '\'') as u8,
+                            ),
                             ..m
                         };
                         if let Some(existing) = self.matches.get(&undo_m) {
@@ -616,13 +644,27 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             node: next,
                             spaces: m
                                 .spaces
-                                .saturating_add((self.separate && c != ' ' && c != '\'') as u8),
+                                .saturating_add((c != raw_c && self.separate && c != '\'') as u8),
                             last: c,
                             ..m
                         };
 
                         if next.is_word() {
-                            if next_m.node.weights.iter().any(|&w| w < 0) {
+                            if next_m.node.safe
+                                && next_m.start == 0
+                                && next_m.spaces == 0
+                                && !self.ignore_false_positives
+                            {
+                                // Everything in the input until now is safe.
+                                self.safe = true;
+                            }
+
+                            if next_m.node.weights.iter().any(|&w| w > 0) {
+                                self.pending_commit.push(Match {
+                                    end: pos.unwrap(),
+                                    ..next_m
+                                });
+                            } else {
                                 // Is false positive, so invalidate internal matches.
                                 if next_m.spaces == 0 && !self.ignore_false_positives {
                                     drain_start = Some(
@@ -631,11 +673,6 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                             .unwrap_or(next_m.start),
                                     );
                                 }
-                            } else {
-                                self.pending_commit.push(Match {
-                                    end: pos.unwrap(),
-                                    ..next_m
-                                });
                             }
                         }
 
@@ -658,6 +695,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let censor_threshold = self.censor_threshold;
             let censor_first_character_threshold = self.censor_first_character_threshold;
             let censor_replacement = self.censor_replacement;
+
             self.pending_commit.retain(|pending| {
                 // Cancel due to false positive.
                 if let Some(start) = drain_start {
@@ -686,16 +724,16 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             // Yield one character if possible.
             if let Some(spy_next_index) = self.buffer.spy_next_index() {
                 // This covers all in-flight matches.
-                let mut safe = spy_next_index < safety_end;
+                let mut safe_until = spy_next_index < safety_end;
 
                 // This covers all pending commit matches.
                 for pending in &self.pending_commit {
                     if pending.start <= spy_next_index {
-                        safe = false;
+                        safe_until = false;
                         break;
                     }
                 }
-                if safe {
+                if safe_until {
                     let next = self.buffer.spy_next();
                     if next.map(|c| c.is_ascii_uppercase()).unwrap_or(false) {
                         self.uppercase = self.uppercase.saturating_add(1);
@@ -837,33 +875,51 @@ mod tests {
 
     #[test]
     fn curated() {
-        let mut cases: Vec<(&str, bool)> = vec![("", false)];
+        let mut cases: Vec<(&str, bool, Option<bool>)> = vec![("", false, Some(false))];
         cases.extend(
             include_str!("test_positive.txt")
                 .split('\n')
                 .filter(|l| !l.is_empty())
-                .map(|l| (l, true)),
+                .map(|l| (l, true, Some(false))),
         );
         cases.extend(
             include_str!("test_negative.txt")
                 .split('\n')
                 .filter(|l| !l.is_empty())
-                .map(|l| (l, false)),
+                .map(|l| (l, false, None)),
+        );
+        cases.extend(
+            include_str!("safe.txt")
+                .split('\n')
+                .filter(|l| !l.is_empty() && !l.starts_with('#'))
+                .map(|l| (l, false, Some(true))),
+        );
+        cases.extend(
+            include_str!("test_safe.txt")
+                .split('\n')
+                .filter(|l| !l.is_empty())
+                .map(|l| (l, false, Some(true))),
         );
 
-        for (case, truth) in cases {
+        for (case, any_truth, safe_truth) in cases {
             /*
             #[cfg(debug_assertions)]
             println!("Case: \"{}\"", case);
              */
 
-            let prediction = case.is(Type::ANY);
+            let any = case.is(Type::ANY);
+            let safe = case.is(Type::SAFE);
 
             //let (censored, analysis) = Censor::from_str(case).with_censor_threshold(Type::ANY).censor_and_analyze();
             //println!("\"{}\" -> \"{}\" ({}, {})", case, censored, prediction, analysis.is(Type::ANY));
 
-            if prediction != truth {
-                panic!("FAIL: Predicted {} for {}", prediction, case);
+            if any != any_truth {
+                panic!("FAIL: Predicted {} for {}", any, case);
+            }
+            if let Some(safe_truth) = safe_truth {
+                if safe != safe_truth {
+                    panic!("FAIL: Predicted safe={} for {}", safe, case);
+                }
             }
         }
     }

@@ -6,19 +6,19 @@ use std::hash::{Hash, Hasher};
 #[derive(Clone)]
 pub(crate) struct Match {
     /// The word being matched.
-    pub(crate) node: &'static Node,
+    pub node: &'static Node,
     /// Stores the index in the string when this match was created.
-    pub(crate) start: usize,
+    pub start: usize,
     // Stores the index in the string when this match was completed.
-    pub(crate) end: usize,
+    pub end: usize,
     /// Stores the last matched character.
-    pub(crate) last: char,
+    pub last: char,
     /// Whether the match was preceded by a separator.
-    pub(crate) space_before: bool,
+    pub space_before: bool,
     /// Whether the match was followed by a separator.
-    pub(crate) space_after: bool,
+    pub space_after: bool,
     /// Stores how many spaces appeared within the match, excluding spaces that directly correspond to the pattern.
-    pub(crate) spaces: u8,
+    pub spaces: u8,
 }
 
 impl Match {
