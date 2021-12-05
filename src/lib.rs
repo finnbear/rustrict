@@ -664,15 +664,13 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                     end: pos.unwrap(),
                                     ..next_m
                                 });
-                            } else {
+                            } else if next_m.spaces == 0 && !self.ignore_false_positives {
                                 // Is false positive, so invalidate internal matches.
-                                if next_m.spaces == 0 && !self.ignore_false_positives {
-                                    drain_start = Some(
-                                        drain_start
-                                            .map(|start| start.min(next_m.start))
-                                            .unwrap_or(next_m.start),
-                                    );
-                                }
+                                drain_start = Some(
+                                    drain_start
+                                        .map(|start| start.min(next_m.start))
+                                        .unwrap_or(next_m.start),
+                                );
                             }
                         }
 
