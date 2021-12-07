@@ -22,6 +22,7 @@
 - Flexible
   - Censor and/or analyze
   - Input `&str` or `Iterator<Type = char>`
+  - Can add words with the `customize` feature
   - Plenty of options
 - Performant
   - O(n) analysis and censoring
@@ -36,7 +37,7 @@
 - Does not detect right-to-left profanity while analyzing, so...
 - Censoring forces Unicode to be left-to-right
 - Doesn't understand context
-- Cannot add words at runtime
+- Not resistant to false positives affecting profanities added at runtime
 
 ## Usage
 
@@ -94,6 +95,27 @@ assert!("yes".is(Type::SAFE));
 assert!("NVM".is(Type::SAFE));
 assert!("gtg".is(Type::SAFE));
 assert!("not a common phrase".isnt(Type::SAFE));
+```
+
+If you want to add custom profanities, safe words, or characters to strip out, enable the "customize" feature.
+
+```rust
+#[cfg(feature = "customize")]
+{
+    use rustrict::{add_word, ban_character, CensorStr, Type};
+
+    // You must take care not to call these when the crate is being
+    // used in any other way (to avoid concurrent mutation).
+    unsafe {
+        add_word("reallyreallybadword", (Type::PROFANE & Type::SEVERE) | Type::MEAN);
+        add_word("mybrandname", Type::SAFE);
+        ban_character('ꙮ');
+    }
+    
+    assert!("Reallllllyreallllllybaaaadword".is(Type::PROFANE));
+    assert!("MyBrandName".is(Type::SAFE));
+    assert_eq!("helloꙮꙮꙮ".censor(), "hello");
+}
 ```
 
 ## Comparison

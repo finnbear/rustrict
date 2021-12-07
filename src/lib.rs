@@ -14,42 +14,45 @@ use unicode_categories::UnicodeCategories;
 use unicode_normalization::{Decompositions, Recompositions, UnicodeNormalization};
 
 mod buffer_proxy_iterator;
+mod feature_cell;
 mod mtch;
 mod radix;
 
 const FALSE_POSITIVE_WEIGHT: i8 = -1;
 
 lazy_static! {
-    static ref TREE: Tree = include_str!("profanity.csv")
-        .split('\n')
-        .skip(1)
-        .filter(|line| !line.is_empty())
-        .map(|line| {
-            let mut split = line.split(',');
-            (
-                split.next().unwrap(),
-                [
-                    split.next().unwrap().parse().unwrap(),
-                    split.next().unwrap().parse().unwrap(),
-                    split.next().unwrap().parse().unwrap(),
-                    split.next().unwrap().parse().unwrap(),
-                ],
-                false,
+    static ref TREE: FeatureCell<Tree> = FeatureCell::new(
+        include_str!("profanity.csv")
+            .split('\n')
+            .skip(1)
+            .filter(|line| !line.is_empty())
+            .map(|line| {
+                let mut split = line.split(',');
+                (
+                    split.next().unwrap(),
+                    [
+                        split.next().unwrap().parse().unwrap(),
+                        split.next().unwrap().parse().unwrap(),
+                        split.next().unwrap().parse().unwrap(),
+                        split.next().unwrap().parse().unwrap(),
+                    ],
+                    false,
+                )
+            })
+            .chain(
+                include_str!("safe.txt")
+                    .split('\n')
+                    .filter(|line| !line.is_empty() && !line.starts_with('#'))
+                    .map(|line| { (line, [0; 4], true) })
             )
-        })
-        .chain(
-            include_str!("safe.txt")
-                .split('\n')
-                .filter(|line| !line.is_empty() && !line.starts_with('#'))
-                .map(|line| { (line, [0; 4], true) })
-        )
-        .chain(
-            include_str!("false_positives.txt")
-                .split('\n')
-                .filter(|line| !line.is_empty())
-                .map(|line| { (line, [FALSE_POSITIVE_WEIGHT; 4], false) })
-        )
-        .collect();
+            .chain(
+                include_str!("false_positives.txt")
+                    .split('\n')
+                    .filter(|line| !line.is_empty())
+                    .map(|line| { (line, [FALSE_POSITIVE_WEIGHT; 4], false) })
+            )
+            .collect()
+    );
     static ref REPLACEMENTS: FxHashMap<char, &'static str> = include_str!("replacements.csv")
         .split('\n')
         .filter(|line| !line.is_empty())
@@ -58,16 +61,18 @@ lazy_static! {
             (line[..comma].chars().next().unwrap(), &line[comma + 1..])
         })
         .collect();
-    static ref BANNED: FxHashSet<char> = include_str!("banned_chars.txt")
-        .split('\n')
-        .filter(|s| s.starts_with("U+"))
-        .map(|s| {
-            u32::from_str_radix(&s[2..], 16)
-                .ok()
-                .and_then(char::from_u32)
-                .unwrap()
-        })
-        .collect();
+    static ref BANNED: FeatureCell<FxHashSet<char>> = FeatureCell::new(
+        include_str!("banned_chars.txt")
+            .split('\n')
+            .filter(|s| s.starts_with("U+"))
+            .map(|s| {
+                u32::from_str_radix(&s[2..], 16)
+                    .ok()
+                    .and_then(char::from_u32)
+                    .unwrap()
+            })
+            .collect()
+    );
 }
 
 /// Censor is a flexible profanity filter that can analyze and/or censor arbitrary text.
@@ -155,6 +160,10 @@ bitflags! {
     }
 }
 
+const SEVERE_WEIGHT: i8 = 3;
+const MODERATE_WEIGHT: i8 = 2;
+const MILD_WEIGHT: i8 = 1;
+
 impl Type {
     /// Returns `true` if and only if self, the analysis result, meets the given threshold.
     pub fn is(self, threshold: Self) -> bool {
@@ -164,6 +173,46 @@ impl Type {
     /// Logical opposite of `Self::is`.
     pub fn isnt(self, threshold: Self) -> bool {
         self & threshold == Type::NONE
+    }
+
+    #[allow(dead_code)]
+    fn to_weights(self) -> [i8; 4] {
+        fn bits_to_weight(bits: u32) -> i8 {
+            if bits == 0 {
+                0
+            } else if bits & 0b1 != 0 {
+                MILD_WEIGHT
+            } else if bits & 0b10 != 0 {
+                MODERATE_WEIGHT
+            } else {
+                SEVERE_WEIGHT
+            }
+        }
+
+        [
+            bits_to_weight(self.bits & 0b111),
+            bits_to_weight((self.bits >> 3) & 0b111),
+            bits_to_weight((self.bits >> 6) & 0b111),
+            bits_to_weight((self.bits >> 9) & 0b111),
+        ]
+    }
+
+    fn from_weights(weights: &[i8; 4]) -> Type {
+        let mut result = 0;
+        for (i, &weight) in weights.iter().enumerate() {
+            let severity: u32 = if weight >= SEVERE_WEIGHT {
+                0b100
+            } else if weight == MODERATE_WEIGHT {
+                0b010
+            } else if weight == MILD_WEIGHT {
+                0b001
+            } else {
+                0 // none
+            };
+
+            result |= severity << (i * 3)
+        }
+        Type { bits: result }
     }
 }
 
@@ -450,7 +499,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
     /// Converts internal weights to a `Type`.
     fn analysis(&self) -> Type {
-        weights_to_type(&self.weights) | self.safe_self_censoring_and_spam_detection()
+        Type::from_weights(&self.weights) | self.safe_self_censoring_and_spam_detection()
     }
 
     fn ensure_done(&mut self) {
@@ -502,24 +551,6 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
         safe | spam | self_censoring
     }
-}
-
-fn weights_to_type(weights: &[i8; 4]) -> Type {
-    let mut result = 0;
-    for (i, &weight) in weights.iter().enumerate() {
-        let severity: u32 = if weight >= 3 {
-            0b100 // severe
-        } else if weight == 2 {
-            0b010 // moderate
-        } else if weight == 1 {
-            0b001 // mild
-        } else {
-            0 // none
-        };
-
-        result |= severity << (i * 3)
-    }
-    Type { bits: result }
 }
 
 impl<I: Iterator<Item = char>> Iterator for Censor<I> {
@@ -812,6 +843,46 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
     }
 }
 
+/// Adds a word, with the given type. The type can be `Type::SAFE`, or a combination of `Type::PROFANE`,
+/// `Type::Sexual`, `Type::Offensive`, `Type::Mean`, `Type::Mild`, `Type::Moderate`, and `Type::Severe`,
+/// but NOT both (can't be safe and unsafe).
+///
+/// The word's case is irrelevant, all input will be lower-cased.
+///
+/// # Warning
+///
+/// Any profanity words added this way will not support false positives. For example, if you add the word
+/// "field," you can expect "cornfield" to be detected as well.
+///
+/// # Safety
+///
+/// This must not be called when the crate is being used in any other way. It is best to call this
+/// from the main thread, near the beginning of the program.
+#[cfg(feature = "customize")]
+pub unsafe fn add_word(word: &str, typ: Type) {
+    let (weights, safe) = if typ.is(Type::SAFE) {
+        debug_assert!(
+            typ.isnt(Type::ANY),
+            "if word is Type::SAFE, it cannot be anything else"
+        );
+        ([0; 4], true)
+    } else {
+        (typ.to_weights(), false)
+    };
+    TREE.get_mut().add(&word.to_lowercase(), weights, safe);
+}
+
+/// Adds a banned character (will be removed during censoring).
+///
+/// # Safety
+///
+/// This must not be called when the crate is being used in any other way. It is best to call this
+/// from the main thread, near the beginning of the program.
+#[cfg(feature = "customize")]
+pub unsafe fn ban_character(c: char) {
+    BANNED.get_mut().insert(c);
+}
+
 #[cfg(test)]
 mod tests {
     #![allow(unused_imports)]
@@ -819,6 +890,7 @@ mod tests {
     extern crate test;
     use crate::{Censor, CensorIter, CensorStr, Type};
     use bitflags::_core::ops::Not;
+    use serial_test::serial;
     use std::fs::File;
     use std::io::BufReader;
     use std::time::Instant;
@@ -872,6 +944,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn curated() {
         let mut cases: Vec<(&str, bool, Option<bool>)> = vec![("", false, Some(false))];
         cases.extend(
@@ -923,6 +996,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn censor() {
         let censored = Censor::from_str("HELLO fučk Shit nigga WORLD!")
             .with_censor_replacement('#')
@@ -941,12 +1015,14 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn bidirectional() {
         // Censoring removes direction overrides, so that the text output is the text that was analyzed.
         assert_eq!("an toidi", "an \u{202e}toidi".censor());
     }
 
     #[test]
+    #[serial]
     fn analyze() {
         let analysis = Censor::from_str("HELLO fuck shit WORLD!").analyze();
 
@@ -960,6 +1036,7 @@ mod tests {
 
     /// This exists purely to ensure all the APIs keep compiling.
     #[test]
+    #[serial]
     fn apis() {
         "abcd".censor();
         String::from("abcd").censor();
@@ -974,6 +1051,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn accuracy() {
         fn rustrict(s: &str) -> bool {
             s.is(Type::ANY)
@@ -1049,6 +1127,7 @@ mod tests {
 
     #[cfg(not(debug_assertions))]
     #[test]
+    #[serial]
     fn bandwidth() {
         let file = File::open("test.csv").unwrap();
         let total_len = file.metadata().unwrap().len() as usize;
@@ -1062,7 +1141,7 @@ mod tests {
             text.push_str(&record[1]);
         }
 
-        for power in 1..32 {
+        for power in 1..16 {
             let len = 2usize.pow(power);
 
             if len > text.len() {
@@ -1084,6 +1163,31 @@ mod tests {
         }
     }
 
+    #[cfg(feature = "customize")]
+    #[test]
+    #[serial]
+    fn customize() {
+        use crate::add_word;
+        use crate::ban_character;
+
+        let test_profanity = "thisisafakeprofanityfortesting";
+        let test_safe = "thisisafakesafewordfortesting";
+        let banned = "ꙮ";
+
+        // SAFETY: Tests are run serially, so concurrent mutation is avoided.
+        unsafe {
+            add_word(test_profanity, Type::PROFANE & Type::SEVERE);
+            add_word(test_safe, Type::SAFE);
+            for c in banned.chars() {
+                ban_character(c);
+            }
+        }
+
+        assert!(test_profanity.is(Type::PROFANE & Type::SEVERE));
+        assert!(test_safe.is(Type::SAFE));
+        assert_eq!(banned.censor(), "");
+    }
+
     #[allow(soft_unstable)]
     #[bench]
     fn bench_is_inappropriate(b: &mut Bencher) {
@@ -1103,5 +1207,6 @@ mod tests {
     }
 }
 
+use crate::feature_cell::FeatureCell;
 use doc_comment::doctest;
 doctest!("../README.md");

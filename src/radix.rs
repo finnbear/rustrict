@@ -15,7 +15,8 @@ pub(crate) struct Node {
 }
 
 impl Tree {
-    pub fn add(&mut self, word: &'static str, weights: [i8; 4], safe: bool) {
+    /// Never set weights and safe=true at the same time.
+    pub fn add(&mut self, word: &str, weights: [i8; 4], safe: bool) {
         let mut current = &mut self.root;
         for (i, c) in word.chars().enumerate() {
             let next = current.children.entry(c);
@@ -26,10 +27,10 @@ impl Tree {
                 depth: (i + 1) as u8,
             });
         }
-        current.weights = weights;
         if safe {
-            // Can overwrite weights but not safe (useful if safe word is also false positive).
             current.safe = safe;
+        } else {
+            current.weights = weights;
         }
     }
 }

@@ -1,6 +1,6 @@
 use crate::buffer_proxy_iterator::BufferProxyIterator;
 use crate::radix::Node;
-use crate::{weights_to_type, Type};
+use crate::Type;
 use std::hash::{Hash, Hasher};
 
 #[derive(Clone)]
@@ -64,7 +64,7 @@ impl Match {
             weights[i] = weights[i].max(*weight);
         }
 
-        let typ = weights_to_type(&self.node.weights);
+        let typ = Type::from_weights(&self.node.weights);
 
         if typ.isnt(censor_threshold) {
             // Match isn't severe enough to censor.
