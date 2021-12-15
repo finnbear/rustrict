@@ -89,6 +89,11 @@ is trying to evade the filter, you can check if their input matches a [short lis
 ```rust
 use rustrict::{CensorStr, Type};
 
+// Figure out if a user is trying to evade the filter.
+assert!("pron".is(Type::EVASIVE));
+assert!("porn".isnt(Type::EVASIVE));
+
+// Only let safe messages through.
 assert!("Hello there!".is(Type::SAFE));
 assert!("nice work.".is(Type::SAFE));
 assert!("yes".is(Type::SAFE));

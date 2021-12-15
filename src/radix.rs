@@ -1,3 +1,4 @@
+use crate::Type;
 use rustc_hash::FxHashMap;
 use std::iter::FromIterator;
 
@@ -9,51 +10,45 @@ pub(crate) struct Tree {
 #[derive(Debug)]
 pub(crate) struct Node {
     pub children: FxHashMap<char, Node>,
-    pub weights: [i8; 4],
-    pub safe: bool,
+    pub word: bool,
+    pub typ: Type,
     pub depth: u8,
 }
 
 impl Tree {
-    /// Never set weights and safe=true at the same time.
-    pub fn add(&mut self, word: &str, weights: [i8; 4], safe: bool) {
+    pub fn add(&mut self, word: &str, typ: Type) {
         let mut current = &mut self.root;
         for (i, c) in word.chars().enumerate() {
             let next = current.children.entry(c);
             current = next.or_insert_with(|| Node {
                 children: FxHashMap::default(),
-                weights: [0; 4],
-                safe: false,
+                word: false,
+                typ: Type::NONE,
                 depth: (i + 1) as u8,
             });
         }
-        if safe {
-            current.safe = safe;
-        } else {
-            current.weights = weights;
-        }
+        current.word = true;
+        current.typ |= typ;
+        debug_assert!(
+            !(current.typ.is(Type::ANY) && current.typ.is(Type::SAFE)),
+            "if word is Type::SAFE, it cannot be anything else"
+        );
     }
 }
 
-impl FromIterator<(&'static str, [i8; 4], bool)> for Tree {
-    fn from_iter<T: IntoIterator<Item = (&'static str, [i8; 4], bool)>>(iter: T) -> Self {
+impl FromIterator<(&'static str, Type)> for Tree {
+    fn from_iter<T: IntoIterator<Item = (&'static str, Type)>>(iter: T) -> Self {
         let mut ret = Self {
             root: Node {
                 children: FxHashMap::default(),
-                weights: [0; 4],
-                safe: false,
+                word: false,
+                typ: Type::NONE,
                 depth: 0,
             },
         };
-        for (word, weights, safe) in iter.into_iter() {
-            ret.add(word, weights, safe);
+        for (word, typ) in iter.into_iter() {
+            ret.add(word, typ);
         }
         ret
-    }
-}
-
-impl Node {
-    pub fn is_word(&self) -> bool {
-        self.weights != [0; 4] || self.safe
     }
 }

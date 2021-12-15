@@ -34,7 +34,7 @@ impl Match {
 
     pub(crate) fn commit<I: Iterator<Item = char>>(
         &self,
-        weights: &mut [i8; 4],
+        typ: &mut Type,
         spy: &BufferProxyIterator<I>,
         censor_threshold: Type,
         censor_first_character_threshold: Type,
@@ -59,20 +59,16 @@ impl Match {
             return;
         }
 
-        // Apply weights.
-        for (i, weight) in self.node.weights.iter().enumerate() {
-            weights[i] = weights[i].max(*weight);
-        }
+        // Apply detection.
+        *typ |= self.node.typ;
 
-        let typ = Type::from_weights(&self.node.weights);
-
-        if typ.isnt(censor_threshold) {
+        if self.node.typ.isnt(censor_threshold) {
             // Match isn't severe enough to censor.
             return;
         }
 
         // Censor.
-        let offset = if typ.is(censor_first_character_threshold) || self.node.depth == 1 {
+        let offset = if self.node.typ.is(censor_first_character_threshold) || self.node.depth == 1 {
             0
         } else {
             1

@@ -18,7 +18,10 @@ mod feature_cell;
 mod mtch;
 mod radix;
 
-const FALSE_POSITIVE_WEIGHT: i8 = -1;
+/// Number of weights.
+const WEIGHT_COUNT: usize = 5;
+/// Bits per weight;
+const WEIGHT_BITS: usize = 3;
 
 lazy_static! {
     static ref TREE: FeatureCell<Tree> = FeatureCell::new(
@@ -30,26 +33,22 @@ lazy_static! {
                 let mut split = line.split(',');
                 (
                     split.next().unwrap(),
-                    [
-                        split.next().unwrap().parse().unwrap(),
-                        split.next().unwrap().parse().unwrap(),
-                        split.next().unwrap().parse().unwrap(),
-                        split.next().unwrap().parse().unwrap(),
-                    ],
-                    false,
+                    Type::from_weights(
+                        &[0; WEIGHT_COUNT].map(|_| split.next().unwrap().parse().unwrap()),
+                    ),
                 )
             })
             .chain(
                 include_str!("safe.txt")
                     .split('\n')
                     .filter(|line| !line.is_empty() && !line.starts_with('#'))
-                    .map(|line| { (line, [0; 4], true) })
+                    .map(|line| { (line, Type::SAFE) })
             )
             .chain(
                 include_str!("false_positives.txt")
                     .split('\n')
                     .filter(|line| !line.is_empty())
-                    .map(|line| { (line, [FALSE_POSITIVE_WEIGHT; 4], false) })
+                    .map(|line| { (line, Type::NONE) })
             )
             .collect()
     );
@@ -96,7 +95,7 @@ pub struct Censor<I: Iterator<Item = char>> {
     /// The last position matched against.
     last_pos: usize,
     /// An accumulation of the different types of inappropriateness.
-    weights: [i8; 4],
+    typ: Type,
     /// Counters (mainly for spam detection).
     uppercase: u8,
     repetitions: u8,
@@ -128,32 +127,34 @@ bitflags! {
     /// Type is represents a type or severity of inappropriateness. They can be combined with bitwise operators. They are **not** mutually exclusive.
     pub struct Type: u32 {
         /// Bad words.
-        const PROFANE   = 0b0_000_000_000_000_111;
+        const PROFANE   = 0b0_000_000_000_000_000_111;
         /// Offensive words.
-        const OFFENSIVE = 0b0_000_000_000_111_000;
+        const OFFENSIVE = 0b0_000_000_000_000_111_000;
         /// Sexual words.
-        const SEXUAL    = 0b0_000_000_111_000_000;
+        const SEXUAL    = 0b0_000_000_000_111_000_000;
         /// Mean words.
-        const MEAN      = 0b0_000_111_000_000_000;
+        const MEAN      = 0b0_000_000_111_000_000_000;
+        /// Words intended to evade detection.
+        const EVASIVE   = 0b0_000_111_000_000_000_000;
         /// Spam/gibberish/SHOUTING.
-        const SPAM      = 0b0_111_000_000_000_000;
+        const SPAM      = 0b0_111_000_000_000_000_000;
 
         /// One of a very small number of safe phases.
         /// Recommended to enforce this on users who repeatedly evade the filter.
-        const SAFE      = 0b1_000_000_000_000_000;
+        const SAFE      = 0b1_000_000_000_000_000_000;
 
         /// Not that bad.
-        const MILD      = 0b0_111_111_111_111_111;
+        const MILD      = 0b0_111_111_111_111_111_111;
         /// Bad.
-        const MODERATE  = 0b0_110_110_110_110_110;
+        const MODERATE  = 0b0_110_110_110_110_110_110;
         /// Cover your eyes!
-        const SEVERE    = 0b0_100_100_100_100_100;
+        const SEVERE    = 0b0_100_100_100_100_100_100;
 
         /// The default `Type`, meaning profane, offensive, sexual, or severely mean.
         const INAPPROPRIATE = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | (Self::MEAN.bits & Self::SEVERE.bits);
 
         /// Any type of detection (except SAFE). This will be expanded to cover all future types.
-        const ANY = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | Self::MEAN.bits | Self::SPAM.bits;
+        const ANY = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | Self::MEAN.bits | Self::EVASIVE.bits | Self::SPAM.bits;
 
         /// No type of detection.
         const NONE = 0;
@@ -176,7 +177,7 @@ impl Type {
     }
 
     #[allow(dead_code)]
-    fn to_weights(self) -> [i8; 4] {
+    fn to_weights(self) -> [i8; WEIGHT_COUNT] {
         fn bits_to_weight(bits: u32) -> i8 {
             if bits == 0 {
                 0
@@ -189,15 +190,15 @@ impl Type {
             }
         }
 
-        [
-            bits_to_weight(self.bits & 0b111),
-            bits_to_weight((self.bits >> 3) & 0b111),
-            bits_to_weight((self.bits >> 6) & 0b111),
-            bits_to_weight((self.bits >> 9) & 0b111),
-        ]
+        let mut i = 0;
+        [0; WEIGHT_COUNT].map(|_| {
+            let ret = bits_to_weight((self.bits >> i) & 0b111);
+            i += WEIGHT_BITS;
+            ret
+        })
     }
 
-    fn from_weights(weights: &[i8; 4]) -> Type {
+    fn from_weights(weights: &[i8; WEIGHT_COUNT]) -> Type {
         let mut result = 0;
         for (i, &weight) in weights.iter().enumerate() {
             let severity: u32 = if weight >= SEVERE_WEIGHT {
@@ -210,7 +211,7 @@ impl Type {
                 0 // none
             };
 
-            result |= severity << (i * 3)
+            result |= severity << (i * WEIGHT_BITS)
         }
         Type { bits: result }
     }
@@ -276,11 +277,22 @@ impl std::fmt::Display for Type {
             write!(f, "{} mean", description((*self & Self::MEAN).bits() >> 9))?;
             count += 1;
         }
+        if *self & Self::EVASIVE != Type::empty() {
+            if count > 0 {
+                write!(f, ", ")?;
+            }
+            write!(
+                f,
+                "{} evasive",
+                description((*self & Self::EVASIVE).bits() >> 12)
+            )?;
+            count += 1;
+        }
         if *self & Self::SPAM != Type::empty() {
             if count > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{} spam", description((*self & Self::SPAM).bits() >> 12))?;
+            write!(f, "{} spam", description((*self & Self::SPAM).bits() >> 15))?;
             count += 1;
         }
 
@@ -315,7 +327,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
             // The beginning of the sequence is a separator.
             separate: true,
             // Nothing was detected yet.
-            weights: [0; 4],
+            typ: Type::NONE,
             uppercase: 0,
             repetitions: 0,
             last: None,
@@ -375,7 +387,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
         let (buffer, chars) = Self::buffers_from(text);
 
         self.separate = true;
-        self.weights = [0; 4];
+        self.typ = Type::NONE;
         self.uppercase = 0;
         self.last = None;
         self.repetitions = 0;
@@ -499,7 +511,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
 
     /// Converts internal weights to a `Type`.
     fn analysis(&self) -> Type {
-        Type::from_weights(&self.weights) | self.safe_self_censoring_and_spam_detection()
+        self.typ | self.safe_self_censoring_and_spam_detection()
     }
 
     fn ensure_done(&mut self) {
@@ -680,8 +692,8 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             ..m
                         };
 
-                        if next.is_word() {
-                            if next_m.node.safe
+                        if next.word {
+                            if next_m.node.typ.is(Type::SAFE)
                                 && next_m.start == 0
                                 && next_m.spaces == 0
                                 && !self.ignore_false_positives
@@ -690,7 +702,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                 self.safe = true;
                             }
 
-                            if next_m.node.weights.iter().any(|&w| w > 0) {
+                            if next_m.node.typ.is(Type::ANY) {
                                 self.pending_commit.push(Match {
                                     end: pos.unwrap(),
                                     ..next_m
@@ -719,7 +731,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 self.last_pos = pos;
             }
 
-            let weights = &mut self.weights;
+            let typ = &mut self.typ;
             let spy = &self.buffer;
             let censor_threshold = self.censor_threshold;
             let censor_first_character_threshold = self.censor_first_character_threshold;
@@ -736,7 +748,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 // Can pre-commit due to lack of false positive matches.
                 if pending.end < safety_end {
                     pending.commit(
-                        weights,
+                        typ,
                         spy,
                         censor_threshold,
                         censor_first_character_threshold,
@@ -774,7 +786,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
 
         for pending in mem::take(&mut self.pending_commit) {
             pending.commit(
-                &mut self.weights,
+                &mut self.typ,
                 &self.buffer,
                 self.censor_threshold,
                 self.censor_first_character_threshold,
@@ -860,16 +872,7 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 /// from the main thread, near the beginning of the program.
 #[cfg(feature = "customize")]
 pub unsafe fn add_word(word: &str, typ: Type) {
-    let (weights, safe) = if typ.is(Type::SAFE) {
-        debug_assert!(
-            typ.isnt(Type::ANY),
-            "if word is Type::SAFE, it cannot be anything else"
-        );
-        ([0; 4], true)
-    } else {
-        (typ.to_weights(), false)
-    };
-    TREE.get_mut().add(&word.to_lowercase(), weights, safe);
+    TREE.get_mut().add(&word.to_lowercase(), typ);
 }
 
 /// Adds a banned character (will be removed during censoring).
