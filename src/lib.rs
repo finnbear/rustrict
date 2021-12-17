@@ -887,6 +887,7 @@ mod tests {
     fn short_replacement() {
         "99".isnt(Type::PROFANE);
         "900".isnt(Type::PROFANE);
+        "kkk".is(Type::OFFENSIVE);
     }
 
     #[allow(dead_code)]

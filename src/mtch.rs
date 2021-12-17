@@ -43,16 +43,6 @@ impl Match {
         censor_first_character_threshold: Type,
         censor_replacement: char,
     ) {
-        /*
-        #[cfg(debug_assertions)]
-        {
-            println!(
-                "matching \"{}\" b={} m={} a={}",
-                self.node.phrase, self.space_before, self.spaces, self.space_after
-            );
-        }
-         */
-
         //let length = m.end - m.start;
         if (!(self.space_before && self.space_after)
             && self.node.depth > 1
