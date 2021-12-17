@@ -6,8 +6,7 @@ use crate::radix::*;
 use bitflags::bitflags;
 use lazy_static::lazy_static;
 use rustc_hash::{FxHashMap, FxHashSet};
-use std::char::ToLowercase;
-use std::iter::{Filter, FlatMap};
+use std::iter::Filter;
 use std::mem;
 use std::str::Chars;
 use unicode_categories::UnicodeCategories;
@@ -111,12 +110,6 @@ pub struct Censor<I: Iterator<Item = char>> {
     /// A buffer of the input that stores unconfirmed characters (may need to censor before flushing).
     /// This is so the censored output is unaffected by the subsequent iterator machinery.
     buffer: BufferProxyIterator<Recompositions<Filter<Decompositions<I>, fn(&char) -> bool>>>,
-    /// Iterator machinery to canonicalize input text.
-    chars: FlatMap<
-        BufferProxyIterator<Recompositions<Filter<Decompositions<I>, fn(&char) -> bool>>>,
-        ToLowercase,
-        fn(char) -> ToLowercase,
-    >,
     /// Whether already appended a space at the end.
     space_appended: bool,
     /// Whether all processing of characters has completed.
@@ -144,11 +137,17 @@ bitflags! {
         const SAFE      = 0b1_000_000_000_000_000_000;
 
         /// Not that bad.
-        const MILD      = 0b0_111_111_111_111_111_111;
+        const MILD      = 0b0_001_001_001_001_001_001;
         /// Bad.
-        const MODERATE  = 0b0_110_110_110_110_110_110;
+        const MODERATE  = 0b0_010_010_010_010_010_010;
         /// Cover your eyes!
         const SEVERE    = 0b0_100_100_100_100_100_100;
+
+        /// Any level; `Type::MILD`, `Type::MODERATE`, or `Type::SEVERE`.
+        const MILD_OR_HIGHER = Self::MILD.bits | Self::MODERATE.bits | Self::SEVERE.bits;
+
+        /// Any level in excess of `Type::MILD`.
+        const MODERATE_OR_HIGHER = Self::MODERATE.bits | Self::SEVERE.bits;
 
         /// The default `Type`, meaning profane, offensive, sexual, or severely mean.
         const INAPPROPRIATE = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | (Self::MEAN.bits & Self::SEVERE.bits);
@@ -314,8 +313,6 @@ impl<'a> Censor<Chars<'a>> {
 impl<I: Iterator<Item = char>> Censor<I> {
     /// Allocates a new `Censor` for analyzing and/or censoring text.
     pub fn new(text: I) -> Self {
-        let (buffer, chars) = Self::buffers_from(text);
-
         Self {
             // Default options
             ignore_false_positives: false,
@@ -341,40 +338,25 @@ impl<I: Iterator<Item = char>> Censor<I> {
             matches: FxHashSet::default(),
             matches_tmp: FxHashSet::default(),
             pending_commit: Vec::new(),
-            buffer,
-            chars,
+            buffer: Self::buffer_from(text),
         }
     }
 
-    fn buffers_from(
+    fn buffer_from(
         text: I,
-    ) -> (
-        BufferProxyIterator<Recompositions<Filter<Decompositions<I>, fn(&char) -> bool>>>,
-        FlatMap<
-            BufferProxyIterator<Recompositions<Filter<Decompositions<I>, fn(&char) -> bool>>>,
-            ToLowercase,
-            fn(char) -> ToLowercase,
-        >,
-    ) {
+    ) -> BufferProxyIterator<Recompositions<Filter<Decompositions<I>, fn(&char) -> bool>>> {
         // Detects if a char isn't a diacritical mark (accent) or banned, such that such characters may be
         // filtered on that basis.
         fn isnt_mark_nonspacing_or_banned(c: &char) -> bool {
             !(c.is_mark_nonspacing() || BANNED.contains(c))
         }
 
-        // TODO: Replace Rc via Pin<Self> or otherwise avoid allocation.
-        let buffer = BufferProxyIterator::new(
+        BufferProxyIterator::new(
             text
                 // The following three transformers are to ignore diacritical marks.
                 .nfd()
                 .filter(isnt_mark_nonspacing_or_banned as fn(&char) -> bool)
                 .nfc(),
-        );
-
-        // Detections not case sensitive.
-        (
-            buffer.clone(),
-            buffer.flat_map(char::to_lowercase as fn(char) -> ToLowercase),
         )
     }
 
@@ -384,8 +366,6 @@ impl<I: Iterator<Item = char>> Censor<I> {
     /// TODO: This is untested.
     #[cfg(feature = "reset_censor")]
     pub fn reset(&mut self, text: I) {
-        let (buffer, chars) = Self::buffers_from(text);
-
         self.separate = true;
         self.typ = Type::NONE;
         self.uppercase = 0;
@@ -400,8 +380,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
         self.matches.clear();
         self.matches_tmp.clear();
         self.pending_commit.clear();
-        self.buffer = buffer;
-        self.chars = chars;
+        self.buffer = Self::buffer_from(text);
     }
 
     /// Selects a threshold to apply while censoring. Only words that meet or exceed the threshold
@@ -483,14 +462,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
             !self.buffer.index().is_some(),
             "censor must be called before any other form of processing"
         );
-
-        let size_hint = self.chars.size_hint();
-        let initial_cap = size_hint.1.unwrap_or(size_hint.0);
-        let mut s = String::with_capacity(initial_cap);
-        for c in self {
-            s.push(c);
-        }
-        s
+        self.collect()
     }
 
     /// Fully analyzes a the input characters, to determine the type of inappropriateness present, if any.
@@ -570,7 +542,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
 
     /// Retrieves the next (potentially censored) character.
     fn next(&mut self) -> Option<Self::Item> {
-        while let Some(raw_c) = self.chars.next().or_else(|| {
+        while let Some(raw_c) = self.buffer.next().or_else(|| {
             if self.space_appended {
                 None
             } else {
@@ -585,6 +557,8 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
 
             let pos = self.buffer.index();
 
+            let raw_c_upper = raw_c.is_uppercase();
+            self.uppercase = self.uppercase.saturating_add(raw_c_upper as u8);
             let skippable = raw_c.is_punctuation() || raw_c.is_separator() || raw_c.is_other();
             let replacement = REPLACEMENTS.get(&raw_c);
 
@@ -599,14 +573,6 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 if raw_c == last {
                     self.repetitions = self.repetitions.saturating_add(1);
                 }
-                // Replacement of one letter with another does not imply spam.
-                // Multiple numbers in sequence doesn't either.
-                if replacement.is_some()
-                    && !raw_c.is_ascii_lowercase()
-                    && !(raw_c.is_ascii_digit() && last.is_ascii_digit())
-                {
-                    self.replacements = self.replacements.saturating_add(1);
-                }
 
                 // Characters on the home-row of a QWERTY keyboard.
                 fn is_gibberish(c: char) -> bool {
@@ -618,7 +584,6 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     self.gibberish = self.gibberish.saturating_add(1);
                 }
             }
-            self.last = Some(raw_c);
 
             if let Some(pos) = pos {
                 if !(skippable && replacement.is_none()) {
@@ -631,6 +596,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         space_before: self.separate,
                         space_after: false, // unknown at this time.
                         spaces: 0,
+                        replacements: 0,
                     });
                 }
             }
@@ -655,12 +621,26 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
 
             let mut drain_start: Option<usize> = None;
             let mut safety_end = usize::MAX;
+            let mut replacement_counted = false;
 
             mem::swap(&mut self.matches, &mut self.matches_tmp);
             for c in replacement
                 .unwrap_or(&&*raw_c.encode_utf8(&mut [0; 4]))
                 .chars()
             {
+                let benign_replacement = raw_c_upper && c.is_lowercase();
+
+                if !(c == raw_c
+                    || replacement_counted
+                    || benign_replacement
+                    || raw_c.is_ascii_alphabetic()
+                    || (raw_c.is_ascii_digit()
+                        && self.last.map(|l| l.is_ascii_digit()).unwrap_or(false)))
+                {
+                    self.replacements = self.replacements.saturating_add(1);
+                    replacement_counted = true;
+                }
+
                 for m in self.matches_tmp.iter() {
                     let m = m.clone();
 
@@ -671,6 +651,9 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         let undo_m = Match {
                             spaces: m.spaces.saturating_add(
                                 ((c == ' ' || c != raw_c) && self.separate && c != '\'') as u8,
+                            ),
+                            replacements: m.replacements.saturating_add(
+                                (c != raw_c && !benign_replacement && !self.separate) as u8,
                             ),
                             ..m
                         };
@@ -688,6 +671,9 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             spaces: m
                                 .spaces
                                 .saturating_add((c != raw_c && self.separate && c != '\'') as u8),
+                            replacements: m.replacements.saturating_add(
+                                (c != raw_c && !benign_replacement && !self.separate) as u8,
+                            ),
                             last: c,
                             ..m
                         };
@@ -707,7 +693,10 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                     end: pos.unwrap(),
                                     ..next_m
                                 });
-                            } else if next_m.spaces == 0 && !self.ignore_false_positives {
+                            } else if next_m.spaces == 0
+                                && next_m.replacements == 0
+                                && !self.ignore_false_positives
+                            {
                                 // Is false positive, so invalidate internal matches.
                                 drain_start = Some(
                                     drain_start
@@ -727,12 +716,13 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 }
             }
             self.matches_tmp.clear();
+            self.last = Some(raw_c);
             if let Some(pos) = pos {
                 self.last_pos = pos;
             }
 
             let typ = &mut self.typ;
-            let spy = &self.buffer;
+            let spy = &mut self.buffer;
             let censor_threshold = self.censor_threshold;
             let censor_first_character_threshold = self.censor_first_character_threshold;
             let censor_replacement = self.censor_replacement;
@@ -775,11 +765,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     }
                 }
                 if safe_until {
-                    let next = self.buffer.spy_next();
-                    if next.map(|c| c.is_ascii_uppercase()).unwrap_or(false) {
-                        self.uppercase = self.uppercase.saturating_add(1);
-                    }
-                    return next;
+                    return self.buffer.spy_next();
                 }
             }
         }
@@ -787,7 +773,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
         for pending in mem::take(&mut self.pending_commit) {
             pending.commit(
                 &mut self.typ,
-                &self.buffer,
+                &mut self.buffer,
                 self.censor_threshold,
                 self.censor_first_character_threshold,
                 self.censor_replacement,
@@ -795,9 +781,6 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
         }
 
         if let Some(c) = self.buffer.spy_next() {
-            if c.is_uppercase() {
-                self.uppercase = self.uppercase.saturating_add(1);
-            }
             return Some(c);
         }
 
@@ -899,6 +882,13 @@ mod tests {
     use std::time::Instant;
     use test::Bencher;
 
+    #[test]
+    #[serial]
+    fn short_replacement() {
+        "99".isnt(Type::PROFANE);
+        "900".isnt(Type::PROFANE);
+    }
+
     #[allow(dead_code)]
     fn find_detection(text: &str) {
         let holistic = Censor::from_str(text).analyze();
@@ -981,14 +971,15 @@ mod tests {
             println!("Case: \"{}\"", case);
              */
 
-            let any = case.is(Type::ANY);
-            let safe = case.is(Type::SAFE);
+            let typ = Censor::from_str(case).analyze();
+            let any = typ.is(Type::ANY);
+            let safe = typ.is(Type::SAFE);
 
             //let (censored, analysis) = Censor::from_str(case).with_censor_threshold(Type::ANY).censor_and_analyze();
             //println!("\"{}\" -> \"{}\" ({}, {})", case, censored, prediction, analysis.is(Type::ANY));
 
             if any != any_truth {
-                panic!("FAIL: Predicted {} for {}", any, case);
+                panic!("FAIL: Predicted {} for {}", typ, case);
             }
             if let Some(safe_truth) = safe_truth {
                 if safe != safe_truth {
@@ -1055,9 +1046,34 @@ mod tests {
 
     #[test]
     #[serial]
+    fn levels() {
+        assert!("poo".is(Type::PROFANE & Type::MILD));
+        assert!("poo".is(Type::PROFANE & Type::MILD_OR_HIGHER));
+        assert!("poo".isnt(Type::PROFANE & Type::MODERATE));
+        assert!("poo".isnt(Type::PROFANE & Type::MODERATE_OR_HIGHER));
+        assert!("poo".isnt(Type::PROFANE & Type::SEVERE));
+        assert!("arse".is(Type::PROFANE & Type::MODERATE));
+        assert!("arse".is(Type::PROFANE & Type::MILD_OR_HIGHER));
+        assert!("arse".is(Type::PROFANE & Type::MODERATE_OR_HIGHER));
+        assert!("arse".isnt(Type::PROFANE & Type::MILD));
+        assert!("arse".isnt(Type::PROFANE & Type::SEVERE));
+        assert!("i hope you die".is(Type::MEAN & Type::SEVERE));
+        assert!("i hope you die".is(Type::MEAN & Type::MILD_OR_HIGHER));
+        assert!("i hope you die".is(Type::MEAN & Type::MODERATE_OR_HIGHER));
+        assert!("i hope you die".isnt(Type::MEAN & Type::MILD));
+        assert!("i hope you die".isnt(Type::MEAN & Type::MODERATE));
+    }
+
+    #[test]
+    #[serial]
     fn accuracy() {
         fn rustrict(s: &str) -> bool {
             s.is(Type::ANY)
+        }
+
+        #[allow(dead_code)]
+        fn rustrict_old(s: &str) -> bool {
+            rustrict_old::CensorStr::is(s, rustrict_old::Type::ANY)
         }
 
         fn censor(s: &str) -> bool {
@@ -1068,13 +1084,23 @@ mod tests {
 
         println!("| Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |");
         println!("|-------|----------|-------------------|-------------------|------|");
-        print_accuracy("https://crates.io/crates/rustrict", rustrict, false);
-        print_accuracy("https://crates.io/crates/censor", censor, false);
+        print_accuracy(
+            "https://crates.io/crates/rustrict",
+            rustrict,
+            true,
+            Some(rustrict_old),
+        );
+        print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }
 
-    fn print_accuracy(link: &str, checker: fn(&str) -> bool, find_detections: bool) {
+    fn print_accuracy(
+        link: &str,
+        checker: fn(&str) -> bool,
+        find_detections: bool,
+        compare_to: Option<fn(&str) -> bool>,
+    ) {
         let start = Instant::now();
-        let (total, positive, negative) = accuracy_of(checker, find_detections);
+        let (total, positive, negative) = accuracy_of(checker, find_detections, compare_to);
         println!(
             "| [{}]({}) | {:.2}% | {:.2}% | {:.2}% | {:.2}s |",
             link.split('/').last().unwrap(),
@@ -1086,7 +1112,11 @@ mod tests {
         );
     }
 
-    fn accuracy_of(checker: fn(&str) -> bool, find_detections: bool) -> (f32, f32, f32) {
+    fn accuracy_of(
+        checker: fn(&str) -> bool,
+        find_detections: bool,
+        compare_to: Option<fn(&str) -> bool>,
+    ) -> (f32, f32, f32) {
         let file = File::open("test.csv").unwrap();
         let reader = BufReader::new(file);
         let mut csv = csv::Reader::from_reader(reader);
@@ -1112,6 +1142,12 @@ mod tests {
                 println!("{}: {}", truth, text);
                 if prediction {
                     find_detection(text);
+                }
+            }
+            if let Some(checker) = compare_to {
+                let compare_prediction = checker(text);
+                if prediction != compare_prediction && text.len() < 100 {
+                    println!("COMPARISON: On \"{}\", output {} instead", text, prediction);
                 }
             }
             if truth {

@@ -5,9 +5,9 @@ word,profane,offensive,sexual,mean,evasive
 ࿖,0,2,0,0,0
 ࿗,0,2,0,0,0
 ࿘,0,2,0,0,0
-3==d,0,0,2,0,1
+3==D,0,0,2,0,1
 3==o,0,0,2,0,1
-8==d,0,0,2,0,1
+8==D,0,0,2,0,1
 8==o,0,0,2,0,1
 c==3,0,0,2,0,1
 c==B,0,0,2,0,1
@@ -167,13 +167,16 @@ gayness,0,1,0,0,0
 gays,0,1,0,0,0
 gayest,0,2,0,0,0
 genital,0,0,2,0,0
+ggers,3,3,0,0,0
 getcancer,0,0,0,3,0
 getlost,0,0,0,2,0
 ghetto,0,2,0,0,0
 goddam,1,1,0,0,0
 handjob,0,0,3,0,0
 heil hitler,0,3,0,0,0
+hangyourself,0,2,0,3,0
 hate,0,0,0,2,0
+hayt,0,0,0,2,2
 hell,1,0,0,0,0
 her bob,0,0,3,0,0
 heshe,0,0,2,0,0
@@ -278,6 +281,7 @@ retart,0,2,0,2,0
 rimjob,0,0,3,0,0
 scrotum,0,0,3,0,0
 scum,0,0,2,2,0
+scumbag,0,0,2,2,0
 secks,0,0,2,0,2
 secs,0,0,2,0,2
 seex,0,0,1,0,0
@@ -318,7 +322,7 @@ testical,0,0,3,0,1
 testicle,0,0,3,0,0
 that sob,1,0,1,0,0
 threesome,0,0,3,0,0
-tit,0,0,3,0,0
+tit,0,0,2,0,0
 tits,0,0,3,0,0
 tohell,2,2,0,0,0
 tosser,2,0,0,0,0

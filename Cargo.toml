@@ -1,7 +1,7 @@
 [package]
 name = "rustrict"
 authors = ["Finn Bear"]
-version = "0.1.42"
+version = "0.2.1"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/finnbear/rustrict/"
@@ -44,4 +44,5 @@ doc-comment = "0.3.3"
 [dev-dependencies]
 rand = "0.8"
 censor = "0.2.0"
+rustrict_old = { package = "rustrict", version = "0.1" }
 serial_test = "0.5"

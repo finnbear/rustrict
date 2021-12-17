@@ -19,6 +19,8 @@ pub(crate) struct Match {
     pub space_after: bool,
     /// Stores how many spaces appeared within the match, excluding spaces that directly correspond to the pattern.
     pub spaces: u8,
+    /// Stores how many replacements took place while matching.
+    pub replacements: u8,
 }
 
 impl Match {
@@ -27,6 +29,7 @@ impl Match {
         Self {
             start: self.start.min(other.start),
             spaces: self.spaces.min(other.spaces),
+            replacements: self.replacements.min(other.replacements),
             last: self.last.min(other.last),
             ..*self
         }
@@ -35,7 +38,7 @@ impl Match {
     pub(crate) fn commit<I: Iterator<Item = char>>(
         &self,
         typ: &mut Type,
-        spy: &BufferProxyIterator<I>,
+        spy: &mut BufferProxyIterator<I>,
         censor_threshold: Type,
         censor_first_character_threshold: Type,
         censor_replacement: char,
@@ -51,16 +54,24 @@ impl Match {
          */
 
         //let length = m.end - m.start;
-        if !(self.space_before && self.space_after)
-            && self.spaces as usize + 4 > self.node.depth as usize
+        if (!(self.space_before && self.space_after)
             && self.node.depth > 1
+            && self.spaces as usize + 4 > self.node.depth as usize)
+            || (self.replacements >= self.node.depth
+                && self.node.depth <= 3
+                && !self.node.typ.is(Type::SEVERE))
         {
             // Match isn't strong enough.
             return;
         }
 
         // Apply detection.
-        *typ |= self.node.typ;
+        *typ |= self.node.typ
+            | if self.replacements >= 2 {
+                Type::EVASIVE & Type::MILD
+            } else {
+                Type::NONE
+            };
 
         if self.node.typ.isnt(censor_threshold) {
             // Match isn't severe enough to censor.

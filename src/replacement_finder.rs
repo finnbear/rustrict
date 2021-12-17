@@ -1,8 +1,18 @@
 use csv::Writer;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 fn main() {
-    let replacements: BTreeMap<char, String> = include_str!("unicode_confusables.txt")
+    let mut replacements: BTreeMap<char, BTreeSet<char>> = BTreeMap::new();
+
+    let mut append_replacement = |(k, v): (char, String)| {
+        replacements
+            .entry(k)
+            .or_insert_with(BTreeSet::new)
+            .extend(v.chars())
+    };
+
+    // Unicode confusables
+    include_str!("unicode_confusables.txt")
         .split("\n")
         .filter(|line| !line.is_empty() && !line.starts_with('#'))
         .filter_map(|line| {
@@ -29,28 +39,44 @@ fn main() {
                     })
                 })
         })
-        .chain(
-            include_str!("replacements_extra.csv")
-                .split("\n")
-                .filter(|line| !line.is_empty())
-                .map(|line| {
-                    let comma = line.find(",").unwrap();
-                    (
-                        line[..comma].chars().next().unwrap(),
-                        String::from(&line[comma + 1..]),
-                    )
-                }),
-        )
-        .collect();
+        .for_each(&mut append_replacement);
+
+    // Upper to lower case.
+    (0..=0xFFFFFF)
+        .filter_map(char::from_u32)
+        .filter_map(|c| {
+            let r = c.to_lowercase().next().unwrap();
+            if r != c {
+                Some((c, r.to_string()))
+            } else {
+                None
+            }
+        })
+        .for_each(&mut append_replacement);
+
+    // Extra confusables.
+    include_str!("replacements_extra.csv")
+        .split("\n")
+        .filter(|line| !line.is_empty())
+        .map(|line| {
+            let comma = line.find(",").unwrap();
+            (
+                line[..comma].chars().next().unwrap(),
+                String::from(&line[comma + 1..]),
+            )
+        })
+        .for_each(&mut append_replacement);
 
     let mut writer = Writer::from_path("src/replacements.csv").unwrap();
     for (find, mut replace) in replacements {
         // Keep original character accessible.
-        if find.is_digit(36) && !find.is_ascii_uppercase() {
-            replace.push(find);
+        if find.is_digit(36) {
+            replace.insert(find);
         }
 
-        writer.write_record(&[&find.to_string(), &replace]).unwrap();
+        writer
+            .write_record(&[&find.to_string(), &replace.iter().collect()])
+            .unwrap();
     }
     writer.flush().unwrap();
 }
