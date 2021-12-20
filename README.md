@@ -102,24 +102,22 @@ assert!("gtg".is(Type::SAFE));
 assert!("not a common phrase".isnt(Type::SAFE));
 ```
 
-If you want to add custom profanities, safe words, or characters to strip out, enable the "customize" feature.
+If you want to add custom profanities or safe words, enable the "customize" feature.
 
 ```rust
 #[cfg(feature = "customize")]
 {
-    use rustrict::{add_word, ban_character, CensorStr, Type};
+    use rustrict::{add_word, CensorStr, Type};
 
     // You must take care not to call these when the crate is being
     // used in any other way (to avoid concurrent mutation).
     unsafe {
         add_word("reallyreallybadword", (Type::PROFANE & Type::SEVERE) | Type::MEAN);
         add_word("mybrandname", Type::SAFE);
-        ban_character('ꙮ');
     }
     
     assert!("Reallllllyreallllllybaaaadword".is(Type::PROFANE));
     assert!("MyBrandName".is(Type::SAFE));
-    assert_eq!("helloꙮꙮꙮ".censor(), "hello");
 }
 ```
 
@@ -130,7 +128,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.86% | 91.54% | 90.69% | 8s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.84% | 91.53% | 90.67% | 23s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development

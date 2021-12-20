@@ -842,7 +842,8 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 /// `Type::Sexual`, `Type::Offensive`, `Type::Mean`, `Type::Mild`, `Type::Moderate`, and `Type::Severe`,
 /// but NOT both (can't be safe and unsafe).
 ///
-/// The word's case is irrelevant, all input will be lower-cased.
+/// It is recommended to use all lower-case, which will match both cases. Upper-case characters will
+/// only match upper-case.
 ///
 /// # Warning
 ///
@@ -855,18 +856,7 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 /// from the main thread, near the beginning of the program.
 #[cfg(feature = "customize")]
 pub unsafe fn add_word(word: &str, typ: Type) {
-    TREE.get_mut().add(&word.to_lowercase(), typ);
-}
-
-/// Adds a banned character (will be removed during censoring).
-///
-/// # Safety
-///
-/// This must not be called when the crate is being used in any other way. It is best to call this
-/// from the main thread, near the beginning of the program.
-#[cfg(feature = "customize")]
-pub unsafe fn ban_character(c: char) {
-    BANNED.get_mut().insert(c);
+    TREE.get_mut().add(word, typ);
 }
 
 #[cfg(test)]
@@ -1208,24 +1198,18 @@ mod tests {
     #[serial]
     fn customize() {
         use crate::add_word;
-        use crate::ban_character;
 
         let test_profanity = "thisisafakeprofanityfortesting";
         let test_safe = "thisisafakesafewordfortesting";
-        let banned = "ꙮ";
 
         // SAFETY: Tests are run serially, so concurrent mutation is avoided.
         unsafe {
             add_word(test_profanity, Type::PROFANE & Type::SEVERE);
             add_word(test_safe, Type::SAFE);
-            for c in banned.chars() {
-                ban_character(c);
-            }
         }
 
         assert!(test_profanity.is(Type::PROFANE & Type::SEVERE));
         assert!(test_safe.is(Type::SAFE));
-        assert_eq!(banned.censor(), "");
     }
 
     #[allow(soft_unstable)]
