@@ -1078,8 +1078,8 @@ mod tests {
         print_accuracy(
             "https://crates.io/crates/rustrict",
             rustrict,
-            true,
-            Some(rustrict_old),
+            false, // true,
+            None,  // Some(rustrict_old),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }
