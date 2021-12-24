@@ -874,6 +874,9 @@ impl Context {
     /// How many repetitions are tolerated.
     const REPETITION_LIMIT: usize = 3;
 
+    /// Maximum "safe only" timeout.
+    const MAX_TIMEOUT: Duration = Duration::from_secs(3600);
+
     /// rate_limit is minimum time between messages.
     /// burst allows a certain amount of messages beyond the rate limit.
     pub fn new(rate_limit: Duration, burst: u8) -> Self {
@@ -917,8 +920,8 @@ impl Context {
         let suspicion = self.suspicion.max(1).saturating_mul(self.reports.max(1));
 
         // How convinced are we that the user is a bad actor.
-        let is_kinda_sus = suspicion >= 5;
-        let is_impostor = suspicion >= 25;
+        let is_kinda_sus = suspicion >= 2;
+        let is_impostor = suspicion >= 15;
 
         // Don't give bad actors the benefit of the doubt when it comes to meanness.
         let meanness_threshold = if is_impostor {
@@ -1001,7 +1004,7 @@ impl Context {
                         Duration::from_secs(5 * 60)
                     })
             {
-                self.only_safe_until = Some(only_safe_until);
+                self.only_safe_until = Some(only_safe_until.min(now + Self::MAX_TIMEOUT));
             }
         }
 
@@ -1046,10 +1049,11 @@ impl Context {
                     self.rate_limited_until = Some(rate_limited_until);
                 }
             }
-            // Forgiveness.
-            self.suspicion = self
-                .suspicion
-                .saturating_sub((elapsed.as_secs() / 60).clamp(1, u8::MAX as u64) as u8);
+            // Forgiveness (minus one suspicion per safe message, and also per minute between messages).
+            self.suspicion = self.suspicion.saturating_sub(
+                (elapsed.as_secs() / 60).clamp(analysis.is(Type::SAFE) as u64, u8::MAX as u64)
+                    as u8,
+            );
             Ok(censored)
         }
     }

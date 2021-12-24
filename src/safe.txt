@@ -54,6 +54,8 @@ yup
 yeah
 cool
 good one
+yay
+excellent
 nice
 nice one
 nice work
