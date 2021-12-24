@@ -684,6 +684,7 @@ bass lick
 bass punk
 bass sees
 bass sess
+bass trad
 basses
 bastaard
 bates punk
@@ -1375,7 +1376,7 @@ consumers punk
 containers punk
 continues punk
 contrafagotto
-cookies punk
+cook
 coomb
 cooment
 coomera
@@ -1995,7 +1996,6 @@ heeling
 heelless
 heep rick
 heer bob
-heii
 heil
 heli
 helladian

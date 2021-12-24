@@ -63,18 +63,17 @@ impl Match {
                 Type::NONE
             };
 
-        if self.node.typ.isnt(censor_threshold) {
-            // Match isn't severe enough to censor.
-            return;
+        // Decide whether to censor.
+        if self.node.typ.is(censor_threshold) {
+            // Decide whether to censor the first character.
+            let offset =
+                if self.node.typ.is(censor_first_character_threshold) || self.node.depth == 1 {
+                    0
+                } else {
+                    1
+                };
+            spy.censor(self.start + offset..=self.end, censor_replacement);
         }
-
-        // Censor.
-        let offset = if self.node.typ.is(censor_first_character_threshold) || self.node.depth == 1 {
-            0
-        } else {
-            1
-        };
-        spy.censor(self.start + offset..=self.end, censor_replacement);
     }
 }
 

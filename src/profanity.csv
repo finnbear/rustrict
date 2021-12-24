@@ -34,6 +34,7 @@ balls,0,0,1,0,0
 ballz,0,0,1,0,1
 balsack,0,0,3,0,0
 bastard,2,3,0,0,0
+bastrad,2,3,0,0,1
 beetch,0,2,2,0,1
 biatch,0,2,2,0,1
 bich,0,2,2,0,1
@@ -65,6 +66,7 @@ chink,0,3,0,0,0
 clit,0,0,3,0,0
 cock,2,0,2,0,0
 cocksuck,2,0,3,0,0
+cok,2,0,2,0,1
 commie,0,2,0,0,0
 commitsuicide,0,0,0,3,0
 condom,0,0,2,0,0
@@ -178,10 +180,11 @@ getlost,0,0,0,2,0
 ghetto,0,2,0,0,0
 goddam,1,1,0,0,0
 handjob,0,0,3,0,0
-heil hitler,0,3,0,0,0
 hangyourself,0,2,0,3,0
+h8,0,0,0,2,1
 hate,0,0,0,2,0
 hayt,0,0,0,2,2
+heil hitler,0,3,0,0,0
 hell,1,0,0,0,0
 her bob,0,0,3,0,0
 heshe,0,0,2,0,0
@@ -217,6 +220,7 @@ labia,0,0,3,0,0
 loser,0,0,0,2,0
 masterbate,0,0,2,0,0
 masturbate,0,0,2,0,0
+a mf,1,1,1,0,1
 migga,2,3,0,0,2
 miger,2,5,0,0,2
 milf,0,0,2,0,0
@@ -317,7 +321,9 @@ ssex,0,0,1,0,1
 stfu,1,0,0,2,0
 stupid,0,0,0,1,0
 succ,0,0,1,1,1
+sucs,0,0,1,1,1
 suck,0,0,1,1,0
+sucks,0,0,1,1,0
 suckit,0,0,2,2,0
 suckme,0,0,3,0,0
 suckmy,0,0,3,0,0
@@ -331,7 +337,7 @@ that sob,1,0,1,0,0
 threesome,0,0,3,0,0
 tit,0,0,2,0,0
 tits,0,0,3,0,0
-tohell,2,2,0,0,0
+tohell,1,1,0,2,0
 tosser,2,0,0,0,0
 turd,1,0,0,0,0
 turnmeon,0,0,2,0,0

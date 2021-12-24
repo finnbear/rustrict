@@ -22,6 +22,7 @@
 - Flexible
   - Censor and/or analyze
   - Input `&str` or `Iterator<Type = char>`
+  - Can track per-user state with `context` feature
   - Can add words with the `customize` feature
   - Plenty of options
 - Performant
@@ -102,7 +103,7 @@ assert!("gtg".is(Type::SAFE));
 assert!("not a common phrase".isnt(Type::SAFE));
 ```
 
-If you want to add custom profanities or safe words, enable the "customize" feature.
+If you want to add custom profanities or safe words, enable the `customize` feature.
 
 ```rust
 #[cfg(feature = "customize")]
@@ -121,6 +122,45 @@ If you want to add custom profanities or safe words, enable the "customize" feat
 }
 ```
 
+But wait, there's more! If your use-case is chat moderation, and you can store data on a per user basis, you
+might benefit from the `context` feature.
+
+```rust
+#[cfg(feature = "context")]
+{
+    use rustrict::{BlockReason, Context};
+    use std::time::Duration;
+    
+    pub struct User {
+        context: Context,
+    }
+    
+    let mut bob = User {
+        context: Context::default()
+    };
+    
+    // Ok messages go right through.
+    assert_eq!(bob.context.process(String::from("hello")), Ok(String::from("hello")));
+    
+    // Bad words are censored.
+    assert_eq!(bob.context.process(String::from("crap")), Ok(String::from("c***")));
+
+    // Can take user reports (After many reports or inappropriate messages,
+    // will only let known safe messages through.)
+    for _ in 0..5 {
+        bob.context.report();
+    }
+   
+    // If many bad words are used or reports are made, the first letter of
+    // future bad words starts getting censored too.
+    assert_eq!(bob.context.process(String::from("crap")), Ok(String::from("****")));
+    
+    // Can manually mute.
+    bob.context.mute_for(Duration::from_secs(2));
+    assert!(matches!(bob.context.process(String::from("anything")), Err(BlockReason::Muted(_))));
+}
+```
+
 ## Comparison
 
 To compare filters, the first 100,000 items of [this list](https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv)
@@ -128,7 +168,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.81% | 91.56% | 90.63% | 9s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.79% | 91.57% | 90.60% | 9s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development

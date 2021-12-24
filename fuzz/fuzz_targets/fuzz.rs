@@ -1,6 +1,7 @@
 #![no_main]
 use libfuzzer_sys::fuzz_target;
-use rustrict::{Censor, Type};
+use rustrict::{Censor, Context, Type};
+use std::time::Duration;
 
 fuzz_target!(|data: &[u8]| {
     if !data.is_empty() {
@@ -23,6 +24,14 @@ fuzz_target!(|data: &[u8]| {
                 })
                 .with_censor_replacement(if flag(flags, 4) { '#' } else { '*' })
                 .censor_and_analyze();
+
+            let mut ctx = Context::new(Duration::from_nanos(3), 1);
+
+            for _ in 0..3 {
+                let _ = ctx.process(String::from(text));
+                let _ = ctx.process(String::from("hi"));
+                let _ = ctx.process(String::from(text));
+            }
         }
     }
 });
