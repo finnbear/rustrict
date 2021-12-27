@@ -142,8 +142,8 @@ impl Context {
         }
 
         let mut new_suspicion = type_to_sus(Type::PROFANE | Type::OFFENSIVE | Type::SEXUAL)
-            .saturating_add(type_to_sus(Type::EVASIVE))
-            .saturating_add(type_to_sus(Type::SPAM));
+            + type_to_sus(Type::EVASIVE)
+            + type_to_sus(Type::SPAM);
 
         if recent_similar >= 2 {
             // Don't penalize as much for repeated messages, since an innocent user may repeat their
@@ -198,10 +198,15 @@ impl Context {
                             as u8,
                     )
                 };
-                if let Some(rate_limited_until) = self
-                    .rate_limited_until
-                    .unwrap_or(now)
-                    .checked_add(self.rate_limit)
+                if let Some(rate_limited_until) =
+                    self.rate_limited_until.unwrap_or(now).checked_add(
+                        self.rate_limit
+                            * if analysis.is(censor_threshold | Type::EVASIVE) {
+                                3
+                            } else {
+                                1
+                            },
+                    )
                 {
                     self.rate_limited_until = Some(rate_limited_until);
                 }
@@ -219,6 +224,12 @@ impl Context {
     /// Passing `Duration::ZERO` will therefore un-mute.
     pub fn mute_for(&mut self, duration: Duration) {
         self.muted_until = Some(Instant::now() + duration);
+    }
+
+    /// Manually restrict this user's messages to known safe phrases for a duration. Overwrites any
+    /// previous manual restriction. Passing `Duration::ZERO` will therefore un-restrict.
+    pub fn restrict_for(&mut self, duration: Duration) {
+        self.only_safe_until = Some(Instant::now() + duration);
     }
 
     /// Call if another user "reports" this user's message(s). The function of reports is for

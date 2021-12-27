@@ -219,6 +219,7 @@ s
 sa
 scrotums
 scums
+scummy
 semens
 sex(.*)
 sh
