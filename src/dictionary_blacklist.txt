@@ -2,51 +2,119 @@
 (.*)nigger(.*)
 (.*)prostitut(.*)
 (.*)vagina(.*)
+a holes
 ab
 acock
-a holes
+afterbreast
 ag
+annal
+annus
+antiejaculation
+antirape
+antivibrator
+anuses
 ap
+apoop
 ar
 arses
 assholes
 ates
 ays
 b
+badasses
+ball sac
+ball sag
+ball sak
+ballsiest
+bastaard
+befetished
+bewhore
+bichy
+bisexual
 bitchain
 bitchar
+bitched
+bitcheries
+bitchery
 bitches(.*)
 bitchi
+bitchier
+bitchiest
+bitchily
+bitchiness
 bitching
 bitcho
 bitchy
+blackballs
+blackbreast
 blackbutt
 blackcock
 blow job
+blow jobs
+blow mee
+blowcock
 blowjobs
 blueballs
 bn
 bollocks
+bon er
 boners
+bonnering
+boobery
+boobialla
 boobie(.*)
+boobily
+boobish
+booboisie
 boobs
 booby
+boobyalla
+boobyish
+boobyism
+brain less
+brainlessly
+brainlessness
 bras
+breastfeeding
+breastie
+breasting
+breastless
 breasts
+bug ger
+buggered
+buggeries
+buggering
 buggers
+buggery
 bullshit(.*)
 buttocks
 butts
 c
+ca strate
 cancer
 castrates
 ch
 chinks
 cl
+clitoral
+clitoria
+clitoric
+clitoridauxe
+clitoridean
+clitoridectomies
+clitoridectomy
+clitoriditis
+clitoridotomy
 clitoris(.*)
+clitoritis
+clitoromania
 co
 cockbell(.*)
 cockboat(.*)
+cockbrain
+cocked
+cocker
+cockhead
 cockmaster
 cocks
 commies
@@ -63,7 +131,17 @@ cummer
 cummers
 cunts
 d
+damned
+damnit
 damns
+de flower
+de generate
+deboner
+debugger
+deflowered
+deflowerer
+deflowering
+deflowerment
 deflowers
 degenerates
 des
@@ -72,9 +150,12 @@ dildo(.*)
 dongs
 douche(.*)
 ds
+dumbcow
 dumber
 dumbest
+dumbhead
 dumbs
+dumby
 dy
 dykes
 e
@@ -89,6 +170,8 @@ ep
 eq
 ers
 es
+esexual
+ex rated
 ey
 f
 fa
@@ -99,27 +182,56 @@ fe
 fecks
 fellate
 fellatio(.*)
+fetisheer
+fetisher
+fetishes
+fetishic
+fetishism
+fetishist
+fetishization
+fetishize
+fetishlike
+fetishmonger
+fetishry
 finger you
 fingerings
 flanges
+four some
 foursomes
+frape
 freaks
 frigg(.*)
 frigs
 fuck(.*)
 g
 gaes
+gang bang
 gay
 ge
+gen ital
+genitalia
+genitalic
+genitally
 genitals
+gentianal
 ges
 get lost
+ghettoed
+ghettoes
+ghettoing
+ghettoization
+ghettoize
+ghettoizing
 ghettos
+goddammed
+goddamming
+goddammit
 goddamn
 goddamns
 goddams
 gs
 h
+hand job
 hater
 haters
 hates
@@ -127,100 +239,175 @@ heii
 hellhole
 hellholes
 hells
+hemipenis
 hic
 hoars
 hoes
 holocausts
 homos
+homosexual
 honkeys
 honkies
+hoo ker
+hook er
+hook ker
 hookers
+hor ny
+horn ny
+hornyhanded
+hornyhead
 hs
 ht
+hypersexual
 ic
 id
+idiotic
 idiots
 ids
 imbecil(.*)
 incests
+intersexual
 jackass
+jackassery
+jackasses
+jackassification
+jackassism
+jackassness
 jerks
 jigaboos
 k
+kill yourself
 l
 la
+lapcock
 lc
 ld
 le
 les
+lesbia
 li
 livesex
 ll
 lo
 losers
+loss ser
 m
 masturbate(.*)
+mi ger
+mo ron
+moronic
 morons
 motherfuck(.*)
 mp
 muffs
+multivibrator
 n
 na
+nakedness
+nazification
+nazified
+nazifies
+nazify
+naziism
+nazim
+nazir
 nazis
+nazism
 ne
 necrap
+nee gros
 ng ger
 ni
 nidiot
+nonejaculatory
+nonpregnant
+nonsexual
+nonvibrator
 ns
 nt
 nude(.*)
 nut case
 nut job
+nut jobs
 nv
 o
 ob
 obs
 oe
 ons
+orgasmic
 orgasms
 os
 ot
+overfagged
+overfagging
+overpregnant
 p
+pansexual
+pe nis
+pean is
+pean nis
 penises
 penist
+pennis
 ph
+pissed
+pisses
 pissing
+pissoir
 pl
 po
 poop(.*)
 porn(.?)
+pornerastic
+pornocracy
+pornocrat
+pornograph
+pornological
 pr
 pricks
+pseudopregnant
+psychosexual
 pu
+puberties
+puberty
 pubes
+pubescence
+pubescency
 pussies
 pussy
 q
 qs
+queerer
+queerest
 queers
 r
 ra
 rab
 racists
+raped
+rapeful
+raper
 rapes
 rapists
 rectums
 rehoe
+retardation
 retarded
 retards
+rim job
 rs
 s
 sa
 scrotums
-scums
 scummy
+scums
 semens
+semicastrate
+semihorny
+semimoron
+seminaked
+seminude
 sex(.*)
 sh
 shi
@@ -230,22 +417,33 @@ shithead
 shits
 shitt(.*)
 shut up
+sissy
+sluthood
 sluts
 slutt(.*)
+sociosexual
 spics
 spunked
 spunks
 ss
 st
+stupider
+stupidhead
 stupids
 su
+subgenital
+sucked
+sucking
 sucks
 suicide
+supersexual
+superugly
 t
 te
 terrorists
 testicles
 th
+three some
 threesomes
 ti
 tite
@@ -261,21 +459,45 @@ twits
 u
 ug
 ump
-ura
+undouched
+unejaculated
+unfagged
+unfagoted
+unhorny
+unigenital
+unisexual
+unnaked
+unpregnant
+unsexed
+unsexual
 ur mom
+ur moms
 ur mother
+ur mothers
+ura
+ureterogenital
+urethrogenital
+urethropenile
+urethrosexual
+urinogenital
+urinosexual
+urogenital
 v
 vibrators
 vixens
+vulvae
 vulvas
 w
+wan ker
 wank(.*)
 white power
+white powers
 white trash
 whore(.*)
 ws
 wto
 x
+xx
 y
 ys
 z
