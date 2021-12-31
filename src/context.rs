@@ -198,15 +198,10 @@ impl Context {
                             as u8,
                     )
                 };
-                if let Some(rate_limited_until) =
-                    self.rate_limited_until.unwrap_or(now).checked_add(
-                        self.rate_limit
-                            * if analysis.is(censor_threshold | Type::EVASIVE) {
-                                3
-                            } else {
-                                1
-                            },
-                    )
+                if let Some(rate_limited_until) = self
+                    .rate_limited_until
+                    .unwrap_or(now)
+                    .checked_add(self.rate_limit * (1 + new_suspicion as u32))
                 {
                     self.rate_limited_until = Some(rate_limited_until);
                 }
