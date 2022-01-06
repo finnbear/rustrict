@@ -46,7 +46,7 @@ impl Match {
         //let length = m.end - m.start;
         if (!(self.space_before && self.space_after)
             && self.node.depth > 1
-            && self.spaces as usize + 4 > self.node.depth as usize)
+            && self.spaces.max(self.replacements) as usize + 4 > self.node.depth as usize)
             || (self.replacements >= self.node.depth
                 && self.node.depth <= 3
                 && !self.node.typ.is(Type::SEVERE))

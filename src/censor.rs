@@ -450,8 +450,11 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     if (skippable || c == m.last) && m.start != pos.unwrap_or(0) {
                         // Undo remove.
                         let undo_m = Match {
+                            // Here, '.' is primarily for allowing ellipsis ("...") as a form of
+                            // space.
                             spaces: m.spaces.saturating_add(
-                                ((c == ' ' || c != raw_c) && self.separate && c != '\'') as u8,
+                                ((c == ' ' || c == '.' || c != raw_c) && self.separate && c != '\'')
+                                    as u8,
                             ),
                             replacements: m
                                 .replacements
@@ -771,6 +774,7 @@ mod tests {
             //println!("\"{}\" -> \"{}\" ({}, {})", case, censored, prediction, analysis.is(Type::ANY));
 
             if any != any_truth {
+                find_detection(case);
                 panic!("FAIL: Predicted {} for {}", typ, case);
             }
             if let Some(safe_truth) = safe_truth {
