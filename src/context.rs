@@ -36,6 +36,8 @@ impl Context {
 
     /// rate_limit is minimum time between messages.
     /// burst allows a certain amount of messages beyond the rate limit.
+    /// Other factors, such as long messages and profanity detections, automatically count against
+    /// a user's rate limit.
     pub fn new(rate_limit: Duration, burst: u8) -> Self {
         Self {
             history: VecDeque::with_capacity(Self::CAPACITY),
@@ -187,11 +189,15 @@ impl Context {
             if self.history.len() >= Self::CAPACITY {
                 self.history.pop_front();
             }
+
+            // How many messages does this count for against the rate limit.
+            let rate_limit_messages = (message.chars().count() / 32).clamp(1, 3) as u8;
+
             self.history.push_back((message, now));
             self.last_message = Some(now);
             if self.rate_limit > Duration::ZERO {
                 self.burst_used = if remaining_rate_limit.is_some() {
-                    self.burst_used.saturating_add(1)
+                    self.burst_used.saturating_add(rate_limit_messages)
                 } else {
                     self.burst_used.saturating_sub(
                         (elapsed.as_nanos() / self.rate_limit.as_nanos()).min(u8::MAX as u128)
@@ -201,7 +207,7 @@ impl Context {
                 if let Some(rate_limited_until) = self
                     .rate_limited_until
                     .unwrap_or(now)
-                    .checked_add(self.rate_limit * (1 + new_suspicion as u32))
+                    .checked_add(self.rate_limit * (rate_limit_messages + new_suspicion) as u32)
                 {
                     self.rate_limited_until = Some(rate_limited_until);
                 }
@@ -417,6 +423,21 @@ mod tests {
         std::thread::sleep(Duration::from_secs(2));
 
         assert_eq!(ctx.process(String::from("one")), Ok(String::from("one")));
+    }
+
+    #[test]
+    fn context_spam_long_message() {
+        use crate::{BlockReason, Context};
+
+        let mut ctx = Context::new(Duration::from_millis(350), 2);
+
+        assert_eq!(
+            ctx.process(String::from("three")),
+            Ok(String::from("three"))
+        );
+        assert!(ctx.process(String::from("one two three one two three one two three one two three one two three one two three one two three one two three one two three")).is_ok());
+        let result = ctx.process(String::from("four"));
+        assert!(matches!(result, Err(BlockReason::Spam(_))), "{:?}", result);
     }
 
     #[test]
