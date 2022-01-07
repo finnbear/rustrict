@@ -28,7 +28,10 @@ pub use censor::{Censor, CensorIter, CensorStr};
 pub use censor::add_word;
 
 #[cfg(feature = "context")]
-pub use context::{BlockReason, Context};
+pub use context::{
+    BlockReason, Context, ContextProcessingOptions, ContextRateLimitOptions,
+    ContextRepetitionLimitOptions,
+};
 
 /// Trims whitespace characters from both ends of a string, according to the definition of
 /// `crate::is_whitespace`.

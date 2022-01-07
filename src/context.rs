@@ -32,7 +32,7 @@ pub struct ContextProcessingOptions {
     block_if_severely_inappropriate: bool,
     rate_limit: Option<ContextRateLimitOptions>,
     /// Block messages if they are very similar to this many previous message.
-    block_if_repetitive: Option<ContextRepetitionBlockingOptions>,
+    repetition_limit: Option<ContextRepetitionLimitOptions>,
     /// Maximum automatic "safe" timeouts can last. If set too high, users have more time/incentive to
     /// try and find ways around the system. If zero, "safe" timeouts won't be used.
     max_safe_timeout: Duration,
@@ -47,13 +47,14 @@ impl Default for ContextProcessingOptions {
             block_if_empty: true,
             block_if_severely_inappropriate: true,
             rate_limit: Some(ContextRateLimitOptions::default()),
-            block_if_repetitive: Some(ContextRepetitionBlockingOptions::default()),
+            repetition_limit: Some(ContextRepetitionLimitOptions::default()),
             max_safe_timeout: Duration::from_secs(30 * 60),
             trim_whitespace: true,
         }
     }
 }
 
+/// Options that control rate-limiting.
 #[derive(Clone, Debug)]
 pub struct ContextRateLimitOptions {
     /// Minimum time between messages (zero means infinite rate, 2s means 0.5 messages per second).
@@ -74,8 +75,9 @@ impl Default for ContextRateLimitOptions {
     }
 }
 
+/// Options that control repetition-limiting.
 #[derive(Clone, Debug)]
-pub struct ContextRepetitionBlockingOptions {
+pub struct ContextRepetitionLimitOptions {
     /// How many recent strings can be similar before blocking ensues.
     limit: u8,
     /// How long recent input is remembered for.
@@ -84,7 +86,7 @@ pub struct ContextRepetitionBlockingOptions {
     similarity_threshold: f32,
 }
 
-impl Default for ContextRepetitionBlockingOptions {
+impl Default for ContextRepetitionLimitOptions {
     fn default() -> Self {
         Self {
             limit: 3,
@@ -203,7 +205,7 @@ impl Context {
         // Repetition detection.
         let mut recent_similar = 0;
 
-        if let Some(opts) = options.block_if_repetitive.as_ref() {
+        if let Some(opts) = options.repetition_limit.as_ref() {
             self.history.retain(|&(_, t)| now - t < opts.memory);
 
             for (recent_message, _) in &self.history {
@@ -258,7 +260,7 @@ impl Context {
         {
             Err(BlockReason::Spam(dur))
         } else if options
-            .block_if_repetitive
+            .repetition_limit
             .as_ref()
             .map(|opts| recent_similar >= opts.limit)
             .unwrap_or(false)
@@ -305,7 +307,7 @@ impl Context {
                     as u8,
             );
 
-            if let Some(repetition_blocking_options) = options.block_if_repetitive.as_ref() {
+            if let Some(repetition_blocking_options) = options.repetition_limit.as_ref() {
                 if self.history.len() >= repetition_blocking_options.limit as usize * 2 {
                     self.history.pop_front();
                 }
@@ -455,7 +457,7 @@ mod tests {
 
     extern crate test;
     use crate::context::{
-        ContextProcessingOptions, ContextRateLimitOptions, ContextRepetitionBlockingOptions,
+        ContextProcessingOptions, ContextRateLimitOptions, ContextRepetitionLimitOptions,
     };
     use crate::{Censor, CensorIter, CensorStr, Type};
     use std::fs::File;
@@ -499,7 +501,7 @@ mod tests {
 
         let mut ctx = Context::new();
 
-        for _ in 0..ContextRepetitionBlockingOptions::default().limit {
+        for _ in 0..ContextRepetitionLimitOptions::default().limit {
             assert!(ctx.process(String::from("one")).is_ok());
         }
 
