@@ -453,7 +453,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             // Here, '.' is primarily for allowing ellipsis ("...") as a form of
                             // space.
                             spaces: m.spaces.saturating_add(
-                                ((matches!(c, ' ' | '.' | ',' | ';') || c != raw_c)
+                                ((matches!(c, ' ' | '.' | ',' | ';' | '…') || c != raw_c)
                                     && self.separate
                                     && c != '\'') as u8,
                             ),

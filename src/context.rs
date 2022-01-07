@@ -2,14 +2,13 @@ use crate::{trim_whitespace, Censor, Type};
 
 use std::collections::VecDeque;
 use std::fmt::{Display, Formatter};
+use std::num::NonZeroU16;
 use std::time::{Duration, Instant};
 
 /// Context is useful for taking moderation actions on a per-user basis i.e. each user would get
 /// their own Context.
 pub struct Context {
     history: VecDeque<(String, Instant)>,
-    rate_limit: Duration,
-    burst: u8,
     burst_used: u8,
     suspicion: u8,
     reports: u8,
@@ -21,28 +20,84 @@ pub struct Context {
     last_message: Option<Instant>,
 }
 
-impl Context {
-    /// VecDeque internally adds 1 (resulting in 8), and then finds the next power of 2 (still 8).
-    const CAPACITY: usize = 7;
+/// Options for customizing `Context::process_with_options`. Always initialize with ..Default::default(),
+/// as new fields may be added in the future.
+#[derive(Clone, Debug)]
+pub struct ContextProcessingOptions {
+    /// Block messages if the user has been manually muted.
+    block_if_muted: bool,
+    /// Block messages if they are empty (after whitespace is trimmed, if applicable).
+    block_if_empty: bool,
+    /// Block messages, as opposed to censoring, if severe inappropriateness is detected.
+    block_if_severely_inappropriate: bool,
+    rate_limit: Option<ContextRateLimitOptions>,
+    /// Block messages if they are very similar to this many previous message.
+    block_if_repetitive: Option<ContextRepetitionBlockingOptions>,
+    /// Maximum automatic "safe" timeouts can last. If set too high, users have more time/incentive to
+    /// try and find ways around the system. If zero, "safe" timeouts won't be used.
+    max_safe_timeout: Duration,
+    /// Trim whitespace from beginning and end before returning censored output.
+    trim_whitespace: bool,
+}
 
-    /// Track repetitions (spam) within this time frame.
-    const REPETITION_DURATION: Duration = Duration::from_secs(60);
-
-    /// How many repetitions are tolerated.
-    const REPETITION_LIMIT: usize = 3;
-
-    /// Maximum "safe only" timeout.
-    const MAX_TIMEOUT: Duration = Duration::from_secs(3600);
-
-    /// rate_limit is minimum time between messages.
-    /// burst allows a certain amount of messages beyond the rate limit.
-    /// Other factors, such as long messages and profanity detections, automatically count against
-    /// a user's rate limit.
-    pub fn new(rate_limit: Duration, burst: u8) -> Self {
+impl Default for ContextProcessingOptions {
+    fn default() -> Self {
         Self {
-            history: VecDeque::with_capacity(Self::CAPACITY),
-            rate_limit,
-            burst,
+            block_if_muted: true,
+            block_if_empty: true,
+            block_if_severely_inappropriate: true,
+            rate_limit: Some(ContextRateLimitOptions::default()),
+            block_if_repetitive: Some(ContextRepetitionBlockingOptions::default()),
+            max_safe_timeout: Duration::from_secs(30 * 60),
+            trim_whitespace: true,
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ContextRateLimitOptions {
+    /// Minimum time between messages (zero means infinite rate, 2s means 0.5 messages per second).
+    limit: Duration,
+    /// Allows a certain amount of messages beyond the rate limit.
+    burst: u8,
+    /// Count a message against the rate limit up to 3 times, once for each unit of this many characters.
+    character_limit: Option<NonZeroU16>,
+}
+
+impl Default for ContextRateLimitOptions {
+    fn default() -> Self {
+        Self {
+            limit: Duration::from_secs(5),
+            burst: 3,
+            character_limit: Some(NonZeroU16::new(16).unwrap()),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct ContextRepetitionBlockingOptions {
+    /// How many recent strings can be similar before blocking ensues.
+    limit: u8,
+    /// How long recent input is remembered for.
+    memory: Duration,
+    /// Normalized levenshtein threshold to consider "too similar."
+    similarity_threshold: f32,
+}
+
+impl Default for ContextRepetitionBlockingOptions {
+    fn default() -> Self {
+        Self {
+            limit: 3,
+            memory: Duration::from_secs(60),
+            similarity_threshold: 2.0 / 3.0,
+        }
+    }
+}
+
+impl Context {
+    pub fn new() -> Self {
+        Self {
+            history: VecDeque::new(),
             burst_used: 0,
             suspicion: 0,
             reports: 0,
@@ -73,6 +128,18 @@ impl Context {
     /// Takes user message, returns censored message trimmed of whitespace (if it should be sent)
     /// or `BlockReason` (explaining why it should be blocked entirely).
     pub fn process(&mut self, message: String) -> Result<String, BlockReason> {
+        self.process_with_options(message, &ContextProcessingOptions::default())
+    }
+
+    /// Takes user message, returns censored message trimmed of whitespace (if it should be sent)
+    /// or `BlockReason` (explaining why it should be blocked entirely).
+    ///
+    /// Takes a set of options for fine-tuning the processing.
+    pub fn process_with_options(
+        &mut self,
+        message: String,
+        options: &ContextProcessingOptions,
+    ) -> Result<String, BlockReason> {
         let now = Instant::now();
         let elapsed = self.last_message.map(|l| now - l).unwrap_or(Duration::ZERO);
 
@@ -102,15 +169,16 @@ impl Context {
             Type::OFFENSIVE & Type::SEVERE
         };
 
-        let (mut censored, analysis) = Censor::from_str(trim_whitespace(&message))
+        let (mut censored, analysis) = Censor::from_str(&message)
             .with_censor_threshold(censor_threshold)
             .with_censor_first_character_threshold(censor_first_character_threshold)
             .censor_and_analyze();
 
-        // Censoring can remove certain characters, rendering the prefix or suffix whitespace.
-        let trimmed_censored = trim_whitespace(&censored);
-        if trimmed_censored.len() < censored.len() {
-            censored = String::from(trimmed_censored);
+        if options.trim_whitespace {
+            let trimmed_censored = trim_whitespace(&censored);
+            if trimmed_censored.len() < censored.len() {
+                censored = String::from(trimmed_censored);
+            }
         }
 
         self.total = self.total.saturating_add(1);
@@ -133,13 +201,17 @@ impl Context {
         };
 
         // Repetition detection.
-        self.history
-            .retain(|&(_, t)| now - t < Self::REPETITION_DURATION);
         let mut recent_similar = 0;
 
-        for (recent_message, _) in &self.history {
-            if strsim::normalized_levenshtein(&recent_message, &message) >= 2.0 / 3.0 {
-                recent_similar += 1;
+        if let Some(opts) = options.block_if_repetitive.as_ref() {
+            self.history.retain(|&(_, t)| now - t < opts.memory);
+
+            for (recent_message, _) in &self.history {
+                if strsim::normalized_levenshtein(&recent_message, &message)
+                    >= opts.similarity_threshold as f64
+                {
+                    recent_similar += 1;
+                }
             }
         }
 
@@ -153,7 +225,9 @@ impl Context {
             new_suspicion /= 2;
         }
 
-        if (is_kinda_sus && new_suspicion >= 4) || (is_impostor && new_suspicion >= 2) {
+        if ((is_kinda_sus && new_suspicion >= 4) || (is_impostor && new_suspicion >= 2))
+            && !options.max_safe_timeout.is_zero()
+        {
             if let Some(only_safe_until) =
                 self.only_safe_until
                     .unwrap_or(now)
@@ -163,7 +237,7 @@ impl Context {
                         Duration::from_secs(5 * 60)
                     })
             {
-                self.only_safe_until = Some(only_safe_until.min(now + Self::MAX_TIMEOUT));
+                self.only_safe_until = Some(only_safe_until.min(now + options.max_safe_timeout));
             }
         }
 
@@ -171,43 +245,56 @@ impl Context {
 
         let remaining_rate_limit = Self::remaining_duration(&mut self.rate_limited_until, now);
 
-        if let Some(dur) = Self::remaining_duration(&mut self.muted_until, now) {
+        if let Some(dur) =
+            Self::remaining_duration(&mut self.muted_until, now).filter(|_| options.block_if_muted)
+        {
             Err(BlockReason::Muted(dur))
-        } else if censored.is_empty() {
+        } else if options.block_if_empty && censored.is_empty() {
             Err(BlockReason::Empty)
-        } else if let Some(dur) = remaining_rate_limit.filter(|_| self.burst_used >= self.burst) {
+        } else if let Some(dur) = options
+            .rate_limit
+            .as_ref()
+            .and_then(|opt| remaining_rate_limit.filter(|_| self.burst_used >= opt.burst))
+        {
             Err(BlockReason::Spam(dur))
-        } else if recent_similar >= Self::REPETITION_LIMIT {
-            Err(BlockReason::Repetitious(recent_similar))
-        } else if analysis.is(Type::INAPPROPRIATE & Type::SEVERE) {
+        } else if options
+            .block_if_repetitive
+            .as_ref()
+            .map(|opts| recent_similar >= opts.limit)
+            .unwrap_or(false)
+        {
+            Err(BlockReason::Repetitious(recent_similar as usize))
+        } else if options.block_if_severely_inappropriate
+            && analysis.is(Type::INAPPROPRIATE & Type::SEVERE)
+        {
             Err(BlockReason::Inappropriate(analysis))
         } else if let Some(dur) = Self::remaining_duration(&mut self.only_safe_until, now)
-            .filter(|_| !analysis.is(Type::SAFE))
+            .filter(|_| !(analysis.is(Type::SAFE) || options.max_safe_timeout.is_zero()))
         {
             Err(BlockReason::Unsafe(dur))
         } else {
-            if self.history.len() >= Self::CAPACITY {
-                self.history.pop_front();
-            }
-
-            // How many messages does this count for against the rate limit.
-            let rate_limit_messages = (message.chars().count() / 32).clamp(1, 3) as u8;
-
-            self.history.push_back((message, now));
             self.last_message = Some(now);
-            if self.rate_limit > Duration::ZERO {
+            if let Some(rate_limit_options) = options.rate_limit.as_ref() {
+                // How many messages does this count for against the rate limit.
+                let rate_limit_messages =
+                    if let Some(char_limit) = rate_limit_options.character_limit {
+                        (message.chars().count() / char_limit.get() as usize).clamp(1, 3) as u8
+                    } else {
+                        1
+                    };
+
                 self.burst_used = if remaining_rate_limit.is_some() {
                     self.burst_used.saturating_add(rate_limit_messages)
                 } else {
                     self.burst_used.saturating_sub(
-                        (elapsed.as_nanos() / self.rate_limit.as_nanos()).min(u8::MAX as u128)
-                            as u8,
+                        (elapsed.as_nanos() / rate_limit_options.limit.as_nanos())
+                            .min(u8::MAX as u128) as u8,
                     )
                 };
-                if let Some(rate_limited_until) = self
-                    .rate_limited_until
-                    .unwrap_or(now)
-                    .checked_add(self.rate_limit * (rate_limit_messages + new_suspicion) as u32)
+                if let Some(rate_limited_until) =
+                    self.rate_limited_until.unwrap_or(now).checked_add(
+                        rate_limit_options.limit * (rate_limit_messages + new_suspicion) as u32,
+                    )
                 {
                     self.rate_limited_until = Some(rate_limited_until);
                 }
@@ -217,6 +304,15 @@ impl Context {
                 (elapsed.as_secs() / 60).clamp(analysis.is(Type::SAFE) as u64, u8::MAX as u64)
                     as u8,
             );
+
+            if let Some(repetition_blocking_options) = options.block_if_repetitive.as_ref() {
+                if self.history.len() >= repetition_blocking_options.limit as usize * 2 {
+                    self.history.pop_front();
+                }
+
+                self.history.push_back((message, now));
+            }
+
             Ok(censored)
         }
     }
@@ -245,6 +341,12 @@ impl Context {
         self.reports as usize
     }
 
+    /// Clear suspicion and reports.
+    pub fn exonerate(&mut self) {
+        self.suspicion = 0;
+        self.reports = 0;
+    }
+
     /// Returns total number of messages processed. It is not guaranteed that the full
     /// range of `usize` of messages will be counted (currently only `u16::MAX` are counted).
     pub fn total(&self) -> usize {
@@ -261,7 +363,7 @@ impl Context {
 
 impl Default for Context {
     fn default() -> Self {
-        Self::new(Duration::from_secs(5), 3)
+        Self::new()
     }
 }
 
@@ -352,8 +454,10 @@ mod tests {
     #![allow(unused_imports)]
 
     extern crate test;
+    use crate::context::{
+        ContextProcessingOptions, ContextRateLimitOptions, ContextRepetitionBlockingOptions,
+    };
     use crate::{Censor, CensorIter, CensorStr, Type};
-    use bitflags::_core::ops::Not;
     use std::fs::File;
     use std::io::BufReader;
     use std::time::{Duration, Instant};
@@ -363,7 +467,7 @@ mod tests {
     fn context_inappropriate() {
         use crate::{BlockReason, Context};
 
-        let mut ctx = Context::new(Duration::ZERO, 0);
+        let mut ctx = Context::new();
 
         assert_eq!(ctx.process(String::from("one")), Ok(String::from("one")));
         assert!(matches!(
@@ -376,7 +480,7 @@ mod tests {
     fn context_unsafe() {
         use crate::{BlockReason, Context};
 
-        let mut ctx = Context::new(Duration::ZERO, 0);
+        let mut ctx = Context::new();
 
         for _ in 0..30 {
             ctx.report();
@@ -393,9 +497,9 @@ mod tests {
     fn context_repetitious() {
         use crate::{BlockReason, Context};
 
-        let mut ctx = Context::new(Duration::ZERO, 0);
+        let mut ctx = Context::new();
 
-        for _ in 0..Context::REPETITION_LIMIT {
+        for _ in 0..ContextRepetitionBlockingOptions::default().limit {
             assert!(ctx.process(String::from("one")).is_ok());
         }
 
@@ -407,36 +511,61 @@ mod tests {
     fn context_spam() {
         use crate::{BlockReason, Context};
 
-        let mut ctx = Context::new(Duration::from_millis(350), 2);
+        let mut ctx = Context::new();
+        let opts = ContextProcessingOptions {
+            rate_limit: Some(ContextRateLimitOptions {
+                limit: Duration::from_millis(350),
+                burst: 2,
+                ..Default::default()
+            }),
+            ..Default::default()
+        };
 
-        assert_eq!(ctx.process(String::from("one")), Ok(String::from("one")));
-        assert_eq!(ctx.process(String::from("two")), Ok(String::from("two")));
         assert_eq!(
-            ctx.process(String::from("three")),
+            ctx.process_with_options(String::from("one"), &opts),
+            Ok(String::from("one"))
+        );
+        assert_eq!(
+            ctx.process_with_options(String::from("two"), &opts),
+            Ok(String::from("two"))
+        );
+        assert_eq!(
+            ctx.process_with_options(String::from("three"), &opts),
             Ok(String::from("three"))
         );
         assert!(matches!(
-            ctx.process(String::from("four")),
+            ctx.process_with_options(String::from("four"), &opts),
             Err(BlockReason::Spam(_))
         ));
 
         std::thread::sleep(Duration::from_secs(2));
 
-        assert_eq!(ctx.process(String::from("one")), Ok(String::from("one")));
+        assert_eq!(
+            ctx.process_with_options(String::from("one"), &opts),
+            Ok(String::from("one"))
+        );
     }
 
     #[test]
     fn context_spam_long_message() {
         use crate::{BlockReason, Context};
 
-        let mut ctx = Context::new(Duration::from_millis(350), 2);
+        let mut ctx = Context::new();
+        let opts = ContextProcessingOptions {
+            rate_limit: Some(ContextRateLimitOptions {
+                limit: Duration::from_millis(350),
+                burst: 2,
+                ..Default::default()
+            }),
+            ..Default::default()
+        };
 
         assert_eq!(
-            ctx.process(String::from("three")),
+            ctx.process_with_options(String::from("three"), &opts),
             Ok(String::from("three"))
         );
-        assert!(ctx.process(String::from("one two three one two three one two three one two three one two three one two three one two three one two three one two three")).is_ok());
-        let result = ctx.process(String::from("four"));
+        assert!(ctx.process_with_options(String::from("one two three one two three one two three one two three one two three one two three one two three one two three one two three"), &opts).is_ok());
+        let result = ctx.process_with_options(String::from("four"), &opts);
         assert!(matches!(result, Err(BlockReason::Spam(_))), "{:?}", result);
     }
 
@@ -444,7 +573,7 @@ mod tests {
     fn context_muted() {
         use crate::{BlockReason, Context};
 
-        let mut ctx = Context::new(Duration::ZERO, 0);
+        let mut ctx = Context::new();
 
         ctx.mute_for(Duration::from_secs(5));
 
@@ -456,7 +585,7 @@ mod tests {
     fn context_empty() {
         use crate::{BlockReason, Context};
 
-        let mut ctx = Context::new(Duration::from_secs(1), 2);
+        let mut ctx = Context::new();
         assert_eq!(ctx.process(String::from("   ")), Err(BlockReason::Empty));
     }
 }
