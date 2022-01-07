@@ -25,19 +25,20 @@ pub struct Context {
 #[derive(Clone, Debug)]
 pub struct ContextProcessingOptions {
     /// Block messages if the user has been manually muted.
-    block_if_muted: bool,
+    pub block_if_muted: bool,
     /// Block messages if they are empty (after whitespace is trimmed, if applicable).
-    block_if_empty: bool,
+    pub block_if_empty: bool,
     /// Block messages, as opposed to censoring, if severe inappropriateness is detected.
-    block_if_severely_inappropriate: bool,
-    rate_limit: Option<ContextRateLimitOptions>,
+    pub block_if_severely_inappropriate: bool,
+    /// Rate-limiting options.
+    pub rate_limit: Option<ContextRateLimitOptions>,
     /// Block messages if they are very similar to this many previous message.
-    repetition_limit: Option<ContextRepetitionLimitOptions>,
+    pub repetition_limit: Option<ContextRepetitionLimitOptions>,
     /// Maximum automatic "safe" timeouts can last. If set too high, users have more time/incentive to
     /// try and find ways around the system. If zero, "safe" timeouts won't be used.
-    max_safe_timeout: Duration,
+    pub max_safe_timeout: Duration,
     /// Trim whitespace from beginning and end before returning censored output.
-    trim_whitespace: bool,
+    pub trim_whitespace: bool,
 }
 
 impl Default for ContextProcessingOptions {
@@ -58,11 +59,11 @@ impl Default for ContextProcessingOptions {
 #[derive(Clone, Debug)]
 pub struct ContextRateLimitOptions {
     /// Minimum time between messages (zero means infinite rate, 2s means 0.5 messages per second).
-    limit: Duration,
+    pub limit: Duration,
     /// Allows a certain amount of messages beyond the rate limit.
-    burst: u8,
+    pub burst: u8,
     /// Count a message against the rate limit up to 3 times, once for each unit of this many characters.
-    character_limit: Option<NonZeroU16>,
+    pub character_limit: Option<NonZeroU16>,
 }
 
 impl Default for ContextRateLimitOptions {
@@ -79,11 +80,11 @@ impl Default for ContextRateLimitOptions {
 #[derive(Clone, Debug)]
 pub struct ContextRepetitionLimitOptions {
     /// How many recent strings can be similar before blocking ensues.
-    limit: u8,
+    pub limit: u8,
     /// How long recent input is remembered for.
-    memory: Duration,
+    pub memory: Duration,
     /// Normalized levenshtein threshold to consider "too similar."
-    similarity_threshold: f32,
+    pub similarity_threshold: f32,
 }
 
 impl Default for ContextRepetitionLimitOptions {
