@@ -70,7 +70,7 @@ fn main() {
     let mut writer = Writer::from_path("src/replacements.csv").unwrap();
     for (find, mut replace) in replacements {
         // Keep original character accessible.
-        if find.is_digit(36) {
+        if find.is_ascii() {
             replace.insert(find);
         }
 

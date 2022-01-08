@@ -13,6 +13,8 @@ pub(crate) struct Node {
     pub word: bool,
     pub typ: Type,
     pub depth: u8,
+    #[cfg(feature = "trace")]
+    pub trace: String,
 }
 
 impl Tree {
@@ -25,6 +27,8 @@ impl Tree {
                 word: false,
                 typ: Type::NONE,
                 depth: (i + 1) as u8,
+                #[cfg(feature = "trace")]
+                trace: word.chars().take(i + 1).collect(),
             });
         }
         current.word = true;
@@ -44,6 +48,8 @@ impl FromIterator<(&'static str, Type)> for Tree {
                 word: false,
                 typ: Type::NONE,
                 depth: 0,
+                #[cfg(feature = "trace")]
+                trace: String::new(),
             },
         };
         for (word, typ) in iter.into_iter() {

@@ -363,6 +363,12 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let skippable = raw_c.is_punctuation() || raw_c.is_separator() || raw_c.is_other();
             let replacement = REPLACEMENTS.get(&raw_c);
 
+            #[cfg(feature = "trace")]
+            println!(
+                "Read '{}', skippable={}, replacing with={:?}",
+                raw_c, skippable, replacement
+            );
+
             if (!self.separate || self.last == Some(self.censor_replacement))
                 && raw_c == self.censor_replacement
             {
@@ -387,7 +393,11 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             }
 
             if let Some(pos) = pos {
-                if !(skippable && replacement.is_none()) {
+                // Must special-case all skippable, non-replaced characters that may start
+                // a profanity, so that these profanities are detected.
+                //
+                // Not adding a match is mainly an optimization.
+                if !(skippable && replacement.is_none() && !matches!(raw_c, '_')) {
                     // Seed a new match for every character read.
                     self.matches.insert(Match {
                         node: &TREE.root,
@@ -430,22 +440,34 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 .unwrap_or(&&*raw_c.encode_utf8(&mut [0; 4]))
                 .chars()
             {
+                // This replacement raises absolutely zero suspicion.
                 let benign_replacement = c == raw_c_lower;
 
-                if !(replacement_counted
+                // This counts as a replacement, mainly for spam detection purposes.
+                let countable_replacement = !(replacement_counted
                     || benign_replacement
                     || raw_c.is_ascii_alphabetic()
                     || (raw_c.is_ascii_digit()
-                        && self.last.map(|l| l.is_ascii_digit()).unwrap_or(false)))
-                {
+                        && self.last.map(|l| l.is_ascii_digit()).unwrap_or(false)));
+
+                if countable_replacement {
                     self.replacements = self.replacements.saturating_add(1);
                     replacement_counted = true;
                 }
+
+                #[cfg(feature = "trace")]
+                println!(
+                    " - Replacement '{}', benign={}, countable={}",
+                    c, benign_replacement, countable_replacement
+                );
 
                 for m in self.matches_tmp.iter() {
                     let m = m.clone();
 
                     safety_end = safety_end.min(m.start);
+
+                    #[cfg(feature = "trace")]
+                    println!("  - Consider match \"{}\"", m.node.trace);
 
                     if (skippable || c == m.last) && m.start != pos.unwrap_or(0) {
                         // Undo remove.
@@ -471,6 +493,9 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     }
 
                     if let Some(next) = m.node.children.get(&c) {
+                        #[cfg(feature = "trace")]
+                        println!("     - Next is \"{}\"", next.trace);
+
                         let next_m = Match {
                             node: next,
                             spaces: m

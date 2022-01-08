@@ -1,7 +1,7 @@
 use crate::{trim_whitespace, Censor, Type};
 
 use std::collections::VecDeque;
-use std::fmt::{Display, Formatter};
+use std::fmt::{self, Debug, Display, Formatter};
 use std::num::NonZeroU16;
 use std::time::{Duration, Instant};
 
@@ -18,6 +18,23 @@ pub struct Context {
     only_safe_until: Option<Instant>,
     rate_limited_until: Option<Instant>,
     last_message: Option<Instant>,
+}
+
+impl Debug for Context {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        // Don't debug history field.
+        f.debug_struct("Context")
+            .field("burst_used", &self.burst_used)
+            .field("suspicion", &self.suspicion)
+            .field("reports", &self.reports)
+            .field("total", &self.total)
+            .field("total_inappropriate", &self.total_inappropriate)
+            .field("muted_until", &self.muted_until)
+            .field("only_safe_until", &self.only_safe_until)
+            .field("rate_limited_until", &self.rate_limited_until)
+            .field("last_message", &self.last_message)
+            .finish()
+    }
 }
 
 /// Options for customizing `Context::process_with_options`. Always initialize with ..Default::default(),

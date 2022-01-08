@@ -1,9 +1,9 @@
-!,il
-#,h
-$,s
-(,c
-*,aeiou
-+,t
+!,!il
+#,#h
+$,$s
+(,(c
+*,*aeiou
++,+t
 0,0o
 1,1il
 2,2z
@@ -14,8 +14,8 @@ $,s
 7,7t
 8,8b
 9,9gpq
-<,c
-@,a
+<,<c
+@,@a
 A,Aa
 B,Bb
 C,Cc
@@ -47,7 +47,7 @@ j,ij
 l,il
 u,uv
 v,uv
-|,il
+|,il|
 ¢,c
 À,à
 Á,á
