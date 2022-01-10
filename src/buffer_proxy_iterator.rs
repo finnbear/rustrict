@@ -5,8 +5,9 @@ use std::ops::RangeInclusive;
 /// This iterator buffers characters until they can be determined to be clean of profanity.
 pub(crate) struct BufferProxyIterator<I: Iterator<Item = char>> {
     iter: I,
-    // The index into iter of the start of buffer.
+    /// The index into iter of the start of buffer.
     buffer_start_position: usize,
+    /// Staging area (to possibly censor).
     buffer: VecDeque<I::Item>,
 }
 
@@ -30,11 +31,11 @@ impl<I: Iterator<Item = char>> BufferProxyIterator<I> {
 
     /// Returns index of the next character that can be spied, or empty if no characters can be spied.
     pub fn spy_next_index(&self) -> Option<usize> {
-        return if self.buffer.is_empty() {
+        if self.buffer.is_empty() {
             None
         } else {
             Some(self.buffer_start_position)
-        };
+        }
     }
 
     /// Spies one one more character.

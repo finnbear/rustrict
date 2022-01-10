@@ -33,7 +33,7 @@ impl Debug for Context {
             .field("only_safe_until", &self.only_safe_until)
             .field("rate_limited_until", &self.rate_limited_until)
             .field("last_message", &self.last_message)
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
@@ -227,7 +227,7 @@ impl Context {
             self.history.retain(|&(_, t)| now - t < opts.memory);
 
             for (recent_message, _) in &self.history {
-                if strsim::normalized_levenshtein(&recent_message, &message)
+                if strsim::normalized_levenshtein(recent_message, &message)
                     >= opts.similarity_threshold as f64
                 {
                     recent_similar += 1;
@@ -361,10 +361,11 @@ impl Context {
         self.reports as usize
     }
 
-    /// Clear suspicion and reports.
+    /// Clear suspicion and reports, and automatic mutes (not manual mute or rate limit).
     pub fn exonerate(&mut self) {
         self.suspicion = 0;
         self.reports = 0;
+        self.only_safe_until = None;
     }
 
     /// Returns total number of messages processed. It is not guaranteed that the full
