@@ -2,7 +2,7 @@ use crate::buffer_proxy_iterator::BufferProxyIterator;
 use crate::feature_cell::FeatureCell;
 use crate::mtch::*;
 use crate::radix::*;
-use crate::Type;
+use crate::{is_whitespace, Type};
 use lazy_static::lazy_static;
 use rustc_hash::{FxHashMap, FxHashSet};
 use std::iter::Filter;
@@ -360,7 +360,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let pos = self.buffer.index();
 
             self.uppercase = self.uppercase.saturating_add(raw_c.is_uppercase() as u8);
-            let skippable = raw_c.is_punctuation() || raw_c.is_separator() || raw_c.is_other();
+            let skippable = raw_c.is_punctuation() || raw_c.is_separator() || is_whitespace(raw_c);
             let replacement = REPLACEMENTS.get(&raw_c);
 
             #[cfg(feature = "trace")]
@@ -708,6 +708,13 @@ mod tests {
         "99".isnt(Type::PROFANE);
         "900".isnt(Type::PROFANE);
         "kkk".is(Type::OFFENSIVE);
+    }
+
+    #[test]
+    #[serial]
+    fn unicode_whitespace() {
+        assert!("fu\u{1160}ck".is(Type::PROFANE));
+        assert!(!"fu\u{1161}ck".is(Type::PROFANE));
     }
 
     #[allow(dead_code)]

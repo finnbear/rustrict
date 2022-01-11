@@ -122,7 +122,7 @@ If you want to add custom profanities or safe words, enable the `customize` feat
 }
 ```
 
-But wait, there's more! If your use-case is chat moderation, and you can store data on a per user basis, you
+But wait, there's more! If your use-case is chat moderation, and you can store data on a per-user basis, you
 might benefit from the `context` feature.
 
 ```rust
@@ -168,7 +168,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.74% | 91.89% | 90.46% | 9s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.74% | 91.89% | 90.45% | 9s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development
