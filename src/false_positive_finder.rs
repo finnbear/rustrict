@@ -65,6 +65,8 @@ fn maybe_false_positive<C: Iterator<Item = char> + Clone>(word: C) -> Option<Str
         let index_range = 0..=word.len();
         let mut shortest_subslice = word;
         for perm in index_range.permutations(2) {
+            // TODO: Cannot always remove prefix, because false positive wont take effect if starts
+            // after the profanity in question. For example, "to helicopter" -> "heli"
             let start = perm[0];
             let end = perm[1];
 

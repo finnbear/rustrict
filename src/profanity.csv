@@ -7,6 +7,7 @@ word,profane,offensive,sexual,mean,evasive
 ࿘,0,2,0,0,0
 ✠,0,1,0,0,0
 _|_,1,0,0,0,1
+_/_,1,0,0,0,1
 _l_,1,0,0,0,2
 3==D,0,0,2,0,1
 3==o,0,0,2,0,1
@@ -40,7 +41,10 @@ bastrad,2,3,0,0,1
 beetch,0,2,2,0,1
 biatch,0,2,2,0,1
 bich,0,2,2,0,1
+bish,0,1,1,0,1
+bishes,0,1,1,0,1
 bitch,0,2,2,0,0
+bitches,0,2,2,0,0
 bitsch,0,2,2,0,2
 bloody,2,0,0,0,0
 blow me,0,0,2,0,0
@@ -105,6 +109,7 @@ douching,1,1,2,1,0
 dumb,0,0,0,1,0
 dumbass,2,0,0,2,0
 dyke,2,2,2,0,0
+eat dog,0,1,0,0,0
 eff,2,0,2,0,1
 effing,2,0,2,0,1
 ejaculat,0,0,2,0,0
@@ -128,7 +133,9 @@ fawk,2,0,1,0,2
 fat,0,1,0,1,0
 fatty,0,2,0,2,0
 fck,2,0,2,0,1
+fcked,2,0,2,0,1
 fcken,2,0,2,0,1
+fcker,2,0,0,2,1
 fckin,2,0,2,0,1
 fcking,2,0,2,0,1
 fcks,2,0,0,0,1
@@ -149,6 +156,7 @@ fking,2,0,2,0,1
 fkk,2,0,2,0,1
 fkker,2,0,2,0,1
 flange,0,0,3,0,0
+fock,2,0,2,0,2
 foursome,0,0,3,0,0
 freak,0,0,0,2,0
 frick,1,0,0,0,0
@@ -215,6 +223,7 @@ hope u die,0,0,0,3,1
 hopeyoudie,0,0,0,3,0
 horny,0,0,3,0,0
 horseshit,2,0,0,0,0
+hugh janus,2,0,0,0,2
 gooch,0,0,2,0,0
 idiot,0,0,0,1,0
 imbecil,0,0,0,2,0

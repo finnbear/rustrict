@@ -471,8 +471,10 @@ baalish
 baalism
 baalist
 baalize
+babbishly
 babcock
 babiche
+babish
 baboonery
 bacchanal
 backhoes
@@ -721,6 +723,7 @@ bath liter
 baths punk
 bawcock
 beanballs
+beat dog
 beatles punk
 becoom
 becoward
@@ -843,6 +846,7 @@ bilcock
 biles punk
 bilinigrin
 billycock
+bilsh
 bine ger
 bine gros
 bines punk
@@ -853,8 +857,11 @@ bisexualism
 bisexuality
 bisexually
 bisexuals
-bishi ted
-bishi ter
+bishareen
+bishari
+bishi
+bishop
+bishydroxycoumarin
 bismuthate
 bissext
 bit cha
@@ -919,6 +926,7 @@ bo nerve
 bo nervous
 boards punk
 boastful
+bobbish
 bobsled
 bobsleigh
 bobstay
@@ -1262,6 +1270,7 @@ clitoromaniac
 clitter
 close rwanda
 closer
+clubbish
 coarse
 cockabondy
 cockade
@@ -1518,6 +1527,7 @@ criniger
 cruises punk
 crurogenital
 cs punk
+cubbish
 cuffing
 cuirasses
 cummerbund
@@ -1657,6 +1667,7 @@ doesn't it
 doggers
 dogs punk
 donga
+dongguan
 donging
 dongola
 dongolese
@@ -1701,6 +1712,7 @@ earners punk
 earnings punk
 earth liter
 eases punk
+eat dogs
 eaters punk
 eath liter
 eats punk
@@ -1821,6 +1833,7 @@ fax got
 fax ist
 fax list
 feastful
+feat dog
 fecket
 feckful
 feckless
@@ -1896,6 +1909,7 @@ flocoon
 floodcock
 florists punk
 fluid lot
+fockle
 foggers
 folks punk
 fonts punk
@@ -1951,6 +1965,7 @@ fugged
 fugging
 fugling
 funds punk
+furbish
 furnishings punk
 futchell
 ga yest
@@ -2094,6 +2109,7 @@ health liter
 heap rick
 hearse
 heartwater
+heat dog
 hecks punk
 hee she
 heelballs
@@ -2158,6 +2174,7 @@ her bobby
 heraclitism
 herbalism
 herbalist
+herbish
 hers punk
 hes he
 hes punk
@@ -2616,6 +2633,7 @@ jewstone
 jiggers
 jitterbugger
 jizzen
+jobbish
 joggers
 johns punk
 joseph liter
@@ -2630,6 +2648,7 @@ june gros
 justments punk
 kabobs
 kaneshite
+kashoubish
 katharses
 kavasses
 kebobs
@@ -2665,6 +2684,7 @@ ladanigerous
 lades punk
 lags punk
 lakes punk
+lambish
 lamiger
 lampron
 lang ger
@@ -2768,6 +2788,7 @@ ln cele
 ln cell
 ln celt
 loafing
+lobbish
 lobcock
 locks punk
 logcock
@@ -3030,6 +3051,7 @@ matters punk
 maycock
 meacock
 measurements punk
+meat dog
 meatballs
 mechanal
 medick
@@ -3074,6 +3096,7 @@ mistful
 mitchell
 mix ger
 ml ger
+mobbish
 mocock
 modules punk
 moistful
@@ -3140,6 +3163,7 @@ mustard
 myers punk
 myth liter
 nabalism
+nabobish
 nabobs
 nake da
 nake de
@@ -3172,6 +3196,7 @@ naziritic
 ncaa strategic
 ncaa strategies
 ncaa strategy
+nebbish
 nee ger
 neeger
 nestful
@@ -3387,6 +3412,7 @@ pean iso
 pean issue
 pean ist
 pean lis
+peat dog
 peers punk
 pegs punk
 pelecanus
@@ -3530,6 +3556,7 @@ pockets punk
 pogonips
 points punk
 polabian
+polabish
 policies punk
 pollenigerous
 pollinigerous
@@ -3538,6 +3565,7 @@ polychaete
 polychaetous
 polyphonic xanax
 pons punk
+poof. you
 poor nos
 poorness
 poppycock
@@ -4019,6 +4047,11 @@ pubertal
 pubertic
 puberulent
 puberulous
+publish esc
+publish esp
+publish ess
+publish est
+publishes
 puccoon
 puffballs
 puffing
@@ -4069,6 +4102,7 @@ quid lot
 quiffing
 quizzes punk
 quotes punk
+rabbish
 rabbit xhtml
 raccoon
 racks punk
@@ -4290,6 +4324,7 @@ routes punk
 routhercock
 rows punk
 rowth liter
+rubbish
 rucks punk
 rude flower
 rude generate
@@ -4324,6 +4359,7 @@ saturday
 savings punk
 saxondom
 says punk
+scabish
 scarfing
 scenes punk
 scenic ca
@@ -4359,6 +4395,7 @@ scyphate
 se ex
 se men
 seacock
+seat dog
 seconds punk
 sects punk
 see men
@@ -4583,7 +4620,9 @@ sniffing
 sniggoringly
 snigs
 snips
+snobbish
 snowballs
+snubbish
 snuffing
 snuffkin
 snuggly
@@ -4607,6 +4646,7 @@ sonic xanax
 sons punk
 sophomore
 sophomoric
+sorbish
 sortwith
 sourballs
 sources punk
@@ -4664,8 +4704,15 @@ spunkiness
 spunking
 spunkless
 spunky
+squabbish
 squamigerous
 squawtits
+squibbish
+stablish esc
+stablish esp
+stablish ess
+stablish est
+stablishes
 staminigerous
 stances punk
 standards punk
@@ -5309,6 +5356,7 @@ tristful
 trochate
 trollopeanism
 tscheffkinite
+tubbish
 tubifexes
 tuckahoes
 tuffing
@@ -5643,6 +5691,7 @@ whitier
 whittler
 width liter
 wifing
+wifock
 wiggeries
 wiggery
 winds punk
