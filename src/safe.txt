@@ -188,3 +188,5 @@ i got muted
 im not a bot
 im in restricted chat mode
 my chat is restricted
+cant talk
+cannot talk

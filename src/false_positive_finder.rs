@@ -44,7 +44,7 @@ lazy_static! {
                 .split("\n")
                 .filter(|l| !l.is_empty())
         )
-        .map(|l| Regex::new(l).unwrap())
+        .map(|l| Regex::new(&l.replace("\\", "\\\\")).unwrap())
         .collect();
 }
 
