@@ -1,5 +1,5 @@
 use crate::buffer_proxy_iterator::BufferProxyIterator;
-use crate::radix::Node;
+use crate::trie::Node;
 use crate::Type;
 use std::hash::{Hash, Hasher};
 

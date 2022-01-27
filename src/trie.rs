@@ -3,7 +3,7 @@ use rustc_hash::FxHashMap;
 use std::iter::FromIterator;
 
 #[derive(Debug)]
-pub(crate) struct Tree {
+pub(crate) struct Trie {
     pub(crate) root: Node,
 }
 
@@ -17,7 +17,7 @@ pub(crate) struct Node {
     pub trace: String,
 }
 
-impl Tree {
+impl Trie {
     pub fn add(&mut self, word: &str, typ: Type) {
         let mut current = &mut self.root;
         for (i, c) in word.chars().enumerate() {
@@ -40,7 +40,7 @@ impl Tree {
     }
 }
 
-impl FromIterator<(&'static str, Type)> for Tree {
+impl FromIterator<(&'static str, Type)> for Trie {
     fn from_iter<T: IntoIterator<Item = (&'static str, Type)>>(iter: T) -> Self {
         let mut ret = Self {
             root: Node {

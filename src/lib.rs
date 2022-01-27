@@ -11,7 +11,7 @@ pub(crate) mod feature_cell;
 #[cfg(feature = "censor")]
 pub(crate) mod mtch;
 #[cfg(feature = "censor")]
-pub(crate) mod radix;
+pub(crate) mod trie;
 #[cfg(feature = "censor")]
 pub(crate) mod typ;
 

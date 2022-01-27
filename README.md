@@ -27,7 +27,7 @@
   - Plenty of options
 - Performant
   - O(n) analysis and censoring
-  - No `regex` (uses custom radix trie)
+  - No `regex` (uses custom trie)
   - 4 MB/s in `release` mode
   - 150 KB/s in `debug` mode
 

@@ -1,7 +1,7 @@
 use crate::buffer_proxy_iterator::BufferProxyIterator;
 use crate::feature_cell::FeatureCell;
 use crate::mtch::*;
-use crate::radix::*;
+use crate::trie::*;
 use crate::{is_whitespace, Type};
 use lazy_static::lazy_static;
 use rustc_hash::{FxHashMap, FxHashSet};
@@ -12,7 +12,7 @@ use unicode_categories::UnicodeCategories;
 use unicode_normalization::{Decompositions, Recompositions, UnicodeNormalization};
 
 lazy_static! {
-    static ref TREE: FeatureCell<Tree> = FeatureCell::new(
+    static ref TRIE: FeatureCell<Trie> = FeatureCell::new(
         include_str!("profanity.csv")
             .split('\n')
             .skip(1)
@@ -411,7 +411,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 if !(skippable && replacement.is_none() && !matches!(raw_c, '_')) {
                     // Seed a new match for every character read.
                     self.matches.insert(Match {
-                        node: &TREE.root,
+                        node: &TRIE.root,
                         start: pos, // will immediately be incremented if match is kept.
                         end: usize::MAX, // sentinel.
                         last: 0 as char, // sentinel.
@@ -719,7 +719,7 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 /// from the main thread, near the beginning of the program.
 #[cfg(feature = "customize")]
 pub unsafe fn add_word(word: &str, typ: Type) {
-    TREE.get_mut().add(word, typ);
+    TRIE.get_mut().add(word, typ);
 }
 
 #[cfg(test)]
@@ -924,10 +924,10 @@ mod tests {
         assert!("i hope you die".is(Type::MEAN & Type::MODERATE_OR_HIGHER));
         assert!("i hope you die".isnt(Type::MEAN & Type::MILD));
         assert!("i hope you die".isnt(Type::MEAN & Type::MODERATE));
-        assert!("...said your mother only...".isnt(
+        assert!("You said your mother only smiled on her TV show".isnt(
             Type::PROFANE
                 | Type::OFFENSIVE
-                | Type::SEXUAL & Type::MODERATE
+                | Type::SEXUAL & Type::MODERATE_OR_HIGHER
                 | Type::MEAN & Type::SEVERE
         ));
     }
