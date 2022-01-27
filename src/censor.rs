@@ -94,6 +94,8 @@ pub struct Censor<I: Iterator<Item = char>> {
     self_censoring: u8,
     /// Is the input completely safe.
     safe: bool,
+    #[cfg(feature = "find_false_positives")]
+    total_matches: usize,
     /// Where matches are kept after they are complete but may be cancelled due to false positives.
     pending_commit: Vec<Match>,
     /// A buffer of the input that stores unconfirmed characters (may need to censor before flushing).
@@ -137,6 +139,8 @@ impl<I: Iterator<Item = char>> Censor<I> {
             space_appended: false,
             done: false,
             last_pos: usize::MAX,
+            #[cfg(feature = "find_false_positives")]
+            total_matches: 0,
             matches: FxHashSet::default(),
             matches_tmp: FxHashSet::default(),
             pending_commit: Vec::new(),
@@ -179,6 +183,8 @@ impl<I: Iterator<Item = char>> Censor<I> {
         self.space_appended = false;
         self.done = false;
         self.last_pos = usize::MAX;
+        #[cfg(feature = "find_false_positives")]
+        self.total_matches = 0;
         self.matches.clear();
         self.matches_tmp.clear();
         self.pending_commit.clear();
@@ -286,6 +292,11 @@ impl<I: Iterator<Item = char>> Censor<I> {
     /// Converts internal weights to a `Type`.
     fn analysis(&self) -> Type {
         self.typ | self.safe_self_censoring_and_spam_detection()
+    }
+
+    #[cfg(feature = "find_false_positives")]
+    pub fn total_matches(&self) -> usize {
+        self.total_matches
     }
 
     fn ensure_done(&mut self) {
@@ -493,9 +504,6 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     }
 
                     if let Some(next) = m.node.children.get(&c) {
-                        #[cfg(feature = "trace")]
-                        println!("     - Next is \"{}\"", next.trace);
-
                         let next_m = Match {
                             node: next,
                             spaces: m
@@ -507,6 +515,12 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             last: c,
                             ..m
                         };
+
+                        #[cfg(feature = "trace")]
+                        println!(
+                            "     - Next is \"{}\", with spaces={}, replacements = {}",
+                            next.trace, next_m.spaces, next_m.replacements
+                        );
 
                         if next.word {
                             if next_m.node.typ.is(Type::SAFE)
@@ -528,6 +542,8 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                 && !self.ignore_false_positives
                             {
                                 // Is false positive, so invalidate internal matches.
+                                #[cfg(feature = "trace")]
+                                println!("Found false positive {}", next_m.node.trace);
                                 drain_start = Some(
                                     drain_start
                                         .map(|start| start.min(next_m.start))
@@ -556,24 +572,36 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let censor_threshold = self.censor_threshold;
             let censor_first_character_threshold = self.censor_first_character_threshold;
             let censor_replacement = self.censor_replacement;
+            #[cfg(feature = "find_false_positives")]
+            let total_matches = &mut self.total_matches;
 
             self.pending_commit.retain(|pending| {
+                #[cfg(feature = "trace")]
+                println!("Consider whether to cancel pending commit {} with start={} against drain_start={:?}", pending.node.trace, pending.start, drain_start);
+
                 // Cancel due to false positive.
                 if let Some(start) = drain_start {
                     if pending.start >= start {
+                        #[cfg(feature = "trace")]
+                        println!("Cancelled {}", pending.node.trace);
                         return false;
                     }
                 }
 
                 // Can pre-commit due to lack of false positive matches.
                 if pending.end < safety_end {
-                    pending.commit(
+                    if pending.commit(
                         typ,
                         spy,
                         censor_threshold,
                         censor_first_character_threshold,
                         censor_replacement,
-                    );
+                    ) {
+                        #[cfg(feature = "find_false_positives")]
+                        {
+                            *total_matches += 1;
+                        }
+                    }
                     return false;
                 }
 
@@ -601,13 +629,18 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
         }
 
         for pending in mem::take(&mut self.pending_commit) {
-            pending.commit(
+            if pending.commit(
                 &mut self.typ,
                 &mut self.buffer,
                 self.censor_threshold,
                 self.censor_first_character_threshold,
                 self.censor_replacement,
-            );
+            ) {
+                #[cfg(feature = "find_false_positives")]
+                {
+                    self.total_matches += 1;
+                }
+            }
         }
 
         if let Some(c) = self.buffer.spy_next() {
@@ -891,6 +924,12 @@ mod tests {
         assert!("i hope you die".is(Type::MEAN & Type::MODERATE_OR_HIGHER));
         assert!("i hope you die".isnt(Type::MEAN & Type::MILD));
         assert!("i hope you die".isnt(Type::MEAN & Type::MODERATE));
+        assert!("...said your mother only...".isnt(
+            Type::PROFANE
+                | Type::OFFENSIVE
+                | Type::SEXUAL & Type::MODERATE
+                | Type::MEAN & Type::SEVERE
+        ));
     }
 
     #[test]

@@ -35,6 +35,7 @@ impl Match {
         }
     }
 
+    /// Returns whether committed.
     pub(crate) fn commit<I: Iterator<Item = char>>(
         &self,
         typ: &mut Type,
@@ -42,7 +43,17 @@ impl Match {
         censor_threshold: Type,
         censor_first_character_threshold: Type,
         censor_replacement: char,
-    ) {
+    ) -> bool {
+        #[cfg(feature = "trace")]
+        println!(
+            "Committing {} with space_before={}, space_after={}, depth={}, replacements={}",
+            self.node.trace,
+            self.space_before,
+            self.space_after,
+            self.node.depth,
+            self.replacements
+        );
+
         //let length = m.end - m.start;
         if (!(self.space_before && self.space_after)
             && self.node.depth > 1
@@ -52,7 +63,7 @@ impl Match {
                 && !self.node.typ.is(Type::SEVERE))
         {
             // Match isn't strong enough.
-            return;
+            return false;
         }
 
         // Apply detection.
@@ -74,6 +85,8 @@ impl Match {
                 };
             spy.censor(self.start + offset..=self.end, censor_replacement);
         }
+
+        true
     }
 }
 
