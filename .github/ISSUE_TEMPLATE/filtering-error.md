@@ -12,9 +12,7 @@ The following shouldn't have been detected, but was:
 ```
 
 ```
-<!---
-One false positive per line.
--->
+<!--- One false positive per line. -->
 
 
 ### False Negatives
@@ -22,10 +20,8 @@ The following should have been detected, but wasn't:
 ```
 
 ```
-<!---
-One false negative per line.
--->
+<!--- One false negative per line. -->
 
 ### Context
 
-I am using `rustrict` version `X.Y.Z`
+I am using `rustrict` version `X.Y.Z` (if not latest version)
