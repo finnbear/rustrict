@@ -711,7 +711,7 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 /// # Warning
 ///
 /// Any profanity words added this way will not support false positives. For example, if you add the word
-/// "field," you can expect "cornfield" to be detected as well.
+/// "field," you can expect "cornfield" to be detected as well, unless you call `add_word("cornfield", Type::None)`.
 ///
 /// # Safety
 ///
@@ -719,7 +719,7 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 /// from the main thread, near the beginning of the program.
 #[cfg(feature = "customize")]
 pub unsafe fn add_word(word: &str, typ: Type) {
-    TRIE.get_mut().add(word, typ);
+    TRIE.get_mut().add(word, typ, true);
 }
 
 #[cfg(test)]
@@ -795,6 +795,13 @@ mod tests {
         } else {
             println!("{} ({})", text, holistic);
         }
+    }
+
+    #[test]
+    #[serial]
+    fn issue_1() {
+        // https://github.com/finnbear/rustrict/issues/1#issuecomment-1024426326
+        assert!("I could say I miss you but it’s not the truth".isnt(Type::ANY));
     }
 
     #[test]
@@ -1087,6 +1094,12 @@ mod tests {
 
         assert!(test_profanity.is(Type::PROFANE & Type::SEVERE));
         assert!(test_safe.is(Type::SAFE));
+
+        unsafe {
+            add_word(test_profanity, Type::NONE);
+        }
+
+        assert!(test_profanity.isnt(Type::PROFANE));
     }
 
     #[allow(soft_unstable)]

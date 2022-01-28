@@ -18,7 +18,7 @@ pub(crate) struct Node {
 }
 
 impl Trie {
-    pub fn add(&mut self, word: &str, typ: Type) {
+    pub fn add(&mut self, word: &str, typ: Type, overwrite: bool) {
         let mut current = &mut self.root;
         for (i, c) in word.chars().enumerate() {
             let next = current.children.entry(c);
@@ -32,7 +32,11 @@ impl Trie {
             });
         }
         current.word = true;
-        current.typ |= typ;
+        if overwrite {
+            current.typ = typ;
+        } else {
+            current.typ |= typ;
+        }
         debug_assert!(
             !(current.typ.is(Type::ANY) && current.typ.is(Type::SAFE)),
             "if word is Type::SAFE, it cannot be anything else"
@@ -53,7 +57,7 @@ impl FromIterator<(&'static str, Type)> for Trie {
             },
         };
         for (word, typ) in iter.into_iter() {
-            ret.add(word, typ);
+            ret.add(word, typ, false);
         }
         ret
     }
