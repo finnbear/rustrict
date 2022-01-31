@@ -11,6 +11,8 @@ pub(crate) struct Trie {
 pub(crate) struct Node {
     pub children: FxHashMap<char, Node>,
     pub word: bool,
+    /// word contains space.
+    pub contains_space: bool,
     pub typ: Type,
     pub depth: u8,
     #[cfg(feature = "trace")]
@@ -20,11 +22,14 @@ pub(crate) struct Node {
 impl Trie {
     pub fn add(&mut self, word: &str, typ: Type, overwrite: bool) {
         let mut current = &mut self.root;
+        let mut contains_space = false;
         for (i, c) in word.chars().enumerate() {
             let next = current.children.entry(c);
+            contains_space |= c == ' ';
             current = next.or_insert_with(|| Node {
                 children: FxHashMap::default(),
                 word: false,
+                contains_space,
                 typ: Type::NONE,
                 depth: (i + 1) as u8,
                 #[cfg(feature = "trace")]
@@ -50,6 +55,7 @@ impl FromIterator<(&'static str, Type)> for Trie {
             root: Node {
                 children: FxHashMap::default(),
                 word: false,
+                contains_space: false,
                 typ: Type::NONE,
                 depth: 0,
                 #[cfg(feature = "trace")]

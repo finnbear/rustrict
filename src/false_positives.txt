@@ -55,7 +55,6 @@ advances punk
 af excess
 af king
 af rick
-af you
 affects punk
 affing
 afrikaans
@@ -738,7 +737,6 @@ bath liter
 baths punk
 bawcock
 beanballs
-beat dog
 beatles punk
 becoom
 becoward
@@ -747,7 +745,6 @@ bedumb
 beef excess
 beef king
 beef rick
-beef you
 beefing
 befingering
 beings punk
@@ -1065,7 +1062,6 @@ bridegod
 brief excess
 brief king
 brief rick
-brief you
 briefing
 brighella
 bronchomotor
@@ -1226,9 +1222,7 @@ cheese nips
 chef excess
 chef king
 chef rick
-chef you
 chellean
-cher bob
 chercock
 chess he
 chess she
@@ -1238,7 +1232,6 @@ chi link
 chief excess
 chief king
 chief rick
-chief you
 chiggers
 childrens punk
 chiltern
@@ -1465,7 +1458,6 @@ condominium
 conf excess
 conf king
 conf rick
-conf you
 conferences punk
 conflicts punk
 congenital
@@ -1750,7 +1742,6 @@ earners punk
 earnings punk
 earth liter
 eases punk
-eat dogs
 eaters punk
 eath liter
 eats punk
@@ -1826,7 +1817,6 @@ esses punk
 essex
 eth liter
 ethanal
-ether bob
 ethnic ca
 ethnic xanax
 european is
@@ -1874,7 +1864,6 @@ fax got
 fax ist
 fax list
 feastful
-feat dog
 fecket
 feckful
 feckless
@@ -1901,7 +1890,6 @@ ff ing
 ff kin
 ff ling
 ff rick
-ff you
 fi angel
 fi anger
 fibre ast
@@ -2158,13 +2146,11 @@ health liter
 heap rick
 hearse
 heartwater
-heat dog
 hecks punk
 hee she
 heelballs
 heelless
 heep rick
-heer bob
 heil
 heli
 helladian
@@ -2560,7 +2546,6 @@ idiotypic
 if excess
 if king
 if rick
-if you
 ife excess
 ife late
 ife latter
@@ -2653,7 +2638,6 @@ ish ted
 isn't it
 isophanal
 iters punk
-ither bob
 its punk
 ix rated
 jack assault
@@ -2710,8 +2694,6 @@ kebobs
 keep rick
 keith liter
 kenipsim
-kenya hole
-kenya mum
 kerfing
 kers punk
 keys punk
@@ -2788,14 +2770,12 @@ lex rated
 lf excess
 lf king
 lf rick
-lf you
 liar reggae
 licks punk
 lid lot
 lief excess
 lief king
 lief rick
-lief you
 liers punk
 lies punk
 likes punk
@@ -3112,7 +3092,6 @@ matters punk
 maycock
 meacock
 measurements punk
-meat dog
 meatballs
 mechanal
 medick
@@ -3350,7 +3329,6 @@ of agit
 of excess
 of king
 of rick
-of you
 officers punk
 offing
 offscum
@@ -3404,7 +3382,6 @@ orthomolecular
 orthomorphic
 orts punk
 oses punk
-other bob
 ouch ink
 ouch link
 ouch liter
@@ -3485,7 +3462,6 @@ pean iso
 pean issue
 pean ist
 pean lis
-peat dog
 peers punk
 pegs punk
 pelecanus
@@ -3638,7 +3614,6 @@ polychaete
 polychaetous
 polyphonic xanax
 pons punk
-poof. you
 poor nos
 poorness
 poppycock
@@ -4235,14 +4210,12 @@ redbreast
 reef excess
 reef king
 reef rick
-reef you
 reefing
 rees punk
 reet art
 ref excess
 ref king
 ref rick
-ref you
 references punk
 reffing
 reflects punk
@@ -4288,7 +4261,6 @@ reuters punk
 rf excess
 rf king
 rf rick
-rf you
 rhaetian
 rhaetic
 rhaetizite
@@ -4435,7 +4407,6 @@ sambunigrin
 samples punk
 sandra holes
 sanggau
-sanyo mumbai
 sapsuck
 sapsucker
 sarape
@@ -4485,7 +4456,6 @@ scyphate
 se ex
 se men
 seacock
-seat dog
 seconds punk
 sects punk
 see men
@@ -4520,7 +4490,6 @@ sheafing
 sheet
 shell
 shellcracker
-sher bob
 sheth
 shetland
 shiers punk
@@ -5021,7 +4990,6 @@ tit for tat
 titles punk
 tobacco ward
 toddick
-tokyo mum
 tomtits
 tons punk
 tooth liter
@@ -5569,7 +5537,6 @@ usgs punk
 ush aging
 ush liter
 ush ted
-uther bob
 uts punk
 ux rated
 va holes

@@ -61,6 +61,8 @@ impl Match {
             || (self.replacements >= self.node.depth
                 && self.node.depth <= 3
                 && !self.node.typ.is(Type::SEVERE))
+            // Make it so "squirrels word" doesn't contain "s word"
+            || (self.node.contains_space && !self.space_before)
         {
             // Match isn't strong enough.
             return false;
