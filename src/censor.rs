@@ -14,9 +14,8 @@ use unicode_normalization::{Decompositions, Recompositions, UnicodeNormalization
 lazy_static! {
     static ref TRIE: FeatureCell<Trie> = FeatureCell::new(
         include_str!("profanity.csv")
-            .split('\n')
+            .lines()
             .skip(1)
-            .filter(|line| !line.is_empty())
             .map(|line| {
                 let mut split = line.split(',');
                 (
@@ -28,20 +27,20 @@ lazy_static! {
             })
             .chain(
                 include_str!("safe.txt")
-                    .split('\n')
+                    .lines()
                     .filter(|line| !line.is_empty() && !line.starts_with('#'))
                     .map(|line| { (line, Type::SAFE) })
             )
             .chain(
                 include_str!("false_positives.txt")
-                    .split('\n')
+                    .lines()
                     .filter(|line| !line.is_empty())
                     .map(|line| { (line, Type::NONE) })
             )
             .collect()
     );
     static ref REPLACEMENTS: FxHashMap<char, &'static str> = include_str!("replacements.csv")
-        .split('\n')
+        .lines()
         .filter(|line| !line.is_empty())
         .map(|line| {
             let comma = line.find(',').unwrap();
@@ -50,7 +49,7 @@ lazy_static! {
         .collect();
     static ref BANNED: FeatureCell<FxHashSet<char>> = FeatureCell::new(
         include_str!("banned_chars.txt")
-            .split('\n')
+            .lines()
             .filter(|s| s.starts_with("U+"))
             .map(|s| {
                 u32::from_str_radix(&s[2..], 16)
@@ -408,7 +407,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 // a profanity, so that these profanities are detected.
                 //
                 // Not adding a match is mainly an optimization.
-                if !(skippable && replacement.is_none() && !matches!(raw_c, '_')) {
+                if !(skippable && replacement.is_none() && !matches!(raw_c, ' ' | '_')) {
                     // Seed a new match for every character read.
                     self.matches.insert(Match {
                         node: &TRIE.root,

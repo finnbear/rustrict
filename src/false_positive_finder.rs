@@ -21,7 +21,7 @@ lazy_static! {
             .filter(|l| !l.is_empty())
             .collect();
     static ref CONCAT_DICTIONARY: HashSet<&'static str> = include_str!("dictionary_common.txt")
-        .split("\n")
+        .lines()
         .filter(|&w| {
             (w.len() > 3 || VALID_SHORT.contains(w))
                 && !is_blacklisted(w)
@@ -29,16 +29,15 @@ lazy_static! {
         })
         .collect();
     static ref PROFANITY: Vec<&'static str> = include_str!("profanity.csv")
-        .split("\n")
-        .filter(|l| !l.is_empty())
+        .lines()
         .skip(1)
         .map(|l| &l[..l.find(',').unwrap()])
         .collect();
     static ref BLACKLIST: Vec<Regex> = include_str!("profanity.csv")
-        .split("\n")
-        .filter(|l| !l.is_empty())
+        .lines()
         .skip(1)
-        .map(|l| &l[..l.find(',').unwrap()])
+        // must trim starting spaces, as they don't count when comparing to blacklist.
+        .map(|l| l[..l.find(',').unwrap()].trim_start_matches(' '))
         .chain(
             include_str!("dictionary_blacklist.txt")
                 .split("\n")

@@ -46,12 +46,13 @@ impl Match {
     ) -> bool {
         #[cfg(feature = "trace")]
         println!(
-            "Committing {} with space_before={}, space_after={}, depth={}, replacements={}",
+            "Committing {} with space_before={}, space_after={}, depth={}, replacements={}, contains_space={}",
             self.node.trace,
             self.space_before,
             self.space_after,
             self.node.depth,
-            self.replacements
+            self.replacements,
+            self.node.contains_space
         );
 
         //let length = m.end - m.start;
