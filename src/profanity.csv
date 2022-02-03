@@ -40,6 +40,7 @@ ballz,0,0,1,0,1
 balsack,0,0,3,0,0
 bastard,2,3,0,0,0
 bastrad,2,3,0,0,1
+beaner,0,2,0,0,0
 beetch,0,2,2,0,1
 biatch,0,2,2,0,1
 bich,0,2,2,0,1
@@ -52,11 +53,18 @@ bloody,2,0,0,0,0
 blow me,0,0,2,0,0
 blowjob,0,0,3,0,0
 bobs,0,0,2,0,2
+bollocs,2,0,2,0,1
 bollock,2,0,2,0,0
-bollok,2,0,2,0,0
+bollocks,2,0,2,0,0
+bollok,2,0,2,0,1
+bolloks,2,0,2,0,1
+bondage,0,0,3,0,0
 boner,0,0,3,0,0
 boob,0,0,3,0,0
 boobies,0,0,3,0,0
+bootplug,1,0,2,0,1
+booty,1,0,0,0,1
+bootycall,1,0,3,0,1
 bootycheek,1,0,0,0,0
 breast,0,0,2,0,0
 btch,0,2,2,0,1
@@ -68,6 +76,7 @@ buttox,1,0,0,0,2
 bra,0,0,1,0,0
 brainless,0,0,0,1,0
 bxtch,0,2,2,0,2
+cameljockey,0,2,0,0,0
 castrate,0,0,2,0,0
 chickenshit,2,0,0,1,0
 chink,0,3,0,0,0
@@ -84,23 +93,30 @@ coon,0,5,0,0,0
 coward,0,0,0,1,0
 cracker,0,2,0,0,0
 crap,1,0,0,0,0
+cuck,0,0,2,0,0
 cum,0,0,3,0,0
 cumer,0,0,3,0,1
 cumed,0,0,3,0,0
+cumgoblin,0,0,3,0,0
+cumlord,0,0,3,0,0
 cnt,0,2,2,0,1
 cunt,0,2,2,0,0
 damn,1,0,0,0,0
 daygo,0,3,0,0,0
 deek,2,0,2,1,2
 deesnuts,0,0,1,0,0
+deesnoots,0,0,1,0,1
 deeznuts,0,0,1,0,0
+deeznoots,0,0,1,0,1
 deflower,0,0,2,0,0
 degenerate,0,0,0,1,0
 dego,0,2,0,0,0
 dic,2,0,2,1,1
 dicc,2,0,2,1,1
 dick,2,0,2,1,0
+dicker,2,0,2,0,1
 dildo,0,0,3,0,0
+dingleberry,1,0,0,0,0
 dipshit,2,0,0,2,0
 dominatrics,0,0,3,0,0
 dominatrix,0,0,3,0,0
@@ -184,6 +200,7 @@ fuger,2,0,0,2,3
 fuk,2,0,2,0,1
 fukk,2,0,2,0,1
 fuked,2,0,2,0,2
+fuker,2,0,0,2,2
 fukc,2,0,2,0,2
 fukin,2,0,2,0,1
 fukyou,2,0,2,3,1
@@ -208,6 +225,7 @@ hangyourself,0,2,0,3,0
 h8,0,0,0,2,1
 haet,0,0,0,2,1
 hate,0,0,0,2,0
+hator,0,0,0,2,2
 hayt,0,0,0,2,2
 heil hitler,0,3,0,0,0
 hell,1,0,0,0,0
@@ -236,14 +254,18 @@ incel,0,1,2,1,0
 incest,0,0,3,0,0
 isgay,0,2,0,0,0
 jackass,1,0,0,1,0
+jackoff,0,0,2,0,0
 jackshit,2,0,0,0,0
 jerk,0,0,0,1,0
 jew,0,1,0,0,0
 jews,0,1,0,0,0
 jigaboo,0,3,0,0,0
 jizz,0,0,3,0,0
+kike,0,2,0,0,0
 kilyourself,0,2,0,3,0
+kinky,0,0,1,0,0
 kkk,0,3,0,0,0
+kkklan,0,3,0,0,0
 labia,0,0,3,0,0
 loser,0,0,0,2,0
 masterbate,0,0,2,0,0
@@ -273,6 +295,7 @@ niglet,0,3,0,0,1
 niguh,2,3,0,0,2
 nigr,2,3,0,0,2
 nigs,2,3,0,0,1
+nipple,0,0,1,0,0
 nips,0,0,2,0,0
 niqq,2,3,0,0,2
 nude,0,0,3,0,0
@@ -288,6 +311,7 @@ nygga,2,3,0,0,3
 orgasm,0,0,2,0,0
 peanis,1,0,3,0,1
 peanus,1,0,3,0,1
+penetrator,0,0,1,0,0
 penile,0,0,3,0,0
 penis,1,0,3,0,0
 penus,1,0,3,0,0
@@ -318,6 +342,7 @@ pubescent,0,0,3,0,0
 pusies,0,2,2,2,0
 pusy,0,1,1,1,0
 pussy,0,2,2,2,0
+queef,0,0,3,0,0
 queer,0,3,0,0,0
 racist,0,0,0,1,0
 rape,0,0,3,0,0
@@ -339,6 +364,10 @@ secs,0,0,2,0,2
 seex,0,0,1,0,0
 semen,0,0,3,0,0
 sex,0,0,1,0,0
+sexbot,0,0,2,0,0
+sexc,0,0,1,0,1
+sexmaster,0,0,2,0,0
+sext,0,0,1,0,0
 sexx,0,0,1,0,0
 sexiest,0,0,1,0,0
 sexual,0,0,1,0,0
@@ -389,6 +418,7 @@ turnmeon,0,0,2,0,0
 twat,0,0,3,0,0
 twit,0,0,0,1,0
 u mf,2,1,1,2,2
+ufuk,2,0,2,0,2
 ugly,0,0,0,2,0
 uncletom,0,2,0,2,0
 unsecks,0,0,2,0,0
@@ -399,6 +429,7 @@ urmom,0,0,1,1,0
 urmother,0,0,1,1,0
 useyourhead,0,0,0,1,0
 vagina,0,0,3,0,0
+viagra,0,0,1,0,0
 vibrator,0,0,3,0,0
 vixen,0,1,2,0,0
 vulva,0,0,3,0,0
