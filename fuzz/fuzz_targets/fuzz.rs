@@ -25,7 +25,7 @@ fuzz_target!(|data: &[u8]| {
                 .with_censor_replacement(if flag(flags, 4) { '#' } else { '*' })
                 .censor_and_analyze();
 
-            let mut ctx = Context::new(Duration::from_nanos(3), 1);
+            let mut ctx = Context::new();
 
             for _ in 0..3 {
                 let _ = ctx.process(String::from(text));

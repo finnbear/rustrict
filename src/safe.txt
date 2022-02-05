@@ -26,6 +26,9 @@ gotta go
 back
 im back
 im leaving
+im going
+im not leaving
+im not going
 thanks
 thx
 ty
@@ -87,6 +90,7 @@ stop
 truce
 cease fire
 dont move
+dont die
 good
 bad
 sus
@@ -172,6 +176,10 @@ need xp
 need exp
 give xp
 give exp
+are you ok
+are you good
+how r u
+how r u doing
 how are you
 how are you doing
 im ok
@@ -182,6 +190,8 @@ its ok
 all good
 enemy coming
 enemy incoming
+watch out
+be careful
 im muted
 im muted for now
 i got muted

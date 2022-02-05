@@ -320,6 +320,7 @@ peepee,2,0,2,0,0
 phuc,2,0,2,0,1
 phuk,2,0,2,0,1
 pieceofgarbage,0,0,0,1,0
+pieceofshit,1,0,0,1,0
 piss,1,0,0,0,0
 poo,1,0,0,0,0
 poop,1,0,0,0,0
@@ -355,6 +356,8 @@ retard,0,2,0,2,0
 retart,0,2,0,2,0
 rimjob,0,0,3,0,0
 s word,1,0,0,0,1
+screwyou,1,0,0,2,0
+screwyourself,1,0,0,2,0
 scrotum,0,0,3,0,0
 scum,0,0,2,2,0
 scumbag,0,0,2,2,0
@@ -381,6 +384,7 @@ shiter,2,0,0,2,0
 shet,2,0,0,0,2
 sht,2,0,0,0,1
 shut the f up,1,0,0,2,0
+shut it,0,0,0,2,0
 shutup,0,0,0,2,0
 sisy,0,0,0,1,0
 skank,0,2,3,0,0
