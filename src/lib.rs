@@ -24,6 +24,13 @@ pub use typ::Type;
 #[cfg(feature = "censor")]
 pub use censor::{Censor, CensorIter, CensorStr};
 
+// Facilitate experimentation with different hash collections.
+#[cfg(feature = "censor")]
+pub(crate) type Map<K, V> = FxHashMap<K, V>;
+
+#[cfg(feature = "censor")]
+pub(crate) type Set<V> = FxHashSet<V>;
+
 #[cfg(feature = "customize")]
 pub use censor::add_word;
 
@@ -95,4 +102,5 @@ mod tests {
 }
 
 use doc_comment::doctest;
+use rustc_hash::{FxHashMap, FxHashSet};
 doctest!("../README.md");

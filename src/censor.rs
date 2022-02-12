@@ -3,8 +3,8 @@ use crate::feature_cell::FeatureCell;
 use crate::mtch::*;
 use crate::trie::*;
 use crate::{is_whitespace, Type};
+use crate::{Map, Set};
 use lazy_static::lazy_static;
-use rustc_hash::{FxHashMap, FxHashSet};
 use std::iter::Filter;
 use std::mem;
 use std::str::Chars;
@@ -39,7 +39,7 @@ lazy_static! {
             )
             .collect()
     );
-    static ref REPLACEMENTS: FxHashMap<char, &'static str> = include_str!("replacements.csv")
+    static ref REPLACEMENTS: Map<char, &'static str> = include_str!("replacements.csv")
         .lines()
         .filter(|line| !line.is_empty())
         .map(|line| {
@@ -47,7 +47,7 @@ lazy_static! {
             (line[..comma].chars().next().unwrap(), &line[comma + 1..])
         })
         .collect();
-    static ref BANNED: FeatureCell<FxHashSet<char>> = FeatureCell::new(
+    static ref BANNED: FeatureCell<Set<char>> = FeatureCell::new(
         include_str!("banned_chars.txt")
             .lines()
             .filter(|s| s.starts_with("U+"))
@@ -74,9 +74,9 @@ pub struct Censor<I: Iterator<Item = char>> {
     censor_replacement: char,
     censor_threshold: Type,
     /// Where potential matches are kept between calls to Self::next.
-    matches: FxHashSet<Match>,
+    matches: Set<Match>,
     /// Where potential matches are temporarily shuffled. Only allocate this once.
-    matches_tmp: FxHashSet<Match>,
+    matches_tmp: Set<Match>,
     /// Whether the last character can be considered a separator.
     separate: bool,
     /// The last position matched against.
@@ -95,6 +95,8 @@ pub struct Censor<I: Iterator<Item = char>> {
     safe: bool,
     #[cfg(feature = "find_false_positives")]
     total_matches: usize,
+    #[cfg(feature = "find_false_positives")]
+    total_match_characters: usize,
     /// Where matches are kept after they are complete but may be cancelled due to false positives.
     pending_commit: Vec<Match>,
     /// A buffer of the input that stores unconfirmed characters (may need to censor before flushing).
@@ -140,8 +142,10 @@ impl<I: Iterator<Item = char>> Censor<I> {
             last_pos: usize::MAX,
             #[cfg(feature = "find_false_positives")]
             total_matches: 0,
-            matches: FxHashSet::default(),
-            matches_tmp: FxHashSet::default(),
+            #[cfg(feature = "find_false_positives")]
+            total_match_characters: 0,
+            matches: Set::default(),
+            matches_tmp: Set::default(),
             pending_commit: Vec::new(),
             buffer: Self::buffer_from(text),
         }
@@ -184,6 +188,8 @@ impl<I: Iterator<Item = char>> Censor<I> {
         self.last_pos = usize::MAX;
         #[cfg(feature = "find_false_positives")]
         self.total_matches = 0;
+        #[cfg(feature = "find_false_positives")]
+        self.total_match_characters = 0;
         self.matches.clear();
         self.matches_tmp.clear();
         self.pending_commit.clear();
@@ -296,6 +302,11 @@ impl<I: Iterator<Item = char>> Censor<I> {
     #[cfg(feature = "find_false_positives")]
     pub fn total_matches(&self) -> usize {
         self.total_matches
+    }
+
+    #[cfg(feature = "find_false_positives")]
+    pub fn total_match_characters(&self) -> usize {
+        self.total_match_characters
     }
 
     fn ensure_done(&mut self) {
@@ -573,6 +584,8 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let censor_replacement = self.censor_replacement;
             #[cfg(feature = "find_false_positives")]
             let total_matches = &mut self.total_matches;
+            #[cfg(feature = "find_false_positives")]
+            let total_match_characters = &mut self.total_match_characters;
 
             self.pending_commit.retain(|pending| {
                 #[cfg(feature = "trace")]
@@ -599,6 +612,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         #[cfg(feature = "find_false_positives")]
                         {
                             *total_matches += 1;
+                            *total_match_characters += pending.end - pending.start;
                         }
                     }
                     return false;
@@ -638,6 +652,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 #[cfg(feature = "find_false_positives")]
                 {
                     self.total_matches += 1;
+                    self.total_match_characters = pending.end - pending.start;
                 }
             }
         }
@@ -940,6 +955,7 @@ mod tests {
 
     #[test]
     #[serial]
+    #[cfg(not(debug_assertions))]
     fn accuracy() {
         fn rustrict(s: &str) -> bool {
             s.is(Type::ANY)
@@ -962,11 +978,12 @@ mod tests {
             "https://crates.io/crates/rustrict",
             rustrict,
             false, // true,
-            None,  // Some(rustrict_old),
+            None, // Some(rustrict_old),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }
 
+    #[allow(dead_code)]
     fn print_accuracy(
         link: &str,
         checker: fn(&str) -> bool,
@@ -986,6 +1003,7 @@ mod tests {
         );
     }
 
+    #[allow(dead_code)]
     fn accuracy_of(
         checker: fn(&str) -> bool,
         find_detections: bool,
@@ -1038,7 +1056,6 @@ mod tests {
         )
     }
 
-    #[cfg(not(debug_assertions))]
     #[test]
     #[serial]
     fn bandwidth() {

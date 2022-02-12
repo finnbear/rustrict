@@ -55,7 +55,7 @@ pub fn is_ignore_fp<C: Iterator<Item = char>>(text: C) -> usize {
         .analyze()
         .is(Type::PROFANE | Type::OFFENSIVE | Type::SEXUAL | Type::MEAN)
     {
-        censor.total_matches().max(1)
+        censor.total_match_characters().max(1)
     } else {
         0
     }
@@ -66,6 +66,7 @@ fn maybe_false_positive<C: Iterator<Item = char> + Clone>(word: C) -> Option<Str
     if baseline > 0 {
         let word: String = word.collect();
         let word = &word[..];
+
         if is_blacklisted(word) {
             return None;
         }

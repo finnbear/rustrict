@@ -28,8 +28,8 @@
 - Performant
   - O(n) analysis and censoring
   - No `regex` (uses custom trie)
-  - 4 MB/s in `release` mode
-  - 150 KB/s in `debug` mode
+  - 3.5 MB/s in `release` mode
+  - 100 KB/s in `debug` mode
 
 ## Limitations
 
@@ -168,7 +168,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.74% | 91.95% | 90.44% | 9s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.71% | 92.02% | 90.39% | 10s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development

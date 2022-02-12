@@ -1,5 +1,5 @@
+use crate::Map;
 use crate::Type;
-use rustc_hash::FxHashMap;
 use std::iter::FromIterator;
 
 #[derive(Debug)]
@@ -9,7 +9,7 @@ pub(crate) struct Trie {
 
 #[derive(Debug)]
 pub(crate) struct Node {
-    pub children: FxHashMap<char, Node>,
+    pub children: Map<char, Node>,
     pub word: bool,
     /// word contains space.
     pub contains_space: bool,
@@ -33,7 +33,7 @@ impl Trie {
             let next = current.children.entry(c);
             contains_space |= c == ' ';
             current = next.or_insert_with(|| Node {
-                children: FxHashMap::default(),
+                children: Map::default(),
                 word: false,
                 contains_space: false,
                 typ: Type::NONE,
@@ -61,7 +61,7 @@ impl FromIterator<(&'static str, Type)> for Trie {
     fn from_iter<T: IntoIterator<Item = (&'static str, Type)>>(iter: T) -> Self {
         let mut ret = Self {
             root: Node {
-                children: FxHashMap::default(),
+                children: Map::default(),
                 word: false,
                 contains_space: false,
                 typ: Type::NONE,

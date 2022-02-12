@@ -45,29 +45,40 @@ impl Match {
         censor_replacement: char,
     ) -> bool {
         #[cfg(feature = "trace")]
-        println!(
-            "Committing {} with space_before={}, space_after={}, depth={}, replacements={}, contains_space={}",
+        print!(
+            "Committing {} with space_before={}, spaces={}, space_after={}, depth={}, replacements={}, contains_space={}: ",
             self.node.trace,
             self.space_before,
+            self.spaces,
             self.space_after,
             self.node.depth,
             self.replacements,
             self.node.contains_space
         );
 
-        //let length = m.end - m.start;
-        if (!(self.space_before && self.space_after)
+        let low_confidence_replacements = !(self.space_before && self.space_after)
             && self.node.depth > 1
-            && self.spaces.max(self.replacements) as usize + 4 > self.node.depth as usize)
-            || (self.replacements >= self.node.depth
-                && self.node.depth <= 3
-                && !self.node.typ.is(Type::SEVERE))
-            // Make it so "squirrels word" doesn't contain "s word"
-            || (self.node.contains_space && !self.space_before)
-        {
+            && self.spaces.max(self.replacements) as usize + 4 > self.node.depth as usize;
+
+        let low_confidence_short = self.replacements >= self.node.depth
+            && self.node.depth <= 3
+            && !self.node.typ.is(Type::SEVERE);
+
+        // Make it so "squirrels word" doesn't contain "s word"
+        let low_confidence_special = self.node.contains_space && !self.space_before;
+
+        if low_confidence_replacements || low_confidence_short || low_confidence_special {
             // Match isn't strong enough.
+            #[cfg(feature = "trace")]
+            println!(
+                "(rejected: {} {} {})",
+                low_confidence_replacements, low_confidence_short, low_confidence_special
+            );
             return false;
         }
+
+        #[cfg(feature = "trace")]
+        println!("(committed)");
 
         // Apply detection.
         *typ |= self.node.typ

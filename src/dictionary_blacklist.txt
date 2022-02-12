@@ -177,6 +177,8 @@ ex rated
 ey
 f
 fa
+fatsos
+fatsoes
 facks
 fag(.*)
 fascists
