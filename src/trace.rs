@@ -1,18 +1,23 @@
-use rustrict::{Censor, Type};
+use rustrict::Censor;
 use std::env::args;
 
 pub fn main() {
     let input = args().skip(1).collect::<Vec<_>>().join(" ");
-    let (censored, analysis) = Censor::from_str(&input).censor_and_analyze();
+    trace(&input, false);
+    //trace(&input, true);
+}
+
+pub fn trace(s: &str, ignore_fp: bool) {
+    let mut censor = Censor::from_str(s);
+    censor.with_ignore_false_positives(ignore_fp);
+    let (censored, analysis) = censor.censor_and_analyze();
     println!(
-        "\"{}\" -> \"{}\" ({} {} {} {} {} {})",
-        input,
+        "ignore_fp={}, \"{}\" -> \"{}\" ({:?} with {} matches and {} matching characters)",
+        ignore_fp,
+        s,
         censored,
-        analysis.is(Type::PROFANE),
-        analysis.is(Type::OFFENSIVE),
-        analysis.is(Type::SEXUAL),
-        analysis.is(Type::MEAN),
-        analysis.is(Type::EVASIVE),
-        analysis.is(Type::SPAM)
+        analysis,
+        censor.total_matches(),
+        censor.total_match_characters()
     );
 }

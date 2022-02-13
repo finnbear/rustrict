@@ -93,9 +93,9 @@ pub struct Censor<I: Iterator<Item = char>> {
     self_censoring: u8,
     /// Is the input completely safe.
     safe: bool,
-    #[cfg(feature = "find_false_positives")]
+    #[cfg(any(feature = "find_false_positives", feature = "trace"))]
     total_matches: usize,
-    #[cfg(feature = "find_false_positives")]
+    #[cfg(any(feature = "find_false_positives", feature = "trace"))]
     total_match_characters: usize,
     /// Where matches are kept after they are complete but may be cancelled due to false positives.
     pending_commit: Vec<Match>,
@@ -140,9 +140,9 @@ impl<I: Iterator<Item = char>> Censor<I> {
             space_appended: false,
             done: false,
             last_pos: usize::MAX,
-            #[cfg(feature = "find_false_positives")]
+            #[cfg(any(feature = "find_false_positives", feature = "trace"))]
             total_matches: 0,
-            #[cfg(feature = "find_false_positives")]
+            #[cfg(any(feature = "find_false_positives", feature = "trace"))]
             total_match_characters: 0,
             matches: Set::default(),
             matches_tmp: Set::default(),
@@ -186,9 +186,9 @@ impl<I: Iterator<Item = char>> Censor<I> {
         self.space_appended = false;
         self.done = false;
         self.last_pos = usize::MAX;
-        #[cfg(feature = "find_false_positives")]
+        #[cfg(any(feature = "find_false_positives", feature = "trace"))]
         self.total_matches = 0;
-        #[cfg(feature = "find_false_positives")]
+        #[cfg(any(feature = "find_false_positives", feature = "trace"))]
         self.total_match_characters = 0;
         self.matches.clear();
         self.matches_tmp.clear();
@@ -299,12 +299,12 @@ impl<I: Iterator<Item = char>> Censor<I> {
         self.typ | self.safe_self_censoring_and_spam_detection()
     }
 
-    #[cfg(feature = "find_false_positives")]
+    #[cfg(any(feature = "find_false_positives", feature = "trace"))]
     pub fn total_matches(&self) -> usize {
         self.total_matches
     }
 
-    #[cfg(feature = "find_false_positives")]
+    #[cfg(any(feature = "find_false_positives", feature = "trace"))]
     pub fn total_match_characters(&self) -> usize {
         self.total_match_characters
     }
@@ -381,7 +381,10 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let pos = self.buffer.index();
 
             self.uppercase = self.uppercase.saturating_add(raw_c.is_uppercase() as u8);
-            let skippable = raw_c.is_punctuation() || raw_c.is_separator() || is_whitespace(raw_c);
+            let skippable = raw_c.is_punctuation()
+                || raw_c.is_separator()
+                || is_whitespace(raw_c)
+                || matches!(raw_c, '(' | ')');
             let replacement = REPLACEMENTS.get(&raw_c);
 
             #[cfg(feature = "trace")]
@@ -488,16 +491,26 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     safety_end = safety_end.min(m.start);
 
                     #[cfg(feature = "trace")]
-                    println!("  - Consider match \"{}\"", m.node.trace);
+                    println!(
+                        "  - Consider match \"{}\" with spaces={}",
+                        m.node.trace, m.spaces
+                    );
 
                     if (skippable || c == m.last) && m.start != pos.unwrap_or(0) {
                         // Undo remove.
+                        #[cfg(feature = "trace")]
+                        println!("undo remove \"{}\" where last={}, node last={:?} and initial spaces={}", m.node.trace, m.last, m.node.last, m.spaces);
                         let undo_m = Match {
                             // Here, '.' is primarily for allowing ellipsis ("...") as a form of
                             // space.
+                            // ( and ) are for ignoring appositive phrases.
+                            // Checking node.last is to collapse multiple spaces into one, to avoid
+                            // invalidating false positives in cases like didn't (it where ( is a space.
                             spaces: m.spaces.saturating_add(
-                                ((matches!(c, ' ' | '.' | ',' | ';' | '…') || c != raw_c)
+                                ((matches!(c, ' ' | '.' | ',' | ';' | '…' | '(' | ')')
+                                    || c != raw_c)
                                     && self.separate
+                                    && m.node.last != Some(' ')
                                     && c != '\'') as u8,
                             ),
                             replacements: m
@@ -542,6 +555,19 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                 self.safe = true;
                             }
 
+                            #[cfg(feature = "trace")]
+                            if !next_m.node.typ.is(Type::ANY) {
+                                if self.ignore_false_positives {
+                                    print!("ignoring");
+                                } else {
+                                    print!("found");
+                                }
+                                println!(
+                                    " false positive \"{}\", spaces={}, replacements={}",
+                                    next_m.node.trace, next_m.spaces, next_m.replacements
+                                );
+                            }
+
                             if next_m.node.typ.is(Type::ANY) {
                                 self.pending_commit.push(Match {
                                     end: pos.unwrap(),
@@ -582,9 +608,9 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let censor_threshold = self.censor_threshold;
             let censor_first_character_threshold = self.censor_first_character_threshold;
             let censor_replacement = self.censor_replacement;
-            #[cfg(feature = "find_false_positives")]
+            #[cfg(any(feature = "find_false_positives", feature = "trace"))]
             let total_matches = &mut self.total_matches;
-            #[cfg(feature = "find_false_positives")]
+            #[cfg(any(feature = "find_false_positives", feature = "trace"))]
             let total_match_characters = &mut self.total_match_characters;
 
             self.pending_commit.retain(|pending| {
@@ -609,7 +635,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         censor_first_character_threshold,
                         censor_replacement,
                     ) {
-                        #[cfg(feature = "find_false_positives")]
+                        #[cfg(any(feature = "find_false_positives", feature = "trace"))]
                         {
                             *total_matches += 1;
                             *total_match_characters += pending.end - pending.start;
@@ -649,10 +675,10 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 self.censor_first_character_threshold,
                 self.censor_replacement,
             ) {
-                #[cfg(feature = "find_false_positives")]
+                #[cfg(any(feature = "find_false_positives", feature = "trace"))]
                 {
                     self.total_matches += 1;
-                    self.total_match_characters = pending.end - pending.start;
+                    self.total_match_characters += pending.end - pending.start;
                 }
             }
         }
@@ -799,7 +825,7 @@ mod tests {
             }
             print!(" ");
             println!(
-                "(\"{}\" is {})",
+                "(\"{}\" is {:?})",
                 text.chars()
                     .skip(start)
                     .take(end - start)
@@ -807,7 +833,7 @@ mod tests {
                 holistic
             );
         } else {
-            println!("{} ({})", text, holistic);
+            println!("{} ({:?})", text, holistic);
         }
     }
 
@@ -862,7 +888,7 @@ mod tests {
 
             if any != any_truth {
                 find_detection(case);
-                panic!("FAIL: Predicted {} for {}", typ, case);
+                panic!("FAIL: Predicted {:?} for {}", typ, case);
             }
             if let Some(safe_truth) = safe_truth {
                 if safe != safe_truth {
@@ -903,7 +929,7 @@ mod tests {
     fn analyze() {
         let analysis = Censor::from_str("HELLO fuck shit WORLD!").analyze();
 
-        assert!(!analysis.is_empty());
+        assert_ne!(analysis, Type::NONE);
         assert!(analysis.is(Type::INAPPROPRIATE));
         assert!(analysis.is(Type::PROFANE));
         assert!(analysis.isnt(Type::SEXUAL & Type::SEVERE));
@@ -978,7 +1004,7 @@ mod tests {
             "https://crates.io/crates/rustrict",
             rustrict,
             false, // true,
-            None, // Some(rustrict_old),
+            None,  // Some(rustrict_old),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }

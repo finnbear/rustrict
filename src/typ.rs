@@ -1,55 +1,90 @@
 use bitflags::bitflags;
+use std::fmt::Debug;
+use std::ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, Not};
 
 bitflags! {
-    /// Type is represents a type or severity of inappropriateness.
-    /// They can be combined with bitwise operators, and are **not** mutually exclusive.
-    pub struct Type: u32 {
-        /// Bad words.
+    struct TypeRepr: u32 {
         const PROFANE   = 0b0_000_000_000_000_000_111;
-        /// Offensive words.
         const OFFENSIVE = 0b0_000_000_000_000_111_000;
-        /// Sexual words.
         const SEXUAL    = 0b0_000_000_000_111_000_000;
-        /// Mean words.
         const MEAN      = 0b0_000_000_111_000_000_000;
-        /// Words intended to evade detection.
         const EVASIVE   = 0b0_000_111_000_000_000_000;
-        /// Spam/gibberish/SHOUTING.
         const SPAM      = 0b0_111_000_000_000_000_000;
 
-        /// One of a very small number of safe phases.
-        /// Recommended to enforce this on users who repeatedly evade the filter.
         const SAFE      = 0b1_000_000_000_000_000_000;
 
-        /// Not that bad.
         const MILD      = 0b0_001_001_001_001_001_001;
-        /// Bad.
         const MODERATE  = 0b0_010_010_010_010_010_010;
-        /// Cover your eyes!
         const SEVERE    = 0b0_100_100_100_100_100_100;
 
-        /// Any level; `Type::MILD`, `Type::MODERATE`, or `Type::SEVERE`.
         const MILD_OR_HIGHER = Self::MILD.bits | Self::MODERATE.bits | Self::SEVERE.bits;
-
-        /// Any level in excess of `Type::MILD`.
         const MODERATE_OR_HIGHER = Self::MODERATE.bits | Self::SEVERE.bits;
-
-        /// The default `Type`, meaning profane, offensive, sexual, or severely mean.
         const INAPPROPRIATE = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | (Self::MEAN.bits & Self::SEVERE.bits);
 
-        /// Any type of detection (except SAFE). This will be expanded to cover all future types.
         const ANY = Self::PROFANE.bits | Self::OFFENSIVE.bits | Self::SEXUAL.bits | Self::MEAN.bits | Self::EVASIVE.bits | Self::SPAM.bits;
-
-        /// No type of detection.
         const NONE = 0;
     }
 }
+
+/// Type is represents a type or severity of inappropriateness.
+/// They can be combined with bitwise AND and OR operators, and are **not** mutually exclusive.
+///
+/// For example, the following means profane or at-least moderately mean:
+/// `Type::PROFANE | (Type::MEAN & Type::MODERATE_OR_HIGHER)`
+#[derive(Copy, Clone, Eq, PartialEq, Hash)]
+pub struct Type(TypeRepr);
 
 const SEVERE_WEIGHT: i8 = 3;
 const MODERATE_WEIGHT: i8 = 2;
 const MILD_WEIGHT: i8 = 1;
 
 impl Type {
+    /// Bad words.
+    pub const PROFANE: Self = Self(TypeRepr::PROFANE);
+
+    /// Offensive words.
+    pub const OFFENSIVE: Self = Self(TypeRepr::OFFENSIVE);
+
+    /// Sexual words.
+    pub const SEXUAL: Self = Self(TypeRepr::SEXUAL);
+
+    /// Mean words.
+    pub const MEAN: Self = Self(TypeRepr::MEAN);
+
+    /// Words intended to evade detection.
+    pub const EVASIVE: Self = Self(TypeRepr::EVASIVE);
+
+    /// Spam/gibberish/SHOUTING.
+    pub const SPAM: Self = Self(TypeRepr::SPAM);
+
+    /// One of a very small number of safe phases.
+    /// Recommended to enforce this on users who repeatedly evade the filter.
+    pub const SAFE: Self = Self(TypeRepr::SAFE);
+
+    /// Not that bad.
+    pub const MILD: Self = Self(TypeRepr::MILD);
+
+    /// Bad.
+    pub const MODERATE: Self = Self(TypeRepr::MODERATE);
+
+    /// Cover your eyes!
+    pub const SEVERE: Self = Self(TypeRepr::SEVERE);
+
+    /// Any level; `Type::MILD`, `Type::MODERATE`, or `Type::SEVERE`.
+    pub const MILD_OR_HIGHER: Self = Self(TypeRepr::MILD_OR_HIGHER);
+
+    /// Any level in excess of `Type::MILD`.
+    pub const MODERATE_OR_HIGHER: Self = Self(TypeRepr::MODERATE_OR_HIGHER);
+
+    /// The default `Type`, meaning profane, offensive, sexual, or severely mean.
+    pub const INAPPROPRIATE: Self = Self(TypeRepr::INAPPROPRIATE);
+
+    /// Any type of detection (except SAFE). This will be expanded to cover all future types.
+    pub const ANY: Self = Self(TypeRepr::ANY);
+
+    /// No type of detection.
+    pub const NONE: Self = Self(TypeRepr::NONE);
+
     /// Number of weights.
     pub(crate) const WEIGHT_COUNT: usize = 5;
     /// Bits per weight;
@@ -63,6 +98,21 @@ impl Type {
     /// Logical opposite of `Self::is`.
     pub fn isnt(self, threshold: Self) -> bool {
         self & threshold == Type::NONE
+    }
+
+    #[deprecated(note = "this is for backwards-compatibility, use Type::NONE instead")]
+    pub fn empty() -> Self {
+        Self::NONE
+    }
+
+    #[deprecated(note = "this is for backwards-compatibility, compare with Type::NONE instead")]
+    pub fn is_empty(self) -> bool {
+        self.0.is_empty()
+    }
+
+    #[deprecated(note = "this is for backwards-compatibility, there is no replacement")]
+    pub fn bits(self) -> u32 {
+        self.0.bits
     }
 
     #[allow(dead_code)]
@@ -81,7 +131,7 @@ impl Type {
 
         let mut i = 0;
         [0; Self::WEIGHT_COUNT].map(|_| {
-            let ret = bits_to_weight((self.bits >> i) & 0b111);
+            let ret = bits_to_weight((self.0.bits >> i) & 0b111);
             i += Self::WEIGHT_BITS;
             ret
         })
@@ -102,7 +152,7 @@ impl Type {
 
             result |= severity << (i * Self::WEIGHT_BITS)
         }
-        Type { bits: result }
+        Self(TypeRepr { bits: result })
     }
 }
 
@@ -113,10 +163,48 @@ impl Default for Type {
     }
 }
 
-/// This serves as replacement for Debug that isn't blocked by
-/// https://github.com/bitflags/bitflags/issues/218
-#[cfg(test)]
-impl std::fmt::Display for Type {
+impl BitAnd for Type {
+    type Output = Self;
+
+    fn bitand(self, rhs: Self) -> Self::Output {
+        // Delegate to bitflags
+        Self(self.0.bitand(rhs.0))
+    }
+}
+
+impl BitOr for Type {
+    type Output = Self;
+
+    fn bitor(self, rhs: Self) -> Self::Output {
+        // Delegate to bitflags
+        Self(self.0.bitor(rhs.0))
+    }
+}
+
+impl BitAndAssign for Type {
+    fn bitand_assign(&mut self, rhs: Self) {
+        // Delegate to bitflags
+        self.0.bitand_assign(rhs.0)
+    }
+}
+
+impl BitOrAssign for Type {
+    fn bitor_assign(&mut self, rhs: Self) {
+        // Delegate to bitflags
+        self.0.bitor_assign(rhs.0)
+    }
+}
+
+impl Not for Type {
+    type Output = Self;
+
+    fn not(self) -> Self::Output {
+        Self(self.0.not())
+    }
+}
+
+/// Note: Can't impl directly on TypeRepr due to https://github.com/bitflags/bitflags/issues/218
+impl Debug for Type {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         fn description(bits: u32) -> &'static str {
             if bits & 0b100 != 0 {
@@ -130,58 +218,70 @@ impl std::fmt::Display for Type {
             }
         }
         let mut count = 0;
-        if *self & Self::PROFANE != Type::empty() {
+        if *self & Self::PROFANE != Type::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{} profane", description((*self & Self::PROFANE).bits()))?;
+            write!(
+                f,
+                "{} profane",
+                description((*self & Self::PROFANE).0.bits())
+            )?;
             count += 1;
         }
-        if *self & Self::OFFENSIVE != Type::empty() {
+        if *self & Self::OFFENSIVE != Type::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
             write!(
                 f,
                 "{} offensive",
-                description((*self & Self::OFFENSIVE).bits() >> 3)
+                description((*self & Self::OFFENSIVE).0.bits() >> 3)
             )?;
             count += 1;
         }
-        if *self & Self::SEXUAL != Type::empty() {
+        if *self & Self::SEXUAL != Type::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
             write!(
                 f,
                 "{} sexual",
-                description((*self & Self::SEXUAL).bits() >> 6)
+                description((*self & Self::SEXUAL).0.bits() >> 6)
             )?;
             count += 1;
         }
-        if *self & Self::MEAN != Type::empty() {
+        if *self & Self::MEAN != Type::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{} mean", description((*self & Self::MEAN).bits() >> 9))?;
+            write!(
+                f,
+                "{} mean",
+                description((*self & Self::MEAN).0.bits() >> 9)
+            )?;
             count += 1;
         }
-        if *self & Self::EVASIVE != Type::empty() {
+        if *self & Self::EVASIVE != Type::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
             write!(
                 f,
                 "{} evasive",
-                description((*self & Self::EVASIVE).bits() >> 12)
+                description((*self & Self::EVASIVE).0.bits() >> 12)
             )?;
             count += 1;
         }
-        if *self & Self::SPAM != Type::empty() {
+        if *self & Self::SPAM != Type::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{} spam", description((*self & Self::SPAM).bits() >> 15))?;
+            write!(
+                f,
+                "{} spam",
+                description((*self & Self::SPAM).0.bits() >> 15)
+            )?;
             count += 1;
         }
 

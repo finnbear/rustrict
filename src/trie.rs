@@ -15,6 +15,8 @@ pub(crate) struct Node {
     pub contains_space: bool,
     pub typ: Type,
     pub depth: u8,
+    /// Character from parent to self.
+    pub last: Option<char>,
     #[cfg(feature = "trace")]
     pub trace: String,
 }
@@ -38,6 +40,7 @@ impl Trie {
                 contains_space: false,
                 typ: Type::NONE,
                 depth: (i + 1) as u8,
+                last: Some(c),
                 #[cfg(feature = "trace")]
                 trace: word.chars().take(i + 1).collect(),
             });
@@ -66,6 +69,7 @@ impl FromIterator<(&'static str, Type)> for Trie {
                 contains_space: false,
                 typ: Type::NONE,
                 depth: 0,
+                last: None,
                 #[cfg(feature = "trace")]
                 trace: String::new(),
             },
