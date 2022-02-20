@@ -9,7 +9,7 @@
 - Resistant to evasion
   - Alternative spellings (like "fck")
   - Repeated characters (like "craaaap")
-  - Confusable characters (like 'ᑭ' vs 'P')
+  - Confusable characters (like 'ᑭ', '𝕡', and '🅿')
   - Spacing (like "c r_a-p")
   - Accents (like "pÓöp")
   - Bidirectional Unicode ([related reading](https://blog.rust-lang.org/2021/11/01/cve-2021-42574.html))
@@ -168,7 +168,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.73% | 91.97% | 90.42% | 10s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.68% | 91.97% | 90.36% | 10s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development

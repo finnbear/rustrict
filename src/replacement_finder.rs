@@ -13,7 +13,7 @@ fn main() {
 
     // Unicode confusables
     include_str!("unicode_confusables.txt")
-        .split("\n")
+        .lines()
         .filter(|line| !line.is_empty() && !line.starts_with('#'))
         .filter_map(|line| {
             let mut segments = line.split(';');
@@ -40,6 +40,26 @@ fn main() {
                 })
         })
         .for_each(&mut append_replacement);
+
+    include_str!("unicode_fonts.txt")
+        .lines()
+        .filter(|line| !line.is_empty())
+        .for_each(|line| {
+            let chars: Vec<_> = line.chars().collect();
+
+            if chars.len() != 26 {
+                panic!("alphabet doesn't have 26 chars: {}", line);
+            }
+
+            for (i, c) in chars.into_iter().enumerate() {
+                if c.is_ascii() {
+                    // not all fonts have all letters.
+                    continue;
+                }
+
+                append_replacement((c, String::from_utf8(vec![b'a' + i as u8]).unwrap()))
+            }
+        });
 
     // Upper to lower case.
     (0..=0xFFFFFF)

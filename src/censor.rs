@@ -432,6 +432,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         space_after: false, // unknown at this time.
                         spaces: 0,
                         replacements: 0,
+                        low_confidence_replacements: 0,
                     });
                 }
             }
@@ -516,6 +517,11 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             replacements: m
                                 .replacements
                                 .saturating_add((!benign_replacement && !self.separate) as u8),
+                            low_confidence_replacements: m
+                                .low_confidence_replacements
+                                .saturating_add(
+                                    (!benign_replacement && raw_c.is_ascii_digit()) as u8,
+                                ),
                             ..m
                         };
                         if let Some(existing) = self.matches.get(&undo_m) {
@@ -535,6 +541,11 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             replacements: m
                                 .replacements
                                 .saturating_add((!benign_replacement && !self.separate) as u8),
+                            low_confidence_replacements: m
+                                .low_confidence_replacements
+                                .saturating_add(
+                                    (!benign_replacement && raw_c.is_ascii_digit()) as u8,
+                                ),
                             last: c,
                             ..m
                         };
@@ -1004,7 +1015,7 @@ mod tests {
             "https://crates.io/crates/rustrict",
             rustrict,
             false, // true,
-            None,  // Some(rustrict_old),
+            None, // Some(rustrict_old),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }

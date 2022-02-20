@@ -5,6 +5,7 @@
 6 secs
 7 secs
 8 secs
+88
 9 secs
 0 secs
 two secs
@@ -60,6 +61,7 @@ headbutt
 heli
 hellen
 hellp
+h tier
 ho ho ho
 honkeytonk
 honkey tonk
