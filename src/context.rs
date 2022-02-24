@@ -337,16 +337,18 @@ impl Context {
         }
     }
 
-    /// Returns how long the user is muted for, if at all.
-    pub fn muted_for(&self) -> Option<Duration> {
+    /// Returns how long the user is muted for (possibly [`Duration::ZERO`]).
+    pub fn muted_for(&self) -> Duration {
         self.muted_until
             .map(|muted_until| muted_until.saturating_duration_since(Instant::now()))
+            .unwrap_or(Duration::ZERO)
     }
 
-    /// Returns how long the user is restricted to [`Type::SAFE`] for, if at all.
-    pub fn restricted_for(&self) -> Option<Duration> {
+    /// Returns how long the user is restricted to [`Type::SAFE`] for (possibly [`Duration::ZERO`]).
+    pub fn restricted_for(&self) -> Duration {
         self.only_safe_until
             .map(|restricted_until| restricted_until.saturating_duration_since(Instant::now()))
+            .unwrap_or(Duration::ZERO)
     }
 
     /// Manually mute this user's messages for a duration. Overwrites any previous manual mute.
