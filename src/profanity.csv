@@ -294,8 +294,11 @@ naked,0,0,2,0,0
 naughty,0,0,1,0,0
 n word,1,1,0,0,1
 natsee,0,2,0,0,2
+national socialist,0,0,0,0,1
+natsoc,0,0,0,0,1
 natzi,0,2,0,0,1
 nazi,0,2,0,0,0
+nazis,0,2,0,0,0
 neger,3,5,0,0,2
 negros,0,1,0,0,0
 nga,2,3,0,0,2
@@ -403,6 +406,8 @@ shut it,0,0,0,2,0
 shut ut,0,0,0,2,1
 shutup,0,0,0,2,0
 sisy,0,0,0,1,0
+siegheil,0,2,0,0,1
+sieghail,0,2,0,0,2
 skank,0,2,3,0,0
 slut,0,2,2,0,0
 sodomize,0,0,3,0,0
