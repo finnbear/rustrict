@@ -156,15 +156,27 @@ impl<I: Iterator<Item = char>> Censor<I> {
     ) -> BufferProxyIterator<Recompositions<Filter<Decompositions<I>, fn(&char) -> bool>>> {
         // Detects if a char isn't a diacritical mark (accent) or banned, such that such characters may be
         // filtered on that basis.
-        fn isnt_mark_nonspacing_or_banned(c: &char) -> bool {
-            !(c.is_mark_nonspacing() || BANNED.contains(c))
+        fn filter_char(c: &char) -> bool {
+            // In order of approximate likelihood, for efficiency.
+            // This purposefully omits: is_other_private_use, and is_mark_nonspacing.
+            let ok = c.is_letter()
+                || c.is_number()
+                || c.is_separator()
+                || c.is_punctuation()
+                || c.is_symbol()
+                || c.is_mark_spacing_combining()
+                || c.is_mark_enclosing()
+                || c.is_other_format()
+                || c.is_other_control();
+
+            ok && !BANNED.contains(c)
         }
 
         BufferProxyIterator::new(
             text
                 // The following three transformers are to ignore diacritical marks.
                 .nfd()
-                .filter(isnt_mark_nonspacing_or_banned as fn(&char) -> bool)
+                .filter(filter_char as fn(&char) -> bool)
                 .nfc(),
         )
     }
@@ -780,6 +792,8 @@ mod tests {
     extern crate test;
     use crate::{Censor, CensorIter, CensorStr, Type};
     use bitflags::_core::ops::Not;
+    use rand::prelude::ThreadRng;
+    use rand::{thread_rng, Rng};
     use serial_test::serial;
     use std::fs::File;
     use std::io::BufReader;
@@ -799,6 +813,28 @@ mod tests {
     fn unicode_whitespace() {
         assert!("fu\u{1160}ck".is(Type::PROFANE));
         assert!(!"fu\u{1161}ck".is(Type::PROFANE));
+    }
+
+    #[test]
+    #[serial]
+    fn unicode_abuse() {
+        let mut rng = thread_rng();
+
+        fn random_string(rng: &mut ThreadRng, len: usize) -> String {
+            rng.sample_iter::<char, _>(rand::distributions::Standard)
+                .take(len)
+                .collect()
+        }
+
+        for _ in 0..10 {
+            let input = random_string(&mut rng, 100);
+            let censored = input.censor();
+
+            // Most of the characters should be removed for being invalid.
+            assert!(censored.len() < input.len() / 2);
+
+            println!("{} -> {}", input, censored);
+        }
     }
 
     #[allow(dead_code)]
@@ -900,6 +936,10 @@ mod tests {
             if any != any_truth {
                 find_detection(case);
                 panic!("FAIL: Predicted {:?} for {}", typ, case);
+            }
+            if !any {
+                // None of the current test cases contain any abusive Unicode characters.
+                assert_eq!(case, case.censor());
             }
             if let Some(safe_truth) = safe_truth {
                 if safe != safe_truth {

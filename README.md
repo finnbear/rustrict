@@ -14,7 +14,8 @@
   - Accents (like "pÓöp")
   - Bidirectional Unicode ([related reading](https://blog.rust-lang.org/2021/11/01/cve-2021-42574.html))
   - Self-censoring (like "f*ck")
-  - Safe phrase list for known bad actors
+  - Safe phrase list for known bad actors]
+  - Censors invalid Unicode characters
   - Battle-tested in [Mk48.io](https://mk48.io)
 - Resistant to false positives
   - One word (like "**ass**assin")
@@ -28,7 +29,7 @@
 - Performant
   - O(n) analysis and censoring
   - No `regex` (uses custom trie)
-  - 3.5 MB/s in `release` mode
+  - 3 MB/s in `release` mode
   - 100 KB/s in `debug` mode
 
 ## Limitations
@@ -168,7 +169,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.68% | 91.97% | 90.35% | 10s |
+| [rustrict](https://crates.io/crates/rustrict) | 90.68% | 91.97% | 90.35% | 11s |
 | [censor](https://crates.io/crates/censor) | 76.16% | 72.76% | 77.01% | 23s |
 
 ## Development
