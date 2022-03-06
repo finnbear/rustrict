@@ -1,7 +1,3 @@
 # Broken "positive" tests
 blahsh!t
 battlesh!t
-
-# Broken "negative" tests
-to helicopter
-to helios
