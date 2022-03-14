@@ -2,7 +2,7 @@ use crate::{trim_whitespace, Censor, Type};
 
 use std::collections::VecDeque;
 use std::fmt::{self, Debug, Display, Formatter};
-use std::num::NonZeroU16;
+use std::num::{NonZeroU16, NonZeroUsize};
 use std::time::{Duration, Instant};
 
 /// Context is useful for taking moderation actions on a per-user basis i.e. each user would get
@@ -47,6 +47,10 @@ pub struct ContextProcessingOptions {
     pub block_if_empty: bool,
     /// Block messages, as opposed to censoring, if severe inappropriateness is detected.
     pub block_if_severely_inappropriate: bool,
+    /// Character count (or, with the `width` feature, number of `m`-equivalent widths).
+    ///
+    /// Messages will be trimmed to fit.
+    pub character_limit: Option<NonZeroUsize>,
     /// Rate-limiting options.
     pub rate_limit: Option<ContextRateLimitOptions>,
     /// Block messages if they are very similar to this many previous message.
@@ -64,6 +68,7 @@ impl Default for ContextProcessingOptions {
             block_if_muted: true,
             block_if_empty: true,
             block_if_severely_inappropriate: true,
+            character_limit: Some(NonZeroUsize::new(2048).unwrap()),
             rate_limit: Some(ContextRateLimitOptions::default()),
             repetition_limit: Some(ContextRepetitionLimitOptions::default()),
             max_safe_timeout: Duration::from_secs(30 * 60),
@@ -198,11 +203,25 @@ impl Context {
             .with_censor_first_character_threshold(censor_first_character_threshold)
             .censor_and_analyze();
 
-        if options.trim_whitespace {
-            let trimmed_censored = trim_whitespace(&censored);
-            if trimmed_censored.len() < censored.len() {
-                censored = String::from(trimmed_censored);
+        let mut censored_str = censored.as_str();
+
+        if let Some(character_limit) = options.character_limit {
+            #[cfg(feature = "width")]
+            {
+                censored_str = crate::trim_to_width(censored_str, character_limit.get());
             }
+            if let Some((limit, _)) = censored_str.char_indices().nth(character_limit.get()) {
+                censored_str = &censored_str[..limit];
+            }
+        }
+
+        if options.trim_whitespace {
+            censored_str = trim_whitespace(censored_str);
+        }
+
+        if censored_str.len() < censored.len() {
+            // Something was trimmed, must must re-allocate.
+            censored = String::from(censored_str);
         }
 
         self.total = self.total.saturating_add(1);
@@ -504,6 +523,7 @@ mod tests {
     use crate::{Censor, CensorIter, CensorStr, Type};
     use std::fs::File;
     use std::io::BufReader;
+    use std::num::NonZeroUsize;
     use std::time::{Duration, Instant};
     use test::Bencher;
 
@@ -577,10 +597,8 @@ mod tests {
             ctx.process_with_options(String::from("three"), &opts),
             Ok(String::from("three"))
         );
-        assert!(matches!(
-            ctx.process_with_options(String::from("four"), &opts),
-            Err(BlockReason::Spam(_))
-        ));
+        let res = ctx.process_with_options(String::from("four"), &opts);
+        assert!(matches!(res, Err(BlockReason::Spam(_))), "{:?}", res);
 
         std::thread::sleep(Duration::from_secs(2));
 
@@ -631,5 +649,28 @@ mod tests {
 
         let mut ctx = Context::new();
         assert_eq!(ctx.process(String::from("   ")), Err(BlockReason::Empty));
+    }
+
+    #[test]
+    #[cfg(feature = "width")]
+    fn character_limit() {
+        use crate::{BlockReason, Context, ContextProcessingOptions};
+        let mut ctx = Context::new();
+
+        let opts = ContextProcessingOptions {
+            character_limit: Some(NonZeroUsize::new(5).unwrap()),
+            ..Default::default()
+        };
+
+        assert_eq!(
+            ctx.process_with_options(String::from("abcdefgh"), &opts),
+            Ok(String::from("abcde"))
+        );
+
+        #[cfg(feature = "width")]
+        assert_eq!(
+            ctx.process_with_options(String::from("a﷽"), &opts),
+            Ok(String::from("a"))
+        );
     }
 }
