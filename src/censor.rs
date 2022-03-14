@@ -271,6 +271,13 @@ impl<I: Iterator<Item = char>> Censor<I> {
         self
     }
 
+    /// Useful for processing sub-slices of profanity.
+    #[cfg(feature = "find_false_positives")]
+    pub fn with_separate(&mut self, separate: bool) -> &mut Self {
+        self.separate = separate;
+        self
+    }
+
     /// Produces a censored string. If called, it must be the first form of processing. It
     /// entirely consumes and censors the input characters.
     ///
@@ -434,13 +441,16 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 //
                 // Not adding a match is mainly an optimization.
                 if !(skippable && replacement.is_none() && !matches!(raw_c, ' ' | '_')) {
+                    let begin_camel_case_word = raw_c.is_ascii_uppercase()
+                        && self.last.map(|c| !c.is_ascii_uppercase()).unwrap_or(false);
+
                     // Seed a new match for every character read.
                     self.matches.insert(Match {
                         node: &TRIE.root,
                         start: pos, // will immediately be incremented if match is kept.
                         end: usize::MAX, // sentinel.
                         last: 0 as char, // sentinel.
-                        space_before: self.separate,
+                        space_before: self.separate || begin_camel_case_word,
                         space_after: false, // unknown at this time.
                         spaces: 0,
                         replacements: 0,
@@ -1055,7 +1065,7 @@ mod tests {
             "https://crates.io/crates/rustrict",
             rustrict,
             false, // true,
-            None,  // Some(rustrict_old),
+            None, // Some(rustrict_old),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }

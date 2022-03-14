@@ -18,6 +18,12 @@ pub(crate) mod typ;
 #[cfg(feature = "context")]
 pub(crate) mod context;
 
+#[cfg(feature = "width")]
+pub(crate) mod width;
+
+#[cfg(feature = "width")]
+pub use width::{trim_to_width, width, width_str};
+
 #[cfg(feature = "censor")]
 pub use typ::Type;
 

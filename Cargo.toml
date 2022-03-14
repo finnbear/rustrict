@@ -1,7 +1,7 @@
 [package]
 name = "rustrict"
 authors = ["Finn Bear"]
-version = "0.4.7"
+version = "0.4.8"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/finnbear/rustrict/"
@@ -23,6 +23,11 @@ path = "src/replacement_finder.rs"
 required-features = ["find_replacements"]
 
 [[bin]]
+name = "character_analyzer"
+path = "src/character_analyzer.rs"
+required-features = ["imageproc", "image", "rusttype", "walkdir", "rayon"]
+
+[[bin]]
 name = "trace"
 path = "src/trace.rs"
 required-features = ["trace"]
@@ -32,10 +37,14 @@ default = ["censor", "context"]
 censor = ["bitflags", "lazy_static", "itertools", "unicode-normalization", "rustc-hash"]
 context = ["censor", "strsim"]
 customize = ["censor"]
+width = []
 reset_censor = ["censor"]
 find_false_positives = ["censor", "regex", "indicatif", "rayon"]
 find_replacements = ["csv"]
 trace = ["censor"]
+
+[package.metadata.docs.rs]
+features = ["censor", "context", "customize", "width"]
 
 [patch.crates-io]
 # crates.io not up to date (see https://github.com/swgillespie/unicode-categories/issues/12)
@@ -54,10 +63,14 @@ rayon = {version = "1.5", optional = true}
 doc-comment = "0.3.3"
 strsim = {version = "0.10.0", optional = true}
 csv = {version="1.1", optional = true}
+imageproc = {version = "0.22", optional = true}
+rusttype = {version = "0.9", optional = true}
+image = {version = "0.23.14", optional = true}
+walkdir = {version = "2", optional = true}
 
 [dev-dependencies]
 rand = "0.8"
 csv = "1.1"
 censor_crate = {package = "censor", version = "0.2.0"}
-rustrict_old = { package = "rustrict", version = "0.3.5" }
+rustrict_old = {package = "rustrict", version = "0.4.7"}
 serial_test = "0.5"

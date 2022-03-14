@@ -1,7 +1,6 @@
 #![no_main]
 use libfuzzer_sys::fuzz_target;
 use rustrict::{Censor, Context, Type};
-use std::time::Duration;
 
 fuzz_target!(|data: &[u8]| {
     if !data.is_empty() {
@@ -9,6 +8,9 @@ fuzz_target!(|data: &[u8]| {
         let input = &data[1..];
 
         if let Ok(text) = std::str::from_utf8(input) {
+            let _ = rustrict::width_str(text);
+            let _ = rustrict::trim_to_width(text, 10);
+
             let (_censored, _analysis) = Censor::from_str(text)
                 .with_ignore_self_censoring(flag(flags, 0))
                 .with_ignore_false_positives(flag(flags, 1))

@@ -80,6 +80,10 @@ pub struct ContextRateLimitOptions {
     /// Allows a certain amount of messages beyond the rate limit.
     pub burst: u8,
     /// Count a message against the rate limit up to 3 times, once for each unit of this many characters.
+    ///
+    /// If the `width` feature is enabled, the length of the text is interpreted as the number
+    /// of `m`'s it would take to reach the same length, or the number of characters, whichever
+    /// is higher.
     pub character_limit: Option<NonZeroU16>,
 }
 
@@ -298,7 +302,12 @@ impl Context {
                 // How many messages does this count for against the rate limit.
                 let rate_limit_messages =
                     if let Some(char_limit) = rate_limit_options.character_limit {
-                        (message.chars().count() / char_limit.get() as usize).clamp(1, 3) as u8
+                        let char_count = message.chars().count();
+
+                        #[cfg(feature = "width")]
+                        let char_count = char_count.max(crate::width_str(&message));
+
+                        (char_count / char_limit.get() as usize).clamp(1, 3) as u8
                     } else {
                         1
                     };

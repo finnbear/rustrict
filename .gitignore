@@ -15,5 +15,8 @@ src/dictionary.txt
 src/dictionary_common.txt
 src/unicode_confusables.txt
 
+# Downloads not covered under downloads.sh
+ttf/
+
 .idea
 *.iml

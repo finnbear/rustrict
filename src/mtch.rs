@@ -58,7 +58,11 @@ impl Match {
             self.node.contains_space
         );
 
-        let too_many_replacements = !(self.space_before && self.space_after)
+        let too_many_replacements = !(self.space_before
+            && (self.space_after
+                || (self.spaces == 0
+                    && self.node.depth > 2
+                    && self.node.typ.is(Type::MODERATE_OR_HIGHER))))
             && self.node.depth > 1
             && self.spaces.max(self.replacements) as usize + 4 > self.node.depth as usize;
 
