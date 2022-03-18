@@ -7,6 +7,7 @@ word,profane,offensive,sexual,mean,evasive
 ࿘,0,2,0,0,0
 ✠,0,1,0,0,0
 🖕,1,0,0,0,1
+𓂺,0,0,2,0,3
 _l_,1,0,0,0,2
 3==D,0,0,2,0,1
 3==o,0,0,2,0,1
@@ -68,6 +69,7 @@ breast,0,0,2,0,0
 btch,0,2,2,0,1
 bugger,2,0,0,0,0
 bulshit,2,0,0,0,0
+bullsht,2,0,0,0,1
 butt,1,0,0,0,0
 buttock,1,0,0,0,0
 buttox,1,0,0,0,2
@@ -84,7 +86,7 @@ cock,2,0,2,0,0
 cocksuck,2,0,3,0,0
 cok,2,0,2,0,1
 commie,0,2,0,0,0
-commitsuicide,0,2,0,3,0
+commitsuicide,1,2,0,3,0
 condom,0,0,2,0,0
 coom,0,0,3,0,0
 coomer,0,0,3,2,0
@@ -93,10 +95,11 @@ coward,0,0,0,1,0
 cracker,0,2,0,0,0
 crap,1,0,0,0,0
 cuck,0,0,2,0,0
-cum,0,0,3,0,0
+ cum,0,0,3,0,0
 cumer,0,0,3,0,1
 cumed,0,0,3,0,0
 cumgoblin,0,0,3,0,0
+cumguzler,0,0,3,0,0
 cumlord,0,0,3,0,0
 cnt,0,2,2,0,1
 cunt,0,2,2,0,0
@@ -173,6 +176,8 @@ finger u,0,0,2,0,0
 fingeryou,0,0,2,0,0
 fingering,0,0,1,0,0
 fk,2,0,2,0,1
+fkd,2,0,2,0,1
+fked,2,0,2,0,1
 fkin,2,0,2,0,1
 fking,2,0,2,0,1
 fkk,2,0,2,0,1
@@ -197,6 +202,7 @@ fucked,2,0,2,0,0
 fucker,2,0,0,2,0
 fucking,2,0,2,0,0
 fuckyou,2,0,2,3,0
+fuckyourself,2,0,2,3,0
 fudgepacker,0,0,3,0,0
 fug,2,0,2,0,3
 fuged,2,0,2,0,3
@@ -237,6 +243,7 @@ hator,0,0,0,2,2
 hayt,0,0,0,2,2
 heil hitler,0,3,0,0,0
 hell,1,0,0,0,0
+hentai,0,0,3,0,0
 her bob,0,0,3,0,0
 heshe,0,0,2,0,0
 hilter,0,2,0,0,2
@@ -439,6 +446,7 @@ sucks,0,0,1,1,0
 suckit,0,0,2,2,0
 suckme,0,0,3,0,0
 suckmy,0,0,3,0,0
+suicide,1,0,0,0,0
 suk,0,0,1,1,1
 sukk,0,0,1,1,1
 tard,0,1,0,1,1

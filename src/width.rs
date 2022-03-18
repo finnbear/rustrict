@@ -1,4 +1,4 @@
-const MODE_WIDTH: u8 = 7;
+const MODE_WIDTH: u8 = 10;
 
 lazy_static::lazy_static! {
     static ref WIDTHS: Vec<(char, u8)> = {
@@ -38,9 +38,8 @@ lazy_static::lazy_static! {
 /// Returns an estimate of the worst-case display width in milli-`m`'s (thousandths of the
 /// the width of an `m` character).
 ///
-/// For example, `width('m')` returns 1000, `width('i')` returns 600, and `width('\u{FDFD}')`
-/// returns 10300 (wouldn't you like to know if your user's text is 10.3X longer per character
-/// than you might have expected?).
+/// For example, `width('m')` returns 1000 and `width('\u{FDFD}')` returns 10300 (wouldn't you like
+/// to know if your user's text is 10.3X longer per character than you might have expected?).
 ///
 /// Precision is not necessarily 1 milli-`m` (currently, it is 100 milli-`m`'s).
 pub fn width(c: char) -> usize {
@@ -77,11 +76,14 @@ pub fn trim_to_width(s: &str, mut budget: usize) -> &str {
 mod test {
     use crate::width;
     use crate::width::{trim_to_width, width_str};
+    use serial_test::serial;
 
+    /*
     #[test]
     pub fn i() {
         assert_eq!(width('i'), 600);
     }
+     */
 
     #[test]
     pub fn m() {
@@ -95,11 +97,23 @@ mod test {
     }
 
     #[test]
-    pub fn string() {
-        assert_eq!(width_str("abc‱Ǆဪ"), 7);
+    pub fn emoji() {
+        assert_eq!(width_str("😀🐿"), 3);
     }
 
     #[test]
+    pub fn cjk() {
+        assert_eq!(width_str("大はㅂ"), 6)
+    }
+
+    #[test]
+    pub fn string() {
+        //assert_eq!(width_str("abc‱Ǆဪ"), 7);
+        assert_eq!(width_str("abc‱Ǆဪ"), 8);
+    }
+
+    #[test]
+    #[serial]
     pub fn trim() {
         assert_eq!(trim_to_width("aa", 0), "");
         assert_eq!(trim_to_width("mmm", 1), "m");

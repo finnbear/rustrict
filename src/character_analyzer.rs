@@ -1,13 +1,15 @@
 #![feature(binary_heap_into_iter_sorted)]
 
-//use image::{Rgb, RgbImage, GrayImage, Luma};
-//use imageproc::drawing::{draw_text_mut};
+use image::{GrayImage, Luma, Rgb, RgbImage};
+use imageproc::drawing::draw_text_mut;
 use rayon::prelude::{IntoParallelIterator, ParallelIterator};
 use rusttype::{Font, Point, Scale};
+use std::collections::BinaryHeap;
 use std::ffi::OsStr;
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Write};
 use std::sync::Mutex;
+use unicode_width::UnicodeWidthChar;
 use walkdir::WalkDir;
 
 /// Output file has the following format:
@@ -91,33 +93,19 @@ fn main() {
         let s = c.encode_utf8(&mut tmp);
         buffered.write_all(s.as_bytes()).unwrap();
         buffered.write_all(&[max_width as u8]).unwrap();
+
+        if max_width > 60 {
+            println!("character '{}' has width {}", c, max_width);
+        }
     }
 
     buffered.flush().unwrap();
-
-    /*
-    const RESOLUTION: u32 = 32;
-
-    let path = Path::new(&arg);
-
-    let mut image = GrayImage::new(RESOLUTION, RESOLUTION);
-
-    let height = RESOLUTION as f32;
-    let scale = Scale {
-        x: height,
-        y: height,
-    };
-
-    let text = "\u{12345}";
-    draw_text_mut(&mut image, Luma([255u8]), 0, 0, scale, &font, text);
-
-    let _ = image.save(path).unwrap();
-     */
 }
 
 /// Computes max width in milli-m's.
 fn max_width(c: char, fonts: &[Font]) -> usize {
-    let mut max_width = 0;
+    use unicode_width::UnicodeWidthChar;
+    let mut max_width = c.width().map(|w| w * 1000).unwrap_or(0);
     for font in fonts {
         let width = width(c, font);
         max_width = max_width.max(width);
@@ -134,11 +122,33 @@ fn width(c: char, font: &Font) -> usize {
     let mut max = i32::MIN;
 
     font.layout(s, Scale::uniform(1344.0), Point::default())
-        .filter_map(|i| i.pixel_bounding_box())
-        .for_each(|b| {
-            min = min.min(b.min.x);
-            max = max.max(b.max.x);
+        .for_each(|i| {
+            if let Some(b) = i.pixel_bounding_box() {
+                min = min.min(b.min.x);
+                max = max.max(b.max.x);
+            } else if false {
+                i.draw(|x, _y, _c| {
+                    min = min.min(x as i32);
+                    max = max.max(x as i32);
+                })
+            }
         });
 
     max.checked_sub(min).unwrap_or(0) as usize
+}
+
+fn render(c: char, font: &Font, resolution: u32) {
+    let mut image = GrayImage::new(resolution, resolution);
+
+    let height = resolution as f32;
+    let scale = Scale {
+        x: height,
+        y: height,
+    };
+
+    let mut tmp = [0u8; 4];
+    let text = c.encode_utf8(&mut tmp);
+    draw_text_mut(&mut image, Luma([255u8]), 0, 0, scale, &font, text);
+
+    let _ = image.save("image.png").unwrap();
 }

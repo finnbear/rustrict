@@ -7,6 +7,7 @@ use std::time::{Duration, Instant};
 
 /// Context is useful for taking moderation actions on a per-user basis i.e. each user would get
 /// their own Context.
+#[derive(Clone)]
 pub struct Context {
     history: VecDeque<(String, Instant)>,
     burst_used: u8,
@@ -521,6 +522,7 @@ mod tests {
         ContextProcessingOptions, ContextRateLimitOptions, ContextRepetitionLimitOptions,
     };
     use crate::{Censor, CensorIter, CensorStr, Type};
+    use serial_test::serial;
     use std::fs::File;
     use std::io::BufReader;
     use std::num::NonZeroUsize;
@@ -572,6 +574,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn context_spam() {
         use crate::{BlockReason, Context};
 
@@ -609,6 +612,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn context_spam_long_message() {
         use crate::{BlockReason, Context};
 
