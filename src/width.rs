@@ -1,3 +1,5 @@
+use std::str::from_utf8;
+
 const MODE_WIDTH: u8 = 10;
 
 lazy_static::lazy_static! {
@@ -17,10 +19,13 @@ lazy_static::lazy_static! {
 
         while !raw.is_empty() {
             // Read one UTF-8 character.
-            let c = match std::str::from_utf8(raw) {
-                Ok(s) => s,
-                Err(e) => std::str::from_utf8(&raw[..e.valid_up_to()]).unwrap()
-            }.chars().next().unwrap();
+            // TODO: Once stable, use: utf8_char_width(raw[0])
+            let s = from_utf8(&raw[..1])
+                .or_else(|_| from_utf8(&raw[..2]))
+                .or_else(|_| from_utf8(&raw[..3]))
+                .or_else(|_| from_utf8(&raw[..4]))
+                .unwrap();
+            let c = s.chars().next().unwrap();
             raw = &raw[c.len_utf8()..];
 
             // After character comes a byte of length.
