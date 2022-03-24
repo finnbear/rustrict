@@ -133,6 +133,7 @@ dominatrics,0,0,3,0,0
 dominatrix,0,0,3,0,0
 dong,0,0,2,0,0
 douche,1,1,2,2,0
+douchebag,1,1,2,2,0
 douchiest,1,1,2,1,0
 douching,1,1,2,1,0
 dumb,0,0,0,1,0
@@ -149,7 +150,7 @@ f word,1,0,0,0,1
 f y s,2,0,1,3,2
 f you,2,0,0,2,1
 f u,2,0,0,2,1
-fac,1,0,1,0,1
+facyou,1,0,1,2,1
 facist,0,2,0,0,0
 fack,1,0,1,0,1
 fak,1,0,1,0,2
@@ -412,7 +413,9 @@ rascit,0,0,0,1,2
 rectum,0,0,2,0,0
 recktum,0,0,2,0,2
 retard,0,2,0,2,0
+retarded,0,2,0,2,0
 retart,0,2,0,2,0
+retarted,0,2,0,2,0
 rimjob,0,0,3,0,0
 s word,1,0,0,0,1
 screwyou,1,0,0,2,0
@@ -455,7 +458,7 @@ skank,0,2,3,0,0
 slut,0,2,2,0,0
 sodomize,0,0,3,0,0
 sodomy,0,0,3,0,0
-spic,0,2,0,0,0
+ spic,0,2,0,0,0
 spunk,0,0,3,0,0
 ssex,0,0,1,0,1
 stfu,1,0,0,2,0
@@ -534,6 +537,7 @@ youre hole,0,0,2,0,3
 youremother,0,0,1,1,1
 your hole,0,0,2,0,2
 yourmother,0,0,1,1,0
+yourmom,0,0,1,1,0
 yourmum,0,0,1,1,1
 yomama,0,0,0,1,0
 yo mum,0,0,0,1,1
