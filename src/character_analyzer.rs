@@ -4,12 +4,10 @@ use image::{GrayImage, Luma, Rgb, RgbImage};
 use imageproc::drawing::draw_text_mut;
 use rayon::prelude::{IntoParallelIterator, ParallelIterator};
 use rusttype::{Font, Point, Scale};
-use std::collections::BinaryHeap;
 use std::ffi::OsStr;
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Write};
 use std::sync::Mutex;
-use unicode_width::UnicodeWidthChar;
 use walkdir::WalkDir;
 
 /// Output file has the following format:
@@ -47,11 +45,16 @@ fn main() {
 
     (0..=char::MAX as u32).into_par_iter().for_each(|u| {
         if let Some(c) = char::from_u32(u) {
-            let max_width = (max_width(c, &fonts) as f32 / 100f32).round() as u16;
-            if max_width > u8::MAX as u16 {
-                panic!("{}", c);
-            }
-            let max_width = max_width as u8;
+            let max_width = match c {
+                '🐿' => 20,
+                _ => {
+                    let max_width = (max_width(c, &fonts) as f32 / 100f32).round() as u16;
+                    if max_width > u8::MAX as u16 {
+                        panic!("{}", c);
+                    }
+                    max_width as u8
+                }
+            };
 
             output.lock().unwrap().push(c, max_width);
 

@@ -40,6 +40,14 @@ balsack,0,0,3,0,0
 bastard,2,3,0,0,0
 bastrad,2,3,0,0,1
 beaner,0,2,0,0,0
+beatmeat,0,0,2,0,1
+beatingmeat,0,0,2,0,1
+beatthemeat,0,0,2,0,1
+beatingthemeat,0,0,2,0,1
+beattheirmeat,0,0,2,0,1
+beatingtheirmeat,0,0,2,0,1
+beatyourmeat,0,0,2,1,1
+beatingyourmeat,0,0,2,1,1
 beetch,0,2,2,0,1
 biatch,0,2,2,0,1
 bich,0,2,2,0,1
@@ -76,6 +84,7 @@ buttox,1,0,0,0,2
 bra,0,0,1,0,0
 brainless,0,0,0,1,0
 bxtch,0,2,2,0,2
+C+B,2,0,2,0,2
 cameljockey,0,2,0,0,0
 castrate,0,0,2,0,0
 chickenshit,2,0,0,1,0
@@ -130,6 +139,7 @@ dumb,0,0,0,1,0
 dumbass,2,0,0,2,0
 dyke,2,2,2,0,0
 eat dog,0,1,0,0,0
+ecchi,0,0,2,0,0
 eff,2,0,2,0,1
 effing,2,0,2,0,1
 ejaculat,0,0,2,0,0
@@ -139,6 +149,7 @@ f word,1,0,0,0,1
 f y s,2,0,1,3,2
 f you,2,0,0,2,1
 f u,2,0,0,2,1
+fac,1,0,1,0,1
 facist,0,2,0,0,0
 fack,1,0,1,0,1
 fak,1,0,1,0,2
@@ -291,13 +302,23 @@ klansman,0,3,0,0,0
 klansmen,0,3,0,0,0
 klanswoman,0,3,0,0,0
 klanswomen,0,3,0,0,0
+krap,1,0,0,0,1
 kuklux,0,3,0,0,0
 kukluxklan,0,3,0,0,0
 kys,0,2,0,3,0
 labia,0,0,3,0,0
 loser,0,0,0,2,0
+masherbate,0,0,2,0,2
+masherbating,0,0,2,0,2
 masterbate,0,0,2,0,0
+masterbating,0,0,2,0,0
+mastherbate,0,0,2,0,2
+mastherbating,0,0,2,0,2
+masterhbate,0,0,2,0,2
+masterhbating,0,0,2,0,2
 masturbate,0,0,2,0,0
+masturbating,0,0,2,0,0
+meatbeating,0,0,2,0,1
 a mf,1,1,1,0,1
 migga,2,3,0,0,2
 miger,2,5,0,0,2
@@ -317,6 +338,7 @@ natzi,0,2,0,0,1
 nazi,0,2,0,0,0
 nazis,0,2,0,0,0
 neger,3,5,0,0,2
+negr,3,5,0,0,2
 negros,0,1,0,0,0
 nga,2,3,0,0,2
 ngga,2,3,0,0,2
@@ -446,6 +468,8 @@ sucks,0,0,1,1,0
 suckit,0,0,2,2,0
 suckme,0,0,3,0,0
 suckmy,0,0,3,0,0
+suhck,0,0,1,1,2
+suhckme,0,0,3,0,2
 suicide,1,0,0,0,0
 suk,0,0,1,1,1
 sukk,0,0,1,1,1
@@ -454,8 +478,15 @@ terrorist,0,1,0,0,0
 testical,0,0,3,0,1
 testicle,0,0,3,0,0
 that sob,1,0,1,0,0
+that mf,1,1,1,0,1
 this mf,1,1,1,0,1
 threesome,0,0,3,0,0
+ticklemypickl,0,0,2,0,1
+ticklemypickle,0,0,2,0,1
+tickleyourpickl,0,0,2,0,1
+tickleyourpickle,0,0,2,0,1
+ticklmypickl,0,0,2,0,2
+ticklyourpickl,0,0,2,0,2
 tit,0,0,2,0,0
 tits,0,0,2,0,0
 tohell,1,1,0,2,0

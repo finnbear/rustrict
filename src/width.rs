@@ -103,7 +103,7 @@ mod test {
 
     #[test]
     pub fn emoji() {
-        assert_eq!(width_str("😀🐿"), 3);
+        assert_eq!(width_str("😀🐿"), 4);
     }
 
     #[test]
