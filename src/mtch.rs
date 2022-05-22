@@ -64,6 +64,8 @@ impl Match {
                     && self.node.depth > 2
                     && self.node.typ.is(Type::MODERATE_OR_HIGHER))))
             && self.node.depth > 1
+            // In theory, prevents blahsex, but allows blahsexblah.
+            && (!(self.space_after || self.space_before) || self.node.depth < 3 || self.spaces.max(self.replacements) > 0 || self.node.typ.isnt(Type::MODERATE_OR_HIGHER))
             && self.spaces.max(self.replacements) as usize + 4 > self.node.depth as usize;
 
         let low_confidence_replacements = self.low_confidence_replacements > 1
@@ -86,8 +88,11 @@ impl Match {
             // Match isn't strong enough.
             #[cfg(feature = "trace")]
             println!(
-                "(rejected: {} {} {})",
-                too_many_replacements, low_confidence_short, low_confidence_special
+                "(rejected: {} {} {} {})",
+                too_many_replacements,
+                low_confidence_replacements,
+                low_confidence_short,
+                low_confidence_special
             );
             return false;
         }

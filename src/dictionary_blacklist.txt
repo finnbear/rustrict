@@ -373,7 +373,7 @@ pissoir
 pl
 po
 poop(.*)
-porn(.?)
+porn(.*)
 pornerastic
 pornocracy
 pornocrat
@@ -512,6 +512,7 @@ white power
 white powers
 white trash
 whore(.*)
+worldsex
 ws
 wto
 x
