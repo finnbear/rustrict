@@ -1475,6 +1475,7 @@ church ink
 church link
 church liter
 church tier
+chutzpadik
 cid lot
 cigarettes punk
 cine ger
@@ -2065,7 +2066,16 @@ didn't it
 dies punk
 differences punk
 diggers
+dika
+dikdik
+dike
 dikelocephalus
+diking
+dikkop
+diksha
+diktat
+diktyonite
+dilker
 dingdong
 dings punk
 diplocephalus
@@ -3398,6 +3408,7 @@ lablab
 lacks punk
 ladanigerous
 lades punk
+ladik
 lags punk
 lakes punk
 lambish
@@ -5298,6 +5309,7 @@ saccoon
 sackbutt
 sacrilumbalis
 sacrolumbalis
+saddik
 sadic
 safe excess
 safe late
@@ -5846,6 +5858,7 @@ sukkenye
 sukkoth
 sulpharsenid
 sulphate
+sundik
 sunny ger
 superbowlxxx
 superseptuaginarian
@@ -6499,6 +6512,7 @@ triumphator
 trochate
 trochocephalus
 trollopeanism
+tsadik
 tscheffkinite
 tubbish
 tubifexes
@@ -6964,9 +6978,11 @@ youth liter
 youth tier
 za holes
 zaddick
+zaddik
 zannichellia
 zecchin
 zendic
+zendik
 zenga
 zestful
 zilla bias
