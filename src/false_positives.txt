@@ -580,6 +580,7 @@ assyth
 asters punk
 asylabia
 asyllabia
+atabals
 athletes punk
 attachments punk
 attitude flower
@@ -604,6 +605,7 @@ baalish
 baalism
 baalist
 baalize
+baals
 babbishly
 babcock
 babiche
@@ -617,6 +619,7 @@ backs punk
 bags punk
 bahoe
 bails
+bais
 baksheeshes
 bal is
 bal lis
@@ -817,6 +820,7 @@ ballist
 ballsier
 ballstock
 ballsy
+balsa
 banal
 bananaland
 bang ger
@@ -1265,6 +1269,7 @@ brushet
 brushite
 bs punk
 bubalis
+bubals
 bucephalus
 bucks punk
 budget lost
@@ -1324,6 +1329,7 @@ ca strategi
 ca strategy
 cabalism
 cabalist
+cabals
 cabbalism
 cabbalist
 cabbalize
@@ -1348,6 +1354,7 @@ cannibalism
 cannibalistic
 cannibalization
 cannibalizing
+cannibals
 cannonballs
 canvasses
 car reggae
@@ -1877,6 +1884,7 @@ cyclitol
 cyclopaedic
 cyclopedic
 cymbalist
+cymbals
 cynips
 cynocephalus
 cyphella
@@ -2487,6 +2495,7 @@ forces punk
 forebreast
 forget lost
 fortifys
+founder skirt
 four secs
 four somebody
 four somehow
@@ -2623,9 +2632,11 @@ gets punk
 ghastful
 ghettoized
 ghettoizes
+gibbals
 gid lot
 gies punk
 gifts punk
+gimbals
 gimcrackery
 girgashite
 gives punk
@@ -2829,6 +2840,7 @@ heraclitism
 heraldic
 herbalism
 herbalist
+herbals
 herbish
 herdic
 hers punk
@@ -3143,6 +3155,7 @@ huffing
 huggers
 humbugger
 humbuggers
+hunder skirt
 husht
 hydrencephalus
 hydrocephalus
@@ -3349,6 +3362,7 @@ judcock
 judges punk
 julia bias
 julia gra
+jumbals
 jump rick
 june ger
 june gros
@@ -4130,6 +4144,8 @@ nut casse
 nutcracker
 nutjobber
 nutpecker
+nuzzle
+nuzzling
 ny ger
 oaks punk
 oarcock
@@ -5363,6 +5379,7 @@ screw young
 screw your
 screw youth
 screwballs
+scribals
 scribers punk
 scuddick
 scumber
@@ -5990,6 +6007,7 @@ till it
 tillite
 tilt
 tilts
+timbals
 tina holes
 tine ger
 tine gros
@@ -6560,6 +6578,7 @@ twixt
 two secs
 txt
 tycoon
+tymbals
 tympanal
 type nis
 typps
@@ -6676,6 +6695,7 @@ verbalism
 verbalist
 verbalization
 verbalizing
+verbals
 verbascum
 verde flower
 verde generate
