@@ -94,6 +94,8 @@ pub struct Censor<I: Iterator<Item = char>> {
     /// Is the input completely safe.
     safe: bool,
     #[cfg(any(feature = "find_false_positives", feature = "trace"))]
+    match_ptrs: usize,
+    #[cfg(any(feature = "find_false_positives", feature = "trace"))]
     total_matches: usize,
     #[cfg(any(feature = "find_false_positives", feature = "trace"))]
     total_match_characters: usize,
@@ -140,6 +142,8 @@ impl<I: Iterator<Item = char>> Censor<I> {
             space_appended: false,
             done: false,
             last_pos: usize::MAX,
+            #[cfg(any(feature = "find_false_positives", feature = "trace"))]
+            match_ptrs: 0,
             #[cfg(any(feature = "find_false_positives", feature = "trace"))]
             total_matches: 0,
             #[cfg(any(feature = "find_false_positives", feature = "trace"))]
@@ -316,6 +320,11 @@ impl<I: Iterator<Item = char>> Censor<I> {
     /// Converts internal weights to a `Type`.
     fn analysis(&self) -> Type {
         self.typ | self.safe_self_censoring_and_spam_detection()
+    }
+
+    #[cfg(any(feature = "find_false_positives", feature = "trace"))]
+    pub fn match_ptrs(&self) -> usize {
+        self.match_ptrs
     }
 
     #[cfg(any(feature = "find_false_positives", feature = "trace"))]
@@ -642,6 +651,8 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let censor_first_character_threshold = self.censor_first_character_threshold;
             let censor_replacement = self.censor_replacement;
             #[cfg(any(feature = "find_false_positives", feature = "trace"))]
+            let first_match_ptr = &mut self.match_ptrs;
+            #[cfg(any(feature = "find_false_positives", feature = "trace"))]
             let total_matches = &mut self.total_matches;
             #[cfg(any(feature = "find_false_positives", feature = "trace"))]
             let total_match_characters = &mut self.total_match_characters;
@@ -670,6 +681,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     ) {
                         #[cfg(any(feature = "find_false_positives", feature = "trace"))]
                         {
+                            *first_match_ptr ^= pending.node as *const _ as usize;
                             *total_matches += 1;
                             *total_match_characters += pending.end - pending.start;
                         }
@@ -710,6 +722,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             ) {
                 #[cfg(any(feature = "find_false_positives", feature = "trace"))]
                 {
+                    self.match_ptrs ^= pending.node as *const _ as usize;
                     self.total_matches += 1;
                     self.total_match_characters += pending.end - pending.start;
                 }

@@ -619,6 +619,8 @@ backs punk
 bags punk
 bahoe
 bails
+bailsman
+bailsmen
 bais
 baksheeshes
 bal is
@@ -722,7 +724,17 @@ balistid
 balistraria
 balize
 ball is
+ball isaac
+ball isbn
+ball isl
+ball iso
+ball israel
+ball issn
+ball issue
+ball ist
 ball lis
+ball lisa
+ball list
 ball sacra
 ball sacre
 ball sacrifice
@@ -928,6 +940,7 @@ bidcock
 bids punk
 biffing
 bigger
+bigger s
 bikes punk
 bikini ger
 bilabial
@@ -1993,6 +2006,7 @@ digger
 diggers
 dika
 dikdik
+dikdiks
 dike
 dikelocephalus
 diking
@@ -2258,6 +2272,7 @@ esse men
 essee men
 esses punk
 essex
+essexite
 eth attorn
 eth liter
 eth tier
@@ -5724,6 +5739,8 @@ suprapedal
 surfing
 surveys punk
 sussex
+sussexite
+sussexman
 swank
 swanker
 sweetwater
@@ -5777,6 +5794,7 @@ tarse
 tasses
 tates punk
 tats punk
+tattoo helicopt
 tautit
 tch attorn
 tch ink
@@ -5921,6 +5939,8 @@ titurel
 titus
 tjurunga
 to heli
+to helicopt
+to helio
 tobacco ward
 toddick
 tohunga
@@ -5930,6 +5950,7 @@ tomtits
 tonga
 tons punk
 too heli
+too helicopt
 tooth attorn
 tooth liter
 tooth tier
@@ -6737,6 +6758,7 @@ welsh liter
 welsh ted
 welsh tier
 wendic
+wessexman
 whalesucker
 wharfing
 whatever

@@ -25,7 +25,7 @@ lazy_static! {
         .filter(|&w| {
             (w.len() > 3 || VALID_SHORT.contains(w))
                 && !is_blacklisted(w)
-                && is_ignore_fp(w.chars(), true) == 0
+                && is_ignore_fp(w.chars(), true).0 == 0
         })
         .collect();
     static ref PROFANITY: Vec<&'static str> = include_str!("profanity.csv")
@@ -47,7 +47,7 @@ lazy_static! {
         .collect();
 }
 
-pub fn is_ignore_fp<C: Iterator<Item = char>>(text: C, start_separate: bool) -> usize {
+pub fn is_ignore_fp<C: Iterator<Item = char>>(text: C, start_separate: bool) -> (usize, usize) {
     let mut censor = Censor::new(text);
     censor.with_ignore_false_positives(true);
     censor.with_separate(start_separate);
@@ -56,14 +56,14 @@ pub fn is_ignore_fp<C: Iterator<Item = char>>(text: C, start_separate: bool) -> 
         .analyze()
         .is(Type::PROFANE | Type::OFFENSIVE | Type::SEXUAL | Type::MEAN)
     {
-        censor.total_match_characters().max(1)
+        (censor.total_match_characters().max(1), censor.match_ptrs())
     } else {
-        0
+        (0, 0)
     }
 }
 
 fn maybe_false_positive<C: Iterator<Item = char> + Clone>(word: C) -> Option<String> {
-    let baseline = is_ignore_fp(word.clone(), true);
+    let (baseline, baseline_first_match_ptr) = is_ignore_fp(word.clone(), true);
     if baseline > 0 {
         let word: String = word.collect();
         let word = &word[..];
@@ -96,8 +96,8 @@ fn maybe_false_positive<C: Iterator<Item = char> + Clone>(word: C) -> Option<Str
                 DICTIONARY.contains(sub_slice)
             };
 
-            let subslice_matches = is_ignore_fp(sub_slice.chars(), start == 0);
-            if valid && subslice_matches >= baseline && !is_blacklisted(sub_slice) {
+            let (subslice_matches, first_match_ptr) = is_ignore_fp(sub_slice.chars(), start == 0);
+            if valid && subslice_matches >= baseline && first_match_ptr == baseline_first_match_ptr && !is_blacklisted(sub_slice) {
                 shortest_subslice = sub_slice;
             }
         }
