@@ -927,94 +927,7 @@ bichromic
 bidcock
 bids punk
 biffing
-bigger sac
-bigger sad
-bigger safar
-bigger safe
-bigger sag
-bigger sai
-bigger sak
-bigger sal
-bigger sam
-bigger san
-bigger sap
-bigger sar
-bigger saskatchewan
-bigger sat
-bigger sau
-bigger sav
-bigger say
-bigger sb
-bigger sc
-bigger se
-bigger sha
-bigger she
-bigger shiel
-bigger shift
-bigger shin
-bigger ship
-bigger shirt
-bigger sho
-bigger shu
-bigger si
-bigger sk
-bigger sl
-bigger sm
-bigger sn
-bigger so
-bigger sp
-bigger sq
-bigger sta
-bigger stead
-bigger steal
-bigger steam
-bigger steel
-bigger steer
-bigger stem
-bigger step
-bigger ster
-bigger steve
-bigger stew
-bigger stick
-bigger still
-bigger stock
-bigger stole
-bigger stoma
-bigger stone
-bigger stood
-bigger stop
-bigger stor
-bigger str
-bigger stu
-bigger sty
-bigger sub
-bigger such
-bigger sud
-bigger suf
-bigger sugar
-bigger sugg
-bigger sui
-bigger sull
-bigger sum
-bigger sun
-bigger sup
-bigger sur
-bigger sus
-bigger suz
-bigger sw
-bigger syd
-bigger sym
-bigger syn
-bigger syr
-bigger syst
-bigger za
-bigger zdnet
-bigger zea
-bigger zer
-bigger zimb
-bigger zinc
-bigger zo
-bigger zs
+bigger
 bikes punk
 bikini ger
 bilabial
@@ -1455,6 +1368,7 @@ chi link
 chief excess
 chief king
 chief rick
+chigger
 chiggers
 childrens punk
 chiltern
@@ -1774,6 +1688,7 @@ crack xerox
 crackerberries
 crackerberry
 crackerjack
+craig ger
 crapaud
 crape
 craping
@@ -1920,6 +1835,7 @@ damnum
 damnyankee
 danalite
 danny ger
+danziger
 dar reggae
 dardic
 dasht
@@ -2073,6 +1989,7 @@ dicynodon
 didn't it
 dies punk
 differences punk
+digger
 diggers
 dika
 dikdik
@@ -2433,6 +2350,8 @@ fibre ast
 fibre east
 fibrofatty
 fifing
+fig ger
+figgery
 fight tier
 fighters punk
 figpecker
@@ -2636,6 +2555,7 @@ gibbals
 gid lot
 gies punk
 gifts punk
+gigger
 gimbals
 gimcrackery
 girgashite
@@ -3342,6 +3262,7 @@ jestful
 jets punk
 jewship
 jewstone
+jigger
 jiggers
 jitterbugger
 jizzen
@@ -3394,6 +3315,7 @@ kijiji yourself
 kilan
 kilkenny
 kill an
+kill ike
 kill like
 killian
 kin ky
@@ -3491,6 +3413,7 @@ lief king
 lief rick
 liers punk
 lies punk
+ligger
 light tier
 likes punk
 limb eclipse
@@ -3840,7 +3763,6 @@ mechanal
 medic
 medick
 meets punk
-megalopenis
 meltwater
 memo ron
 menadic
@@ -3860,7 +3782,6 @@ mi germ
 michelle
 micrencephalus
 microcephalus
-micropenis
 mid lot
 midi lot
 midi other
@@ -4049,6 +3970,7 @@ newssheet
 ng germ
 ngai
 ngapi
+nick ger
 nickerpecker
 niddick
 niddicock
@@ -4442,6 +4364,8 @@ picnic ca
 picnic xanax
 pieces punk
 pies punk
+piggeries
+piggery
 pillicock
 pinballs
 pinchcock
@@ -5187,93 +5111,7 @@ riders punk
 ridges punk
 ries punk
 riffing
-rigger sac
-rigger sad
-rigger safar
-rigger safe
-rigger sag
-rigger sai
-rigger sak
-rigger sal
-rigger sam
-rigger san
-rigger sap
-rigger sar
-rigger saskatchewan
-rigger sat
-rigger sau
-rigger sav
-rigger say
-rigger sb
-rigger sc
-rigger se
-rigger sha
-rigger she
-rigger shiel
-rigger shift
-rigger shin
-rigger ship
-rigger shirt
-rigger sho
-rigger shu
-rigger si
-rigger sk
-rigger sl
-rigger sm
-rigger sn
-rigger so
-rigger sp
-rigger sq
-rigger sta
-rigger stead
-rigger steal
-rigger steam
-rigger steel
-rigger steer
-rigger stem
-rigger step
-rigger ster
-rigger steve
-rigger stew
-rigger stick
-rigger still
-rigger stock
-rigger stole
-rigger stoma
-rigger stone
-rigger stood
-rigger stop
-rigger stor
-rigger str
-rigger stu
-rigger sty
-rigger sub
-rigger such
-rigger sud
-rigger suf
-rigger sugar
-rigger sugg
-rigger sui
-rigger sull
-rigger sum
-rigger sun
-rigger sup
-rigger sur
-rigger sus
-rigger suz
-rigger sw
-rigger syd
-rigger sym
-rigger syn
-rigger syr
-rigger syst
-rigger za
-rigger zea
-rigger zer
-rigger zimb
-rigger zinc
-rigger zo
-rigger zs
+rigger
 riggers
 right tier
 rim jobs
@@ -5483,6 +5321,7 @@ shut uti
 shuttlecock
 sierra holes
 siganus
+sigger
 sight tier
 sightlier
 signers punk
@@ -5978,6 +5817,7 @@ therapeutic
 therapeutism
 therapeutist
 therapist
+thigger
 things punk
 thirstful
 thonga
@@ -5996,6 +5836,7 @@ tickets punk
 ticks punk
 ties punk
 tiffing
+tigger
 tight tier
 tightlier
 tigua holes
@@ -6520,7 +6361,6 @@ tribune gros
 tributes punk
 tricephalus
 trichocephalus
-trigger zdnet
 trigonocephalus
 trilabiate
 trim job
@@ -6904,6 +6744,7 @@ wheellike
 wheesht
 when tai
 whiffing
+whiggery
 whilter
 whipcracker
 whisht
@@ -7005,6 +6846,7 @@ zendic
 zendik
 zenga
 zestful
+zigger
 zilla bias
 zilla black
 zilla blad
@@ -7018,3 +6860,4 @@ zilla holes
 zimentwater
 zip rick
 zooxanthella
+zwanziger
