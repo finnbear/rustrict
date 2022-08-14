@@ -175,6 +175,8 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 ## Development
 
+[![Build](https://github.com/finnbear/rustrict/actions/workflows/build.yml/badge.svg)](https://github.com/finnbear/rustrict/actions/workflows/build.yml)
+
 If you make an adjustment that would affect false positives, you will need to run `false_positive_finder`:
 1. Run `./download.sh` to get the required word lists.
 2. Run `cargo run --bin false_positive_finder --release --all-features`
