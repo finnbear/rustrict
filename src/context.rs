@@ -48,6 +48,9 @@ pub struct ContextProcessingOptions {
     pub block_if_empty: bool,
     /// Block messages, as opposed to censoring, if severe inappropriateness is detected.
     pub block_if_severely_inappropriate: bool,
+    /// Block all messages if they are unsafe (useful for implementing moderator-activated "safe mode").
+    /// Note that unsafe messages from certain users may also be blocked automatically.
+    pub safe_mode_until: Option<Instant>,
     /// Character count (or, with the `width` feature, number of `m`-equivalent widths).
     ///
     /// Messages will be trimmed to fit.
@@ -69,6 +72,7 @@ impl Default for ContextProcessingOptions {
             block_if_muted: true,
             block_if_empty: true,
             block_if_severely_inappropriate: true,
+            safe_mode_until: None,
             character_limit: Some(NonZeroUsize::new(2048).unwrap()),
             rate_limit: Some(ContextRateLimitOptions::default()),
             repetition_limit: Some(ContextRepetitionLimitOptions::default()),
@@ -99,6 +103,17 @@ impl Default for ContextRateLimitOptions {
             limit: Duration::from_secs(5),
             burst: 3,
             character_limit: Some(NonZeroU16::new(16).unwrap()),
+        }
+    }
+}
+
+impl ContextRateLimitOptions {
+    /// Alternate defaults for slow mode.
+    pub fn slow_mode() -> Self {
+        Self {
+            limit: Duration::from_secs(10),
+            burst: 2,
+            character_limit: Some(NonZeroU16::new(10).unwrap()),
         }
     }
 }
@@ -289,7 +304,16 @@ impl Context {
 
         let remaining_rate_limit = Self::remaining_duration(&mut self.rate_limited_until, now);
 
-        if let Some(dur) =
+        if let Some(remaining) = options
+            .safe_mode_until
+            .filter(|_| analysis.isnt(Type::SAFE))
+            .and_then(|until| until.checked_duration_since(now))
+        {
+            Err(BlockReason::Unsafe {
+                remaining,
+                targeted: false,
+            })
+        } else if let Some(dur) =
             Self::remaining_duration(&mut self.muted_until, now).filter(|_| options.block_if_muted)
         {
             Err(BlockReason::Muted(dur))
@@ -312,10 +336,13 @@ impl Context {
             && analysis.is(Type::INAPPROPRIATE & Type::SEVERE)
         {
             Err(BlockReason::Inappropriate(analysis))
-        } else if let Some(dur) = Self::remaining_duration(&mut self.only_safe_until, now)
+        } else if let Some(remaining) = Self::remaining_duration(&mut self.only_safe_until, now)
             .filter(|_| !(analysis.is(Type::SAFE) || options.max_safe_timeout.is_zero()))
         {
-            Err(BlockReason::Unsafe(dur))
+            Err(BlockReason::Unsafe {
+                remaining,
+                targeted: true,
+            })
         } else {
             self.last_message = Some(now);
             if let Some(rate_limit_options) = options.rate_limit.as_ref() {
@@ -459,8 +486,13 @@ pub enum BlockReason {
     /// The particular message was *severely* inappropriate, more specifically, `Type`.
     Inappropriate(Type),
     /// Recent messages were generally inappropriate, and this message isn't on the safe list.
+    /// Alternatively, if targeted is false, safe mode was configured globally.
     /// Try again after `Duration`.
-    Unsafe(Duration),
+    Unsafe {
+        remaining: Duration,
+        /// Whether unsafe mode was targeted at this user (as opposed to configured globally).
+        targeted: bool,
+    },
     /// This message was too similar to `usize` recent messages.
     Repetitious(usize),
     /// Too many messages per unit time, try again after `Duration`.
@@ -477,7 +509,7 @@ impl BlockReason {
     pub fn generic_str(self) -> &'static str {
         match self {
             Self::Inappropriate(_) => "Your message was held for severe profanity",
-            Self::Unsafe(_) => "You have been temporarily restricted due to profanity/spam",
+            Self::Unsafe { .. } => "You have been temporarily restricted due to profanity/spam",
             Self::Repetitious(_) => "Your message was too similar to recent messages",
             Self::Spam(_) => "You have been temporarily muted due to excessive frequency",
             Self::Muted(_) => "You have been temporarily muted",
@@ -504,10 +536,17 @@ impl BlockReason {
             } else {
                 "Your message was held for severe profanity"
             }),
-            Self::Unsafe(dur) => format!(
+            Self::Unsafe {
+                remaining,
+                targeted: true,
+            } => format!(
                 "You have been restricted for {} due to profanity/spam",
-                FormattedDuration(dur)
+                FormattedDuration(remaining)
             ),
+            Self::Unsafe {
+                remaining,
+                targeted: false,
+            } => format!("Safe mode is active for {}", FormattedDuration(remaining)),
             Self::Repetitious(count) => {
                 format!("Your message was too similar to {} recent messages", count)
             }
@@ -575,10 +614,18 @@ mod tests {
         }
 
         let res = ctx.process(String::from("shit"));
-        assert!(matches!(res, Err(BlockReason::Unsafe(_))), "1 {:?}", res);
+        assert!(
+            matches!(res, Err(BlockReason::Unsafe { targeted: true, .. })),
+            "1 {:?}",
+            res
+        );
 
         let res = ctx.process(String::from("not common message"));
-        assert!(matches!(res, Err(BlockReason::Unsafe(_))), "2 {:?}", res);
+        assert!(
+            matches!(res, Err(BlockReason::Unsafe { targeted: true, .. })),
+            "2 {:?}",
+            res
+        );
     }
 
     #[test]
@@ -667,6 +714,32 @@ mod tests {
 
         let res = ctx.process(String::from("hello"));
         assert!(matches!(res, Err(BlockReason::Muted(_))), "{:?}", res);
+    }
+
+    #[test]
+    fn context_safe_mode() {
+        use crate::{BlockReason, Context};
+
+        let mut ctx = Context::new();
+
+        let res = ctx.process_with_options(
+            String::from("not on the safe list"),
+            &ContextProcessingOptions {
+                safe_mode_until: Some(Instant::now() + Duration::from_secs(100)),
+                ..Default::default()
+            },
+        );
+        assert!(
+            matches!(
+                res,
+                Err(BlockReason::Unsafe {
+                    targeted: false,
+                    ..
+                })
+            ),
+            "{:?}",
+            res
+        );
     }
 
     #[test]

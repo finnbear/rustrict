@@ -10,6 +10,7 @@ hola
 hola amigos
 sup
 whats up
+whats happening
 welcome
 greetings
 ok bye
@@ -30,10 +31,12 @@ im going
 im not leaving
 im not going
 thanks
+thank you
 thx
 ty
 np
 no problem
+so
 sorry
 sry
 i forgot
@@ -42,6 +45,14 @@ ok
 ok lol
 okay
 i see
+i see you
+how did this happen
+look
+they are coming
+up ahead
+run away
+so long
+its been so long
 yawn
 wut
 what
@@ -50,6 +61,7 @@ why
 when
 who
 huh
+uh
 sure
 aye
 yes
@@ -68,6 +80,7 @@ good try
 nevermind
 nvm
 welp
+whelp
 no
 never
 nop
@@ -88,6 +101,7 @@ join my fleet
 join my clan
 stop
 truce
+traitor
 cease fire
 dont move
 dont die
@@ -110,6 +124,7 @@ lol
 lmao
 hehe
 haha
+hahaha
 ha
 very funny
 xd
@@ -123,6 +138,9 @@ dont kill me
 run
 wait
 come here
+protect me
+we ally
+oh sorry
 go
 i know
 ik
@@ -160,13 +178,21 @@ out of ammo
 im dead
 i died
 someone
+grr
 grrr
 hiss
+noo
 nooo
 oops
+ree
 reee
+aww
+awww
 awwww
+hmm
 hmmm
+ah
+ahh
 ahhh
 bruh
 dude
@@ -198,7 +224,15 @@ watch out
 be careful
 im muted
 im muted for now
+muted
+the thing muted me
+im restricted
+ive been restricted
+restricted
+got muted
 i got muted
+i was muted
+i cant chat
 im not a bot
 im in restricted chat mode
 my chat is restricted
