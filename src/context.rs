@@ -373,11 +373,21 @@ impl Context {
             .unwrap_or(Duration::ZERO)
     }
 
+    /// Returns the latest instant the user is muted (possibly in the past).
+    pub fn muted_until(&self) -> Option<Instant> {
+        self.muted_until
+    }
+
     /// Returns how long the user is restricted to [`Type::SAFE`] for (possibly [`Duration::ZERO`]).
     pub fn restricted_for(&self) -> Duration {
         self.only_safe_until
             .map(|restricted_until| restricted_until.saturating_duration_since(Instant::now()))
             .unwrap_or(Duration::ZERO)
+    }
+
+    /// Returns the latest instant the user is restricted (possibly in the past).
+    pub fn restricted_until(&self) -> Option<Instant> {
+        self.only_safe_until
     }
 
     /// Manually mute this user's messages for a duration. Overwrites any previous manual mute.
