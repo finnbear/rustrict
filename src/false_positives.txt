@@ -917,6 +917,12 @@ bench ink
 bench link
 bench liter
 bench tier
+bend overall
+bend overcome
+bend overhead
+bend overnigh
+bend overs
+bend overview
 benedick
 benz punk
 bereshith
@@ -2318,10 +2324,17 @@ eyeballs
 fackeltanz
 fackings
 fackins
+fail lot
+fail other
+fail ottawa
 fake
 faki
 fakofo
 faky
+fall lot
+fall other
+fall ottawa
+fallotomy
 fanal
 faqs punk
 faradic
@@ -5221,6 +5234,7 @@ schistocephalus
 schlepps
 schmalkaldic
 schnapps
+schools shooting
 sciences punk
 scientists punk
 scoon
@@ -5516,6 +5530,7 @@ snapps
 snazzier
 snazziest
 snazziness
+snazzy
 sniffing
 snig
 sniggoringly

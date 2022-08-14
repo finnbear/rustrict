@@ -41,6 +41,7 @@ bals,0,0,1,0,1
 balsack,0,0,3,0,0
 bastard,2,3,0,0,0
 bastrad,2,3,0,0,1
+ bdsm,0,0,2,0,0
 beaner,0,2,0,0,0
 beatmeat,0,0,2,0,1
 beatingmeat,0,0,2,0,1
@@ -51,13 +52,16 @@ beatingtheirmeat,0,0,2,0,1
 beatyourmeat,0,0,2,1,1
 beatingyourmeat,0,0,2,1,1
 beetch,0,2,2,0,1
+bend over,0,0,1,0,0
 biatch,0,2,2,0,1
 bich,0,2,2,0,1
+bigass,1,0,0,0,0
 bish,0,1,1,0,1
 bishes,0,1,1,0,1
 bitch,0,2,2,0,0
 bitches,0,2,2,0,0
 bitsch,0,2,2,0,2
+blackcock,2,2,2,0,0
 bloody,2,0,0,0,0
 blow me,0,0,2,0,0
 blowjob,0,0,3,0,0
@@ -153,6 +157,7 @@ effing,2,0,2,0,1
 ejaculat,0,0,2,0,0
 ejaculate,0,0,2,0,0
 f'd,2,0,2,0,1
+f off,2,0,0,2,1
 f word,1,0,0,0,1
 f y s,2,0,1,3,2
 f you,2,0,0,2,1
@@ -161,6 +166,7 @@ facyou,1,0,1,2,1
 facist,0,2,0,0,0
 fack,1,0,1,0,1
 fak,1,0,1,0,2
+fallot,0,1,1,0,2
 fascist,0,2,0,0,0
 fashist,0,2,0,0,0
 fag,0,3,1,0,0
@@ -254,6 +260,8 @@ getcancer,0,0,0,3,0
 getlost,0,0,0,2,0
 ghetto,0,2,0,0,0
 goddam,1,1,0,0,0
+gun to school,3,0,0,0,0
+gun at school,3,0,0,0,0
 handjob,0,0,3,0,0
 hangyourself,0,2,0,3,0
 h8,0,0,0,2,1
@@ -284,6 +292,7 @@ horny,0,0,3,0,0
 horseshit,2,0,0,0,0
 htler,0,2,0,0,2
 htlr,0,2,0,0,2
+huejass,2,0,1,0,2
 hugh janus,2,0,0,0,2
 gooch,0,0,2,0,0
 idiot,0,0,0,1,0
@@ -306,6 +315,10 @@ kike,0,2,0,0,0
 kilyoself,0,2,0,3,2
 kilyourself,0,2,0,3,0
 kinky,0,0,1,0,0
+kill student,3,0,0,0,0
+killallstudent,3,0,0,0,0
+killaschool,3,0,0,0,0
+killmyschool,3,0,0,0,0
 kkk,0,3,0,0,0
 kkklan,0,3,0,0,0
 kkkmember,0,3,0,0,0
@@ -320,8 +333,14 @@ kukluxklan,0,3,0,0,0
 kys,0,2,0,3,0
 labia,0,0,3,0,0
 loser,0,0,0,2,0
+masacreinhisschool,3,0,0,0,0
+masacreinmyschool,3,0,0,0,0
+masacremyschool,3,0,0,0,0
 masherbate,0,0,2,0,2
 masherbating,0,0,2,0,2
+massmurderschool,3,0,0,0,0
+massmurderaschool,3,0,0,0,0
+massmurdermyschool,3,0,0,0,0
 masterbate,0,0,2,0,0
 masterbating,0,0,2,0,0
 mastherbate,0,0,2,0,2
@@ -351,6 +370,7 @@ natsoc,0,1,0,0,1
 natzi,0,2,0,0,1
 nazi,0,2,0,0,0
 nazis,0,2,0,0,0
+nazy,0,2,0,0,2
 neger,3,5,0,0,2
 negr,3,5,0,0,2
 negros,0,1,0,0,0
@@ -367,6 +387,7 @@ niglet,0,3,0,0,1
 niguh,2,3,0,0,2
 nigr,2,3,0,0,2
 nigs,2,3,0,0,1
+nippas,2,3,0,0,2
 nipple,0,0,1,0,0
 nips,0,0,2,0,0
 niqq,2,3,0,0,2
@@ -437,6 +458,7 @@ retart,0,2,0,2,0
 retarted,0,2,0,2,0
 rimjob,0,0,3,0,0
 s word,1,0,0,0,1
+schoolshooting,2,0,0,0,0
 screwyou,1,0,0,2,0
 screwyourself,1,0,0,2,0
 scrotum,0,0,3,0,0
@@ -456,6 +478,16 @@ sexx,0,0,2,0,0
 sexiest,0,0,1,0,0
 sexual,0,0,2,0,0
 sexy,0,0,1,0,0
+shoot school,2,0,0,0,0
+shootupschool,3,0,0,0,0
+shootupaschool,3,0,0,0,0
+shootupmyschool,3,0,0,0,0
+shootupaelementaryschool,3,0,0,0,0
+shootupanelementaryschool,3,0,0,0,0
+shootupamiddleschool,3,0,0,0,0
+shootupanmiddleschool,3,0,0,0,0
+shootupahighschool,3,0,0,0,0
+shootupanhighschool,3,0,0,0,0
 shager,0,0,3,0,0
 shaging,0,0,3,0,0
 shit,2,0,0,0,0
@@ -475,6 +507,8 @@ siegheil,0,2,0,0,1
 sieghail,0,2,0,0,2
 skank,0,2,3,0,0
 slut,0,2,2,0,0
+smallD,2,0,2,2,2
+small dick,2,0,2,2,0
 small dk,2,0,2,2,2
 smol dk,2,0,2,2,3
 sodomize,0,0,3,0,0
@@ -555,7 +589,7 @@ ya mama,0,0,1,1,1
 ya moma,0,0,1,1,1
 ya mum,0,0,1,1,2
 you mf,2,1,1,2,1
-you monkey,0,0,0,1,0
+you monkey,0,1,0,1,0
 youre hole,0,0,2,0,3
 youremother,0,0,1,1,1
 your hole,0,0,2,0,2
@@ -567,3 +601,7 @@ yo mum,0,0,0,1,1
 鸡巴,1,0,3,0,0
 天安門,0,0,1,0,0
 天安门,0,0,1,0,0
+傻逼,2,0,2,0,0
+他妈的,2,0,2,0,0
+王八蛋,2,3,0,0,0
+贱人,0,2,2,0,0

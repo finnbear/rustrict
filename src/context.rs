@@ -383,13 +383,25 @@ impl Context {
     /// Manually mute this user's messages for a duration. Overwrites any previous manual mute.
     /// Passing `Duration::ZERO` will therefore un-mute.
     pub fn mute_for(&mut self, duration: Duration) {
-        self.muted_until = Some(Instant::now() + duration);
+        self.mute_until(Instant::now() + duration);
+    }
+
+    /// Manually mute this user's messages until an instant. Overwrites any previous manual mute.
+    /// Passing an instant in the past will therefore un-mute.
+    pub fn mute_until(&mut self, instant: Instant) {
+        self.muted_until = Some(instant);
     }
 
     /// Manually restrict this user's messages to known safe phrases for a duration. Overwrites any
     /// previous manual restriction. Passing `Duration::ZERO` will therefore un-restrict.
     pub fn restrict_for(&mut self, duration: Duration) {
-        self.only_safe_until = Some(Instant::now() + duration);
+        self.restrict_until(Instant::now() + duration);
+    }
+
+    /// Manually restrict this user's messages to known safe phrases until an instant. Overwrites any
+    /// previous manual restriction. Passing an instant in the past will therefore un-restrict.
+    pub fn restrict_until(&mut self, instant: Instant) {
+        self.only_safe_until = Some(instant);
     }
 
     /// Call if another user "reports" this user's message(s). The function of reports is for

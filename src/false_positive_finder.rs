@@ -97,7 +97,11 @@ fn maybe_false_positive<C: Iterator<Item = char> + Clone>(word: C) -> Option<Str
             };
 
             let (subslice_matches, first_match_ptr) = is_ignore_fp(sub_slice.chars(), start == 0);
-            if valid && subslice_matches >= baseline && first_match_ptr == baseline_first_match_ptr && !is_blacklisted(sub_slice) {
+            if valid
+                && subslice_matches >= baseline
+                && first_match_ptr == baseline_first_match_ptr
+                && !is_blacklisted(sub_slice)
+            {
                 shortest_subslice = sub_slice;
             }
         }
