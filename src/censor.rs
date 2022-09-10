@@ -712,7 +712,12 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             }
         }
 
-        for pending in mem::take(&mut self.pending_commit) {
+        let residual = mem::take(&mut self.pending_commit);
+        #[cfg(feature = "trace")]
+        if !residual.is_empty() {
+            println!("{} residuals", residual.len());
+        }
+        for pending in residual {
             if pending.commit(
                 &mut self.typ,
                 &mut self.buffer,

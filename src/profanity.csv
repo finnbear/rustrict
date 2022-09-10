@@ -11,10 +11,12 @@ word,profane,offensive,sexual,mean,evasive
 _l_,1,0,0,0,2
 3==D,0,0,2,0,1
 3==o,0,0,2,0,1
+8==>,0,0,2,0,1
 8==D,0,0,2,0,1
 8==o,0,0,2,0,1
 c==3,0,0,2,0,1
 c==B,0,0,2,0,1
+adlof,0,1,0,0,1
 adolf,0,2,0,0,0
 ahole,2,0,1,2,0
 aholes,2,0,1,0,0
@@ -25,6 +27,7 @@ aregae,0,2,0,0,1
 aregay,0,2,0,0,0
 arse,2,0,0,0,0
 arsehole,2,0,0,0,0
+ashole,2,0,1,2,0
  ass,2,0,1,0,0
 asseater,2,0,0,2,0
 asses,2,0,1,0,0
@@ -94,6 +97,9 @@ C+B,2,0,2,0,2
 cameljockey,0,2,0,0,0
 castrate,0,0,2,0,0
 chickenshit,2,0,0,1,0
+chinaflu,0,2,0,0,0
+chinaplague,0,2,0,0,0
+chinavirus,0,2,0,0,0
 chink,0,3,0,0,0
 chupalo,0,0,2,2,0
 chupamela,0,0,2,2,0
@@ -112,6 +118,7 @@ coon,0,5,0,0,0
 coward,0,0,0,1,0
 cracker,0,2,0,0,0
 crap,1,0,0,0,0
+crotch,0,0,1,0,0
 cuck,0,0,2,0,0
  cum,0,0,3,0,0
 cumer,0,0,3,0,1
@@ -274,6 +281,8 @@ hell,1,0,0,0,0
 hentai,0,0,3,0,0
 her bob,0,0,3,0,0
 heshe,0,0,2,0,0
+hifler,0,1,0,0,2
+hitlar,0,2,0,0,2
 hilter,0,2,0,0,2
 hitler,0,2,0,0,0
 hitlr,0,2,0,0,2
@@ -294,6 +303,10 @@ htler,0,2,0,0,2
 htlr,0,2,0,0,2
 huejass,2,0,1,0,2
 hugh janus,2,0,0,0,2
+hump jo mama,0,0,2,2,2
+hump yo mama,0,0,2,2,1
+hump woman,0,0,2,0,0
+hump women,0,0,2,0,0
 gooch,0,0,2,0,0
 idiot,0,0,0,1,0
 igger,3,3,0,0,0
@@ -318,7 +331,13 @@ kinky,0,0,1,0,0
 kill student,3,0,0,0,0
 killallstudent,3,0,0,0,0
 killaschool,3,0,0,0,0
+killchinese,0,2,0,0,0
+killchina,0,2,0,0,0
 killmyschool,3,0,0,0,0
+killrussia,0,2,0,0,0
+killrussians,0,2,0,0,0
+killukraine,0,2,0,0,0
+killukraine,0,2,0,0,0
 kkk,0,3,0,0,0
 kkklan,0,3,0,0,0
 kkkmember,0,3,0,0,0
@@ -379,6 +398,8 @@ ngga,2,3,0,0,2
 ngger,3,5,0,0,2
 nicca,2,3,0,0,1
 nickger,3,5,0,0,2
+nickher,3,5,0,0,2
+nickker,3,5,0,0,2
 nig,2,3,0,0,0
 nigg,2,3,0,0,0
 nigga,2,3,0,0,0
@@ -511,6 +532,8 @@ slut,0,2,2,0,0
 smallD,2,0,2,2,2
 small dick,2,0,2,2,0
 small dk,2,0,2,2,2
+smash woman,0,0,2,0,0
+smash women,0,0,2,0,0
 smol dk,2,0,2,2,3
 sodomize,0,0,3,0,0
 sodomy,0,0,3,0,0
@@ -573,6 +596,7 @@ useyourhead,0,0,0,1,0
 vagina,0,0,3,0,0
 viagra,0,0,1,0,0
 vibrator,0,0,3,0,0
+virgin,0,0,1,0,0
 vixen,0,1,2,0,0
 vulva,0,0,3,0,0
 wank,0,0,3,0,0
@@ -589,6 +613,7 @@ ya hole,0,0,2,0,2
 ya mama,0,0,1,1,1
 ya moma,0,0,1,1,1
 ya mum,0,0,1,1,2
+you are idiot,0,0,0,2,0
 you mf,2,1,1,2,1
 you monkey,0,1,0,1,0
 youre hole,0,0,2,0,3
@@ -606,3 +631,4 @@ yo mum,0,0,0,1,1
 他妈的,2,0,2,0,0
 王八蛋,2,3,0,0,0
 贱人,0,2,2,0,0
+吃个桃,0,0,2,1,1

@@ -217,6 +217,7 @@ analyzing
 anchor ny
 ande flower
 ande generate
+andreas hole
 andrews punk
 ands punk
 ane ger
@@ -438,6 +439,7 @@ architects punk
 arco ward
 arctocephalus
 arcubalist
+areas hole
 arena holes
 arguments punk
 arks punk
@@ -480,6 +482,7 @@ articles punk
 artisanal
 artists punk
 arts punk
+as holes
 as punk
 as sees
 as sess
@@ -489,6 +492,7 @@ asdic
 asexual
 ash aging
 ash attorn
+ash hole
 ash liter
 ash ted
 ash tier
@@ -930,6 +934,7 @@ bes punk
 betes punk
 betwit
 bezoardic
+bias hole
 biasses
 bibcock
 bicched
@@ -1391,7 +1396,13 @@ chigger
 chiggers
 childrens punk
 chiltern
+china five
+china fix
+china fluid
+china flus
+china flux
 china holes
+china viruses
 chines punk
 chinkapin
 chinkara
@@ -1728,6 +1739,12 @@ creates punk
 crevasses
 criniger
 criocephalus
+crotched
+crotches
+crotchet
+crotching
+crotchwood
+crotchy
 cruises punk
 crurogenital
 cruz punk
@@ -1857,6 +1874,7 @@ danny ger
 danziger
 dar reggae
 dardic
+das hole
 dasht
 dastard
 dasypaedic
@@ -1872,6 +1890,7 @@ de flowers
 de generated
 de generates
 dealers punk
+deas hole
 deaths punk
 debacchate
 deboners
@@ -1891,6 +1910,7 @@ degorder
 degorge
 delassement
 deminude
+demivirgin
 demo ron
 denazification
 denazified
@@ -1919,6 +1939,9 @@ desexualizing
 detribalization
 detribalizing
 developments punk
+devirginate
+devirgination
+devirginator
 dex flower
 dex generate
 dex rated
@@ -2265,6 +2288,7 @@ epornitic
 equilibrator
 era holes
 eremochaetous
+ericas hole
 ericas strate
 erns punk
 erth attorn
@@ -2552,6 +2576,7 @@ gang ger
 ganggang
 gar reggae
 garse
+gas hole
 gasses
 gastful
 gastrogenital
@@ -3321,6 +3346,7 @@ kabobs
 kabonga
 kalanchoe
 kaneshite
+kansas hole
 kashoubish
 katharses
 kavasses
@@ -3387,6 +3413,7 @@ laplandic
 lapps
 lar reggae
 larghetto
+las hole
 lass esc
 lass esp
 lass ess
@@ -3399,6 +3426,7 @@ lass punk
 lass sees
 lass sess
 lasses
+latinas hole
 latitude flower
 latitude generate
 launch attorn
@@ -3433,6 +3461,7 @@ lf excess
 lf king
 lf rick
 liar reggae
+lias hole
 licks punk
 lid lot
 lidicker
@@ -3713,6 +3742,7 @@ lp rick
 ls punk
 lubbercock
 lucanus
+lucas hole
 lucas strategic
 lucas strategies
 lucas strategy
@@ -3761,6 +3791,7 @@ marsh liter
 marsh ted
 marsh tier
 marshite
+mas hole
 mass esc
 mass esp
 mass ess
@@ -3939,6 +3970,7 @@ myers punk
 myth attorn
 myth liter
 myth tier
+mythifier
 nabalism
 nabobish
 nabobs
@@ -3999,6 +4031,14 @@ ng germ
 ngai
 ngapi
 nick ger
+nick hera
+nick herb
+nick here
+nick heritage
+nick hero
+nick hers
+nick kern
+nick kerry
 nickerpecker
 niddick
 niddicock
@@ -4244,6 +4284,7 @@ parapet
 parse
 parsecs
 partners punk
+pas hole
 pass esc
 pass esp
 pass ess
@@ -4277,6 +4318,7 @@ pean lis
 pean us
 pean uzbek
 pean vs
+peas hole
 peckerwood
 peers punk
 pegs punk
@@ -5006,6 +5048,45 @@ rabfak
 raccoon
 racks punk
 racoon
+radio fab
+radio fac
+radio fail
+radio fair
+radio fait
+radio fall
+radio false
+radio fam
+radio fan
+radio faq
+radio far
+radio fas
+radio fatal
+radio fate
+radio fath
+radio fault
+radio favor
+radio favour
+radio fear
+radio feat
+radio february
+radio fed
+radio fee
+radio fell
+radio felt
+radio fem
+radio fen
+radio feof
+radio fer
+radio fest
+radio fever
+radio few
+radio fi
+radio fl
+radio fo
+radio fr
+radio fu
+radio of
+radiofrequency
 rafts punk
 railers punk
 raises punk
@@ -5040,6 +5121,7 @@ rapids punk
 rappe
 rappist
 ras cit
+ras hole
 rases punk
 rates punk
 rats punk
@@ -5267,6 +5349,7 @@ scuttlebutt
 scyphate
 se men
 seacock
+seas hole
 secchio
 seconds punk
 sects punk
@@ -5509,6 +5592,10 @@ sizy
 skaldic
 skibobs
 skiddycock
+skill china
+skill chinese
+skill russia
+skill ukraine
 skill yourself
 skirlcock
 skirts punk
@@ -5582,6 +5669,7 @@ speech ink
 speech link
 speech liter
 speech tier
+speechifier
 spermigerous
 spica
 spiccato
@@ -5840,6 +5928,7 @@ tetradic
 tetrapetalous
 tetrarchate
 tex rated
+texas hole
 texas strate
 texts punk
 then tai
@@ -6517,6 +6606,7 @@ unsexually
 unstupid
 unsucked
 unugly
+unvirgin
 up rick
 upanishadic
 upcock
@@ -6558,6 +6648,7 @@ vandyke
 vannus
 varanus
 variadic
+vas hole
 vedic
 vehicles punk
 velocipedic
@@ -6718,6 +6809,21 @@ vince sty
 vine ger
 vine gros
 vinegerone
+virgin atlantic
+virgin group
+virgin islands
+virginal
+virgineous
+virginhead
+virginia
+virginid
+virginities
+virginitis
+virginity
+virginium
+virginlike
+virginly
+virginship
 visa holes
 viscum
 vixenish
@@ -6780,7 +6886,9 @@ whatever
 wheellike
 wheesht
 when tai
+whereas hole
 whiffing
+whiffler
 whiggery
 whilter
 whipcracker
