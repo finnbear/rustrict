@@ -1,5 +1,6 @@
 use crate::{trim_whitespace, Censor, Type};
 
+use crate::censor::should_skip_censor;
 use std::collections::VecDeque;
 use std::fmt::{self, Debug, Display, Formatter};
 use std::num::{NonZeroU16, NonZeroUsize};
@@ -219,7 +220,11 @@ impl Context {
             .with_censor_first_character_threshold(censor_first_character_threshold)
             .censor_and_analyze();
 
-        let mut censored_str = censored.as_str();
+        let mut censored_str = if should_skip_censor(&message) {
+            message.as_str()
+        } else {
+            censored.as_str()
+        };
 
         if let Some(character_limit) = options.character_limit {
             #[cfg(feature = "width")]

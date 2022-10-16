@@ -765,7 +765,11 @@ pub trait CensorStr: Sized {
 
 impl CensorStr for &str {
     fn censor(self) -> String {
-        Censor::new(self.chars()).censor()
+        if should_skip_censor(self) {
+            self.to_owned()
+        } else {
+            Censor::new(self.chars()).censor()
+        }
     }
 
     fn is(self, threshold: Type) -> bool {
@@ -790,6 +794,21 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
     fn censor(self) -> Self::Iterator {
         Censor::new(self)
     }
+}
+
+/// Returns true if censoring won't work but will likely damage the input (e.g. by removing
+/// diacritics). Will consider the entire input.
+pub(crate) fn should_skip_censor(string: &str) -> bool {
+    let mut some_special = false;
+    for c in string.chars() {
+        // Devanagari is compromised by normalization and diacritic removal.
+        if ('\u{0900}'..='\u{097F}').contains(&c) {
+            some_special = true;
+        } else if !(c.is_whitespace() || c.is_separator()) {
+            return false;
+        }
+    }
+    some_special
 }
 
 /// Adds a word, with the given type. The type can be `Type::SAFE`, or a combination of `Type::PROFANE`,
@@ -818,6 +837,7 @@ mod tests {
     #![allow(unused_imports)]
 
     extern crate test;
+    use crate::censor::should_skip_censor;
     use crate::{Censor, CensorIter, CensorStr, Type};
     use bitflags::_core::ops::Not;
     use rand::prelude::ThreadRng;
@@ -1159,6 +1179,15 @@ mod tests {
             correct_positive as f32 / total_positive as f32,
             correct_negative as f32 / total_negative as f32,
         )
+    }
+
+    #[test]
+    #[serial]
+    fn devanagari() {
+        println!("f\u{0900}u\u{0900}c\u{0900}k");
+        const TEST: &'static str = "हत्यारा मकसहूद भाई तुम बड़ा मस्त काम करती।";
+        assert!(should_skip_censor(TEST));
+        assert_eq!(TEST, TEST.censor());
     }
 
     #[test]

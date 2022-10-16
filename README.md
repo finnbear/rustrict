@@ -36,7 +36,7 @@
 ## Limitations
 
 - Mostly English/emoji only
-- Censoring removes diacritics (accents)
+- Censoring removes most diacritics (accents)
 - Does not detect right-to-left profanity while analyzing, so...
 - Censoring forces Unicode to be left-to-right
 - Doesn't understand context
@@ -170,8 +170,8 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.12%   | 92.14% | 89.61%            | 11s  |
-| [censor](https://crates.io/crates/censor) | 76.16%   | 72.76% | 77.01%            | 23s  |
+| [rustrict](https://crates.io/crates/rustrict) | 90.10%   | 92.15%            | 89.59%            | 11s  |
+| [censor](https://crates.io/crates/censor) | 76.16%   | 72.76%            | 77.01%            | 23s  |
 
 ## Development
 

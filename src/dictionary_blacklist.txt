@@ -34,6 +34,7 @@ beaners
 beat meat
 beating meat
 befetished
+bend over
 bewhore
 bichy
 bisexual
@@ -242,6 +243,7 @@ goddammit
 goddamn
 goddamns
 goddams
+gringos
 gs
 h
 hand job
@@ -280,6 +282,8 @@ idiots
 ids
 imbecil(.*)
 incests
+inseminates
+inseminators
 intersexual
 jackass
 jackassery
@@ -379,6 +383,7 @@ pe nis
 pean is
 pean nis
 peckers
+pedophil(.*)
 penetrators
 penises
 penist
@@ -477,6 +482,8 @@ sucks
 suicide
 supersexual
 superugly
+swasticas
+swastikas
 t
 te
 terrorists

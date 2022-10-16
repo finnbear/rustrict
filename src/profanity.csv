@@ -50,12 +50,13 @@ beatmeat,0,0,2,0,1
 beatingmeat,0,0,2,0,1
 beatthemeat,0,0,2,0,1
 beatingthemeat,0,0,2,0,1
+beatmymeat,0,0,2,0,1
 beattheirmeat,0,0,2,0,1
 beatingtheirmeat,0,0,2,0,1
 beatyourmeat,0,0,2,1,1
 beatingyourmeat,0,0,2,1,1
 beetch,0,2,2,0,1
-bend over,0,0,1,0,0
+bendover,0,0,1,0,0
 biatch,0,2,2,0,1
 bich,0,2,2,0,1
 bigass,1,0,0,0,0
@@ -267,6 +268,7 @@ getcancer,0,0,0,3,0
 getlost,0,0,0,2,0
 ghetto,0,2,0,0,0
 goddam,1,1,0,0,0
+gringo,0,0,0,1,0
 gun to school,3,0,0,0,0
 gun at school,3,0,0,0,0
 handjob,0,0,3,0,0
@@ -313,6 +315,11 @@ igger,3,3,0,0,0
 imbecil,0,0,0,2,0
 incel,0,1,2,1,0
 incest,0,0,3,0,0
+insemin,0,0,2,0,0
+inseminate,0,0,3,0,0
+inseminater,0,0,3,0,0
+inseminating,0,0,3,0,0
+inseminator,0,0,3,0,0
 isgay,0,2,0,0,0
 jackass,1,0,0,1,0
 jackoff,0,0,2,0,0
@@ -383,6 +390,8 @@ mydik,2,0,2,1,2
 naked,0,0,2,0,0
 naughty,0,0,1,0,0
 n word,1,1,0,0,1
+naegar,3,5,0,0,2
+naeger,3,5,0,0,2
 natsee,0,2,0,0,2
 national socialist,0,0,0,0,1
 natsoc,0,1,0,0,1
@@ -397,6 +406,7 @@ nga,2,3,0,0,2
 ngga,2,3,0,0,2
 ngger,3,5,0,0,2
 nicca,2,3,0,0,1
+nicger,3,5,0,0,2
 nickger,3,5,0,0,2
 nickher,3,5,0,0,2
 nickker,3,5,0,0,2
@@ -433,6 +443,7 @@ penile,0,0,3,0,0
 penis,1,0,3,0,0
 penus,1,0,3,0,0
 pecker,1,0,0,0,1
+pedo,0,0,1,0,0
 pedophile,0,0,2,0,0
 peepee,2,0,2,0,0
 phalus,1,0,3,0,2
@@ -480,6 +491,10 @@ retart,0,2,0,2,0
 retarted,0,2,0,2,0
 rimjob,0,0,3,0,0
 s word,1,0,0,0,1
+sakemahdic,0,0,3,0,2
+sakemahdiq,0,0,3,0,2
+sakemydic,0,0,3,0,2
+sakemydiq,0,0,3,0,2
 schoolshooting,2,0,0,0,0
 screwyou,1,0,0,2,0
 screwyourself,1,0,0,2,0
@@ -555,6 +570,9 @@ suhckme,0,0,3,0,2
 suicide,1,0,0,0,0
 suk,0,0,1,1,1
 sukk,0,0,1,1,1
+swatika,0,1,0,0,1
+swastika,0,1,0,0,0
+swastica,0,1,0,0,1
 tard,0,1,0,1,1
 terrorist,0,1,0,0,0
 testical,0,0,3,0,1
