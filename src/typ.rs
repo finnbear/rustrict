@@ -218,7 +218,7 @@ impl Debug for Type {
             }
         }
         let mut count = 0;
-        if *self & Self::PROFANE != Type::NONE {
+        if *self & Self::PROFANE != Self::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
@@ -229,7 +229,7 @@ impl Debug for Type {
             )?;
             count += 1;
         }
-        if *self & Self::OFFENSIVE != Type::NONE {
+        if *self & Self::OFFENSIVE != Self::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
@@ -240,7 +240,7 @@ impl Debug for Type {
             )?;
             count += 1;
         }
-        if *self & Self::SEXUAL != Type::NONE {
+        if *self & Self::SEXUAL != Self::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
@@ -251,7 +251,7 @@ impl Debug for Type {
             )?;
             count += 1;
         }
-        if *self & Self::MEAN != Type::NONE {
+        if *self & Self::MEAN != Self::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
@@ -262,7 +262,7 @@ impl Debug for Type {
             )?;
             count += 1;
         }
-        if *self & Self::EVASIVE != Type::NONE {
+        if *self & Self::EVASIVE != Self::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
@@ -273,7 +273,7 @@ impl Debug for Type {
             )?;
             count += 1;
         }
-        if *self & Self::SPAM != Type::NONE {
+        if *self & Self::SPAM != Self::NONE {
             if count > 0 {
                 write!(f, ", ")?;
             }
@@ -284,8 +284,12 @@ impl Debug for Type {
             )?;
             count += 1;
         }
-
-        if count == 0 {
+        if *self & Self::SAFE != Self::NONE {
+            if count > 0 {
+                write!(f, ", ")?;
+            }
+            write!(f, "safe")
+        } else if count == 0 {
             write!(f, "no detections")
         } else {
             write!(f, "")

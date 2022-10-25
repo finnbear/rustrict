@@ -409,10 +409,22 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let pos = self.buffer.index();
 
             self.uppercase = self.uppercase.saturating_add(raw_c.is_uppercase() as u8);
+            /*
+            // Very old whitelist (allows a ton of abuse):
+            let skippable = match c {
+                ' ' | '~' | '-' | '−' | '_' | '.' | '!' | '?' | ',' | '*' | '"' | '\'' | '\n' | '\r'
+                | '\t' => true,
+                _ => false,
+            };
+
+            // More recent whitelist (still allows abuse like f^u^c^k):
             let skippable = raw_c.is_punctuation()
                 || raw_c.is_separator()
                 || is_whitespace(raw_c)
                 || matches!(raw_c, '(' | ')');
+            // Use a blacklist instead:
+             */
+            let skippable = !raw_c.is_alphanumeric() || is_whitespace(raw_c);
             let replacement = REPLACEMENTS.get(&raw_c);
 
             #[cfg(feature = "trace")]
@@ -449,7 +461,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 // a profanity, so that these profanities are detected.
                 //
                 // Not adding a match is mainly an optimization.
-                if !(skippable && replacement.is_none() && !matches!(raw_c, ' ' | '_')) {
+                if !(skippable && replacement.is_none() && !matches!(raw_c, ' ' | '_' | '🖕')) {
                     let begin_camel_case_word = raw_c.is_ascii_uppercase()
                         && self.last.map(|c| !c.is_ascii_uppercase()).unwrap_or(false);
 
@@ -459,29 +471,22 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         start: pos, // will immediately be incremented if match is kept.
                         end: usize::MAX, // sentinel.
                         last: 0 as char, // sentinel.
-                        space_before: self.separate || begin_camel_case_word,
-                        space_after: false, // unknown at this time.
+                        begin_separate: self.separate || begin_camel_case_word,
+                        end_separate: false, // unknown at this time.
                         spaces: 0,
+                        skipped: 0,
                         replacements: 0,
                         low_confidence_replacements: 0,
                     });
                 }
             }
 
-            /*
-            let skippable = match c {
-                ' ' | '~' | '-' | '−' | '_' | '.' | '!' | '?' | ',' | '*' | '"' | '\'' | '\n' | '\r'
-                | '\t' => true,
-                _ => false,
-            };
-             */
-
             self.separate = skippable;
 
             if self.separate {
                 for pending in self.pending_commit.iter_mut() {
                     if pending.end == self.last_pos {
-                        pending.space_after = true;
+                        pending.end_separate = true;
                     }
                 }
             }
@@ -496,7 +501,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 .unwrap_or(&&*raw_c.encode_utf8(&mut [0; 4]))
                 .chars()
             {
-                // This replacement raises absolutely zero suspicion.
+                // This replacement (uppercase to lower case) raises absolutely zero suspicion.
                 let benign_replacement = c == raw_c_lower;
 
                 // This counts as a replacement, mainly for spam detection purposes.
@@ -517,6 +522,16 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     c, benign_replacement, countable_replacement
                 );
 
+                // These separators don't invalidate a false-positive match.
+                //
+                // -
+                // half-right =/= frig
+                //
+                // '
+                // invalidating false positives in cases like didn't (it where ( is a space.
+                // also, so "i'm fine" matches "im fine" for safety purposes.
+                let ignore_sep = matches!(c, '-' | '\'' | '\n' | '\r');
+
                 for m in self.matches_tmp.iter() {
                     let m = m.clone();
 
@@ -532,27 +547,28 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         // Undo remove.
                         #[cfg(feature = "trace")]
                         println!("undo remove \"{}\" where last={}, node last={:?} and initial spaces={}", m.node.trace, m.last, m.node.last, m.spaces);
+
+                        // Here, '.' is primarily for allowing ellipsis ("...") as a form of
+                        // space.
+                        // ( and ) are for ignoring appositive phrases.
+                        // Checking node.last is to collapse multiple spaces into one, to avoid
+                        let new_space = matches!(c, ' ' | '.' | ',' | ':' | ';' | '…' | '(' | ')')
+                            // && skippable
+                            && m.node.last != Some(' ');
+                        // && !ignore_sep;
+
+                        let new_skip = skippable && !ignore_sep;
+                        let new_replacement = !benign_replacement && !self.separate;
+                        let new_low_confidence_replacement =
+                            !benign_replacement && raw_c.is_ascii_digit();
+
                         let undo_m = Match {
-                            // Here, '.' is primarily for allowing ellipsis ("...") as a form of
-                            // space.
-                            // ( and ) are for ignoring appositive phrases.
-                            // Checking node.last is to collapse multiple spaces into one, to avoid
-                            // invalidating false positives in cases like didn't (it where ( is a space.
-                            spaces: m.spaces.saturating_add(
-                                ((matches!(c, ' ' | '.' | ',' | ';' | '…' | '(' | ')')
-                                    || c != raw_c)
-                                    && self.separate
-                                    && m.node.last != Some(' ')
-                                    && c != '\'') as u8,
-                            ),
-                            replacements: m
-                                .replacements
-                                .saturating_add((!benign_replacement && !self.separate) as u8),
+                            spaces: m.spaces.saturating_add(new_space as u8),
+                            skipped: m.skipped.saturating_add(new_skip as u8),
+                            replacements: m.replacements.saturating_add(new_replacement as u8),
                             low_confidence_replacements: m
                                 .low_confidence_replacements
-                                .saturating_add(
-                                    (!benign_replacement && raw_c.is_ascii_digit()) as u8,
-                                ),
+                                .saturating_add(new_low_confidence_replacement as u8),
                             ..m
                         };
                         if let Some(existing) = self.matches.get(&undo_m) {
@@ -591,9 +607,12 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             if next_m.node.typ.is(Type::SAFE)
                                 && next_m.start == 0
                                 && next_m.spaces == 0
+                                && next_m.skipped == 0
                                 && !self.ignore_false_positives
                             {
                                 // Everything in the input until now is safe.
+                                #[cfg(feature = "trace")]
+                                println!("found safe word: {}", next_m.node.trace);
                                 self.safe = true;
                             }
 
@@ -605,8 +624,8 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                     print!("found");
                                 }
                                 println!(
-                                    " false positive \"{}\", spaces={}, replacements={}",
-                                    next_m.node.trace, next_m.spaces, next_m.replacements
+                                    " false positive \"{}\", spaces={}, skipped={}, replacements={}",
+                                    next_m.node.trace, next_m.spaces, next_m.skipped, next_m.replacements
                                 );
                             }
 
@@ -616,6 +635,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                     ..next_m
                                 });
                             } else if next_m.spaces == 0
+                                && next_m.skipped == 0
                                 && next_m.replacements == 0
                                 && !self.ignore_false_positives
                             {

@@ -80,10 +80,20 @@ fn main() {
         .filter(|line| !line.is_empty())
         .map(|line| {
             let comma = line.find(",").unwrap();
-            (
-                line[..comma].chars().next().unwrap(),
-                String::from(&line[comma + 1..]),
-            )
+            let before_comma = &line[..comma];
+            let c = if before_comma.chars().count() == 1 {
+                before_comma.chars().next().unwrap()
+            } else {
+                let escape = before_comma
+                    .strip_prefix("\\u{")
+                    .unwrap()
+                    .strip_suffix("}")
+                    .unwrap();
+                let escape_int = u32::from_str_radix(escape, 16).unwrap();
+                // println!("ESCAPE: {escape} {escape_int}");
+                char::from_u32(escape_int).unwrap()
+            };
+            (c, String::from(&line[comma + 1..]))
         })
         .for_each(&mut append_replacement);
 

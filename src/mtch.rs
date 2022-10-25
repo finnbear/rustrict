@@ -14,11 +14,13 @@ pub(crate) struct Match {
     /// Stores the last matched character.
     pub last: char,
     /// Whether the match was preceded by a separator.
-    pub space_before: bool,
+    pub begin_separate: bool,
     /// Whether the match was followed by a separator.
-    pub space_after: bool,
+    pub end_separate: bool,
     /// Stores how many spaces appeared within the match, excluding spaces that directly correspond to the pattern.
     pub spaces: u8,
+    /// Stores how many characters were skipped.
+    pub skipped: u8,
     /// Stores how many replacements took place while matching.
     pub replacements: u8,
     /// Stores how many low-confidence replacements took place while matching.
@@ -31,6 +33,7 @@ impl Match {
         Self {
             start: self.start.min(other.start),
             spaces: self.spaces.min(other.spaces),
+            skipped: self.skipped.min(other.skipped),
             replacements: self.replacements.min(other.replacements),
             last: self.last.min(other.last),
             ..*self
@@ -48,25 +51,26 @@ impl Match {
     ) -> bool {
         #[cfg(feature = "trace")]
         print!(
-            "Committing {} with space_before={}, spaces={}, space_after={}, depth={}, replacements={}, contains_space={}: ",
+            "Committing {} with begin_separate={}, spaces={}, skipped={}, end_separate={}, depth={}, replacements={}, contains_space={}: ",
             self.node.trace,
-            self.space_before,
+            self.begin_separate,
             self.spaces,
-            self.space_after,
+            self.skipped,
+            self.end_separate,
             self.node.depth,
             self.replacements,
             self.node.contains_space
         );
 
-        let too_many_replacements = !(self.space_before
-            && (self.space_after
+        let too_many_replacements = !(self.begin_separate
+            && (self.end_separate
                 || (self.spaces == 0
                     && self.node.depth > 2
                     && self.node.typ.is(Type::MODERATE_OR_HIGHER))))
             && self.node.depth > 1
             // In theory, prevents blahsex, but allows blahsexblah.
-            && (!(self.space_after || self.space_before) || self.node.depth < 3 || self.spaces.max(self.replacements) > 0 || self.node.typ.isnt(Type::MODERATE_OR_HIGHER))
-            && self.spaces.max(self.replacements) as usize + 4 > self.node.depth as usize;
+            && (!(self.end_separate || self.begin_separate) || self.node.depth < 3 || self.spaces.max(self.skipped).max(self.replacements) > 0 || self.node.typ.isnt(Type::MODERATE_OR_HIGHER))
+            && self.spaces.max(self.skipped).max(self.replacements) as usize + 4 > self.node.depth as usize;
 
         let low_confidence_replacements = self.low_confidence_replacements > 1
             && self.low_confidence_replacements as usize
@@ -78,7 +82,7 @@ impl Match {
             && !self.node.typ.is(Type::SEVERE);
 
         // Make it so "squirrels word" doesn't contain "s word"
-        let low_confidence_special = self.node.contains_space && !self.space_before;
+        let low_confidence_special = self.node.contains_space && !self.begin_separate;
 
         if too_many_replacements
             || low_confidence_replacements
@@ -126,7 +130,7 @@ impl Match {
 
 impl PartialEq for Match {
     fn eq(&self, other: &Self) -> bool {
-        std::ptr::eq(self.node, other.node) && self.space_before == other.space_before
+        std::ptr::eq(self.node, other.node) && self.begin_separate == other.begin_separate
     }
 }
 
@@ -135,6 +139,6 @@ impl Eq for Match {}
 impl Hash for Match {
     fn hash<H: Hasher>(&self, state: &mut H) {
         state.write_usize(self.node as *const _ as usize);
-        state.write_u8(self.space_before as u8);
+        state.write_u8(self.begin_separate as u8);
     }
 }

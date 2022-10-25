@@ -22,7 +22,7 @@
   - Two words (like "pu**sh it**")
 - Flexible
   - Censor and/or analyze
-  - Input `&str` or `Iterator<Type = char>`
+  - Input `&str` or `Iterator<Item = char>`
   - Can track per-user state with `context` feature
   - Can add words with the `customize` feature
   - Accurately reports the width of Unicode via the `width` feature
@@ -170,7 +170,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 90.10%   | 92.15%            | 89.59%            | 11s  |
+| [rustrict](https://crates.io/crates/rustrict) | 90.11%   | 92.17%            | 89.60%            | 9s   |
 | [censor](https://crates.io/crates/censor) | 76.16%   | 72.76%            | 77.01%            | 23s  |
 
 ## Development
