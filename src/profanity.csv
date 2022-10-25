@@ -210,6 +210,8 @@ finger u,0,0,2,0,0
 fingeryou,0,0,2,0,0
 fingering,0,0,1,0,0
 fk,2,0,2,0,1
+fkc,2,0,2,0,1
+fkcing,2,0,2,0,2
 fkd,2,0,2,0,1
 fked,2,0,2,0,1
 fkin,2,0,2,0,1
@@ -217,6 +219,8 @@ fking,2,0,2,0,1
 fkk,2,0,2,0,1
 fkker,2,0,2,0,1
 fkn,2,0,2,0,1
+fkuc,2,0,2,0,2
+fkucing,2,0,2,0,2
 flange,0,0,3,0,0
 fock,2,0,2,0,2
 fok,2,0,2,0,3
@@ -258,6 +262,12 @@ gaay,0,1,0,0,0
 gae,0,1,0,0,1
 gay,0,1,0,0,0
 gaeness,0,1,0,0,1
+gasjew,0,3,0,0,0
+gazjew,0,3,0,0,2
+gasalljew,0,3,0,0,0
+gazalljew,0,3,0,0,2
+gasthejew,0,3,0,0,0
+gazthejew,0,3,0,0,2
 gayness,0,1,0,0,0
 gays,0,1,0,0,0
 gayest,0,2,0,0,0
@@ -326,6 +336,7 @@ jackoff,0,0,2,0,0
 jackshit,2,0,0,0,0
 jerk,0,0,0,1,0
 jew,0,1,0,0,0
+jewish,0,1,0,0,0
 jews,0,1,0,0,0
 jigaboo,0,3,0,0,0
 jizz,0,0,3,0,0
@@ -333,6 +344,7 @@ joder,2,0,2,0,0
 juden,0,1,0,0,1
 kike,0,2,0,0,0
 kilyoself,0,2,0,3,2
+kilyouself,0,2,0,2,2
 kilyourself,0,2,0,3,0
 kinky,0,0,1,0,0
 kill student,3,0,0,0,0
@@ -359,6 +371,7 @@ kukluxklan,0,3,0,0,0
 kys,0,2,0,3,0
 labia,0,0,3,0,0
 loser,0,0,0,2,0
+mailabomb,0,2,0,0,0
 masacreinhisschool,3,0,0,0,0
 masacreinmyschool,3,0,0,0,0
 masacremyschool,3,0,0,0,0
@@ -527,7 +540,9 @@ shootupahighschool,3,0,0,0,0
 shootupanhighschool,3,0,0,0,0
 shager,0,0,3,0,0
 shaging,0,0,3,0,0
+shat,1,0,0,0,1
 shit,2,0,0,0,0
+shiet,2,0,0,0,1
 shted,2,0,0,0,1
 shited,2,0,0,0,0
 shiter,2,0,0,2,0

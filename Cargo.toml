@@ -1,7 +1,7 @@
 [package]
 name = "rustrict"
 authors = ["Finn Bear"]
-version = "0.5.3"
+version = "0.5.4"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/finnbear/rustrict/"
@@ -73,5 +73,5 @@ walkdir = {version = "2", optional = true}
 rand = "0.8"
 csv = "1.1"
 censor_crate = {package = "censor", version = "0.2.0"}
-rustrict_old = {package = "rustrict", version = "0.5.2"}
+rustrict_old = {package = "rustrict", version = "0.5.3"}
 serial_test = "0.5"

@@ -10,6 +10,7 @@
 88
 9 secs
 a hole
+a jewish
 a reggae
 aa hole
 aa holes
@@ -501,6 +502,8 @@ asexual
 ash aging
 ash attorn
 ash hole
+ash jet
+ash let
 ash liter
 ash ted
 ash tier
@@ -850,6 +853,8 @@ bananaland
 bang ger
 bangladesh aging
 bangladesh attorn
+bangladesh jet
+bangladesh let
 bangladesh liter
 bangladesh ted
 bangladesh tier
@@ -1216,6 +1221,7 @@ broomrape
 brothellike
 brushet
 brushite
+brushlet
 bs punk
 bubalis
 bubals
@@ -1241,6 +1247,7 @@ burgh attorn
 burgh liter
 burgh tier
 bushet
+bushlet
 bushtit
 bushtits
 bustard
@@ -1600,7 +1607,6 @@ comm jess
 comm jesu
 comm jet
 comm jewel
-comm jewis
 comm lea
 comm leban
 comm lect
@@ -1762,6 +1768,7 @@ creates punk
 crevasses
 criniger
 criocephalus
+crosshatch
 crotched
 crotches
 crotchet
@@ -1844,6 +1851,7 @@ currencies punk
 curstful
 curves punk
 cusecs
+cushat
 cushite
 cushitic
 cuss punk
@@ -2159,6 +2167,7 @@ eclairissement
 economies punk
 eddic
 edges punk
+edit jewish
 eds punk
 efecks
 effable
@@ -2463,6 +2472,7 @@ fire crackers
 fireballs
 firecracker
 fishet
+fishlet
 fistful
 fittit
 five secs
@@ -2475,6 +2485,8 @@ flanger
 flangeway
 flesh aging
 flesh attorn
+flesh jet
+flesh let
 flesh liter
 flesh ted
 flesh tier
@@ -2609,6 +2621,7 @@ ganggang
 gar reggae
 garse
 gas hole
+gas jewel
 gasses
 gastful
 gastrogenital
@@ -2644,6 +2657,7 @@ gigger
 gimbals
 gimcrackery
 girgashite
+girl jewish
 gives punk
 glazement
 gliffing
@@ -2715,6 +2729,7 @@ gulfing
 gushet
 gustard
 gustful
+guy jewish
 guys punk
 gymnopaedic
 gynocardic
@@ -2752,6 +2767,7 @@ hardballs
 hards punk
 harp rick
 harshitha
+harshlet
 hasheeshes
 hasht
 hat or
@@ -2764,6 +2780,7 @@ hatemonger
 hats punk
 hatte
 haughtier
+have jewish
 haycock
 haysuck
 haythorn
@@ -3317,11 +3334,14 @@ ios ser
 iproniazid
 ira holes
 irs punk
+is jewish
 is punk
 ischiadic
 ischioanal
 ish aging
 ish attorn
+ish jet
+ish let
 ish liter
 ish ted
 ish tier
@@ -3357,6 +3377,17 @@ jerkwater
 jerky
 jestful
 jets punk
+jewish ancestry
+jewish background
+jewish family
+jewish heritage
+jewish historian
+jewish history
+jewish or
+jewish scholar
+jewish terms
+jewishly
+jewishness
 jewship
 jewstone
 jigger
@@ -3373,6 +3404,8 @@ joseph liter
 joseph tier
 josh aging
 josh attorn
+josh jet
+josh let
 josh liter
 josh ted
 josh tier
@@ -3433,6 +3466,7 @@ kong ger
 koreishite
 krapfen
 krapina
+kshatr
 kvasses
 kyschty
 labial
@@ -3835,6 +3869,8 @@ marrymuffe
 marse
 marsh aging
 marsh attorn
+marsh jet
+marsh let
 marsh liter
 marsh ted
 marsh tier
@@ -3878,6 +3914,8 @@ mes punk
 mesa holes
 mesh aging
 mesh attorn
+mesh jet
+mesh let
 mesh liter
 mesh ted
 mesh tier
@@ -4016,6 +4054,7 @@ muze mentioned
 muze mentor
 muze menu
 muze menus
+my jewish
 myers punk
 myth attorn
 myth liter
@@ -4251,6 +4290,7 @@ openings punk
 ophicephalus
 opponents punk
 opps
+or jewish
 ora holes
 orbit xhtml
 orchella
@@ -5271,6 +5311,8 @@ res punk
 resex
 resh aging
 resh attorn
+resh jet
+resh let
 resh liter
 resh ted
 resh tier
@@ -5477,12 +5519,18 @@ serapist
 serranus
 sers punk
 serves punk
+seshat
 sesquisextal
 sesquitertianal
 sets punk
 seven secs
+shaatnez
 shagging
 sharksucker
+shatan
+shathmont
+shatter
+shattuckite
 sheafing
 sheet
 shell
@@ -5492,6 +5540,7 @@ shetland
 shetlandic
 shiers punk
 shiitic
+shillet
 shinnecock
 shipments punk
 shirlcock
@@ -5745,6 +5794,7 @@ soldiers punk
 solipedous
 solo ser
 solo zer
+somalia bomb
 song ger
 songs punk
 sonic ca
@@ -6082,6 +6132,7 @@ tine gros
 tinegrass
 tines punk
 tings punk
+tirshatha
 tit 4 tat
 tit for tat
 titan
@@ -6150,6 +6201,7 @@ tjurunga
 to heli
 to helicopt
 to helio
+to jewish
 tobacco ward
 toddick
 tohunga
@@ -6170,6 +6222,8 @@ tos ser
 tos zer
 tosh aging
 tosh attorn
+tosh jet
+tosh let
 tosh liter
 tosh ted
 tosh tier
@@ -6698,6 +6752,7 @@ unilabiate
 unisex
 unisexuality
 unisexually
+unjewish
 unnegro
 unniggard
 unporness
@@ -6731,6 +6786,8 @@ uses punk
 usgs punk
 ush aging
 ush attorn
+ush jet
+ush let
 ush liter
 ush ted
 ush tier
@@ -6984,6 +7041,8 @@ weightier
 weightwith
 welsh aging
 welsh attorn
+welsh jet
+welsh let
 welsh liter
 welsh ted
 welsh tier
