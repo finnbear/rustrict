@@ -38,6 +38,7 @@ asslick,2,0,1,2,0
 asswipe,2,0,0,2,0
  azz,1,0,0,0,1
 b word,1,0,0,0,1
+bad lay,0,0,2,1,0
 balls,0,0,1,0,0
 ballz,0,0,1,0,1
 bals,0,0,1,0,1
@@ -97,6 +98,8 @@ bxtch,0,2,2,0,2
 C+B,2,0,2,0,2
 cameljockey,0,2,0,0,0
 castrate,0,0,2,0,0
+cheap lay,0,0,2,0,0
+cheep lay,0,0,2,0,0
 chickenshit,2,0,0,1,0
 chinaflu,0,2,0,0,0
 chinaplague,0,2,0,0,0
@@ -119,6 +122,7 @@ coon,0,5,0,0,0
 coward,0,0,0,1,0
 cracker,0,2,0,0,0
 crap,1,0,0,0,0
+creampie,0,0,2,0,1
 crotch,0,0,1,0,0
 cuck,0,0,2,0,0
  cum,0,0,3,0,0
@@ -231,7 +235,7 @@ frick,1,0,0,0,0
 frik,1,0,0,0,1
 frikyou,1,0,0,2,1
 frig,1,0,2,0,0
-fuc,2,0,2,0,1
+fuc,2,0,2,0,0
 fucc,2,0,2,0,1
 fuch,2,0,2,0,2
 fucing,2,0,2,0,2
@@ -246,6 +250,7 @@ fug,2,0,2,0,3
 fuged,2,0,2,0,3
 fuging,2,0,2,0,3
 fuger,2,0,0,2,3
+fuhrer,0,1,0,0,0
 fuk,2,0,2,0,1
 fukk,2,0,2,0,1
 fuked,2,0,2,0,2
@@ -278,6 +283,7 @@ getcancer,0,0,0,3,0
 getlost,0,0,0,2,0
 ghetto,0,2,0,0,0
 goddam,1,1,0,0,0
+good lay,0,0,2,0,0
 gringo,0,0,0,1,0
 gun to school,3,0,0,0,0
 gun at school,3,0,0,0,0
@@ -291,18 +297,22 @@ hayt,0,0,0,2,2
 heil hitler,0,3,0,0,0
 hell,1,0,0,0,0
 hentai,0,0,3,0,0
+her ashes,0,1,0,0,0
 her bob,0,0,3,0,0
 heshe,0,0,2,0,0
 hifler,0,1,0,0,2
-hitlar,0,2,0,0,2
 hilter,0,2,0,0,2
+his ashes,0,1,0,0,0
+hitlar,0,2,0,0,2
 hitler,0,2,0,0,0
 hitlr,0,2,0,0,2
 ho,0,2,1,0,0
 hoar,0,3,2,0,0
 hoe,0,2,1,0,0
 hoes,0,2,1,0,0
+holocast,0,2,0,0,1
 holocaust,0,2,0,0,0
+holocust,0,2,0,0,2
  homo,0,2,1,0,0
 honkey,0,2,0,0,0
 honkie,0,2,0,0,0
@@ -342,10 +352,15 @@ jigaboo,0,3,0,0,0
 jizz,0,0,3,0,0
 joder,2,0,2,0,0
 juden,0,1,0,0,1
+jumpofabridge,0,1,0,2,0
+jumpoutawindow,0,1,0,2,0
 kike,0,2,0,0,0
 kilyoself,0,2,0,3,2
-kilyouself,0,2,0,2,2
+kilyoslef,0,2,0,3,2
+kilyouself,0,2,0,3,2
+kilyouslef,0,2,0,3,2
 kilyourself,0,2,0,3,0
+kilyourslef,0,2,0,3,2
 kinky,0,0,1,0,0
 kill student,3,0,0,0,0
 killallstudent,3,0,0,0,0
@@ -418,6 +433,7 @@ negros,0,1,0,0,0
 nga,2,3,0,0,2
 ngga,2,3,0,0,2
 ngger,3,5,0,0,2
+ngiger,3,5,0,0,3
 nicca,2,3,0,0,1
 nicger,3,5,0,0,2
 nickger,3,5,0,0,2
@@ -571,6 +587,7 @@ sodomy,0,0,3,0,0
 spunk,0,0,3,0,0
 ssex,0,0,1,0,1
 stfu,1,0,0,2,0
+striper,0,0,2,0,0
 stupid,0,0,0,1,0
 succ,0,0,1,1,1
 sucs,0,0,1,1,1
@@ -582,12 +599,15 @@ suckme,0,0,3,0,0
 suckmy,0,0,3,0,0
 suhck,0,0,1,1,2
 suhckme,0,0,3,0,2
+suicidal,1,0,0,0,0
 suicide,1,0,0,0,0
+suiside,1,0,0,0,1
 suk,0,0,1,1,1
 sukk,0,0,1,1,1
 swatika,0,1,0,0,1
 swastika,0,1,0,0,0
 swastica,0,1,0,0,1
+taketheeasywayout,0,1,0,2,1
 tard,0,1,0,1,1
 terrorist,0,1,0,0,0
 testical,0,0,3,0,1
@@ -606,6 +626,12 @@ tit,0,0,2,0,0
 tits,0,0,2,0,0
 tohell,1,1,0,2,0
 tosser,2,0,0,0,0
+touchkids,0,0,1,0,0
+touched a kid,0,0,1,0,0
+touched kids,0,0,1,0,0
+touching a kid,0,0,1,0,0
+touching kids,0,0,1,0,0
+tuchkids,0,0,1,0,1
 turd,1,0,0,0,0
 turnedmeon,0,0,2,0,0
 turnmeon,0,0,2,0,0

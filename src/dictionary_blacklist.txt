@@ -216,6 +216,8 @@ freaks
 frigg(.*)
 frigs
 fuck(.*)
+fuchs
+fuhrers
 fugs
 g
 gaes
@@ -470,6 +472,8 @@ spunked
 spunks
 ss
 st
+stripers
+stripper(.*)
 stupider
 stupidhead
 stupids
@@ -479,7 +483,9 @@ sucked
 suckers
 sucking
 sucks
-suicide
+suicided
+suicides
+suicidal(.*)
 supersexual
 superugly
 swasticas
@@ -496,6 +502,7 @@ tite
 tits
 tittie(s*)
 tossers
+touch kids
 tp
 tr
 ts
