@@ -8,7 +8,6 @@ use lazy_static::lazy_static;
 use std::iter::Filter;
 use std::mem;
 use std::str::Chars;
-use unicode_categories::UnicodeCategories;
 use unicode_normalization::{Decompositions, Recompositions, UnicodeNormalization};
 
 lazy_static! {
@@ -161,19 +160,14 @@ impl<I: Iterator<Item = char>> Censor<I> {
         // Detects if a char isn't a diacritical mark (accent) or banned, such that such characters may be
         // filtered on that basis.
         fn filter_char(c: &char) -> bool {
-            // In order of approximate likelihood, for efficiency.
-            // This purposefully omits: is_other_private_use, and is_mark_nonspacing.
-            let ok = c.is_letter()
-                || c.is_number()
-                || c.is_separator()
-                || c.is_punctuation()
-                || c.is_symbol()
-                || c.is_mark_spacing_combining()
-                || c.is_mark_enclosing()
-                || c.is_other_format()
-                || c.is_other_control();
+            use finl_unicode::categories::{CharacterCategories, MinorCategory};
+            let category = c.get_minor_category();
+            let nok = matches!(
+                category,
+                MinorCategory::Cn | MinorCategory::Co | MinorCategory::Mn
+            );
 
-            ok && !BANNED.contains(c)
+            !(nok || BANNED.contains(c))
         }
 
         BufferProxyIterator::new(
@@ -821,6 +815,7 @@ impl<I: Iterator<Item = char> + Clone> CensorIter for I {
 pub(crate) fn should_skip_censor(string: &str) -> bool {
     let mut some_special = false;
     for c in string.chars() {
+        use finl_unicode::categories::CharacterCategories;
         // Devanagari is compromised by normalization and diacritic removal.
         if ('\u{0900}'..='\u{097F}').contains(&c) {
             some_special = true;
@@ -1208,6 +1203,15 @@ mod tests {
         const TEST: &'static str = "हत्यारा मकसहूद भाई तुम बड़ा मस्त काम करती।";
         assert!(should_skip_censor(TEST));
         assert_eq!(TEST, TEST.censor());
+    }
+
+    #[test]
+    #[serial]
+    fn pancakes() {
+        assert_eq!(
+            "🥞",
+            std::str::from_utf8(&[240, 159, 165, 158]).unwrap().censor()
+        );
     }
 
     #[test]

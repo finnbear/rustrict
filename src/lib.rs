@@ -1,7 +1,5 @@
 #![cfg_attr(test, feature(test))]
 
-use unicode_categories::UnicodeCategories;
-
 #[cfg(feature = "censor")]
 pub(crate) mod buffer_proxy_iterator;
 #[cfg(feature = "censor")]
@@ -59,6 +57,8 @@ pub fn trim_whitespace(s: &str) -> &str {
 /// Returns true iff the character is effectively whitespace. The definition of whitespace is broader
 /// than that of Unicode, because it includes control characters and a few additional blank characters.
 pub fn is_whitespace(c: char) -> bool {
+    use finl_unicode::categories::CharacterCategories;
+
     // NOTE: The following characters are not detected by standard means but show up as blank.
 
     // https://www.compart.com/en/unicode/U+115F

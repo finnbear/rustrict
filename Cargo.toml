@@ -37,7 +37,7 @@ default = ["censor", "context"]
 censor = ["bitflags", "lazy_static", "itertools", "unicode-normalization", "rustc-hash"]
 context = ["censor", "strsim"]
 customize = ["censor"]
-width = []
+width = ["lazy_static"]
 reset_censor = ["censor"]
 find_false_positives = ["censor", "regex", "indicatif", "rayon"]
 find_replacements = ["csv"]
@@ -46,12 +46,8 @@ trace = ["censor"]
 [package.metadata.docs.rs]
 features = ["censor", "context", "customize", "width"]
 
-[patch.crates-io]
-# crates.io not up to date (see https://github.com/swgillespie/unicode-categories/issues/12)
-unicode_categories = { git = "https://github.com/swgillespie/unicode-categories" }
-
 [dependencies]
-unicode_categories = "0.1.1"
+finl_unicode = "1.2"
 unicode-normalization = {version = "0.1", optional = true}
 unicode-width = {version = "0.1", optional = true}
 bitflags = {version = "1.3", optional = true}
