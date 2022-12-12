@@ -2069,6 +2069,7 @@ dicyema
 dicyemid
 dicynodon
 didn't it
+dido
 dies punk
 differences punk
 digger
@@ -5912,8 +5913,10 @@ stocks punk
 stonepecker
 stopcock
 stormcock
+str any
 strafing
 straight tier
+strany
 streets punk
 strength attorn
 strength liter
@@ -6098,6 +6101,7 @@ tetanal
 tetanus
 tetard
 tetradic
+tetranychus
 tetrapetalous
 tetrarchate
 tex rated
@@ -6250,7 +6254,9 @@ totanus
 towcock
 towers punk
 toys punk
+tra any
 tra holes
+tra ny
 trades punk
 trainers punk
 trains eminem

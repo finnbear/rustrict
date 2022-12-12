@@ -170,7 +170,7 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 | Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |
 |-------|----------|-------------------|-------------------|------|
-| [rustrict](https://crates.io/crates/rustrict) | 89.92%   | 92.19%            | 89.36%            | 8s   |
+| [rustrict](https://crates.io/crates/rustrict) | 89.90%   | 92.20%            | 89.32%            | 8s   |
 | [censor](https://crates.io/crates/censor) | 76.16%   | 72.76%            | 77.01%            | 23s  |
 
 ## Development
