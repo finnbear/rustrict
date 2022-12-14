@@ -10,6 +10,9 @@ hola
 hola amigos
 sup
 whats up
+hey
+omw
+on my way
 whats happening
 welcome
 greetings
@@ -36,6 +39,7 @@ thx
 ty
 np
 no problem
+no kill
 so
 sorry
 sry
@@ -52,6 +56,7 @@ they are coming
 up ahead
 run away
 so long
+peace
 its been so long
 yawn
 wut
@@ -69,11 +74,15 @@ yup
 yeah
 cool
 good one
+good game
 yay
 excellent
 nice
 nice one
 nice work
+noice
+noice one
+noice work
 good job
 good work
 good try
@@ -104,9 +113,11 @@ truce
 traitor
 cease fire
 dont move
+donate
 dont die
 good
 bad
+guys
 sus
 kinda sus
 thats sus
@@ -119,6 +130,7 @@ omg
 afk
 gg
 please
+pls
 plz
 lol
 lmao
@@ -168,10 +180,13 @@ eight
 nine
 ten
 help
+i need help
+help me
 try me
 stop hiding
 1v1
 1v1 me
+coming
 im coming
 almost there
 out of ammo
@@ -181,6 +196,7 @@ someone
 grr
 grrr
 hiss
+my bad
 noo
 nooo
 oops
@@ -218,6 +234,7 @@ im good
 it ok
 its ok
 all good
+incoming
 enemy coming
 enemy incoming
 watch out
@@ -230,6 +247,7 @@ im restricted
 ive been restricted
 restricted
 got muted
+i am muted
 i got muted
 i was muted
 i cant chat

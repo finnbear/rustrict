@@ -31,8 +31,12 @@ fn main() {
 
                     find_char.zip(replace_char).and_then(|(find, replace)| {
                         if replace.is_digit(36) {
-                            println!("{} -> {}", find, replace);
+                            println!("{find} -> {replace}");
                             Some((find, replace.to_string()))
+                        } else if find.is_digit(36) {
+                            panic!("reversed!");
+                            //println!("{replace} -> {find} (REV)");
+                            //Some((replace, find.to_string()))
                         } else {
                             None
                         }
@@ -102,6 +106,14 @@ fn main() {
         // Keep original character accessible.
         if find.is_ascii() {
             replace.insert(find);
+        }
+
+        for c in replace.clone() {
+            let lower = c.to_lowercase().next().unwrap();
+            if c.is_uppercase() && !replace.contains(&lower) {
+                println!("WARNING: Replacing {find} with {replace:?}, so adding {lower}");
+                replace.insert(lower);
+            }
         }
 
         writer
