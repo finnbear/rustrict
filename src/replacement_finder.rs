@@ -90,7 +90,7 @@ fn main() {
             } else {
                 let escape = before_comma
                     .strip_prefix("\\u{")
-                    .unwrap()
+                    .expect(before_comma)
                     .strip_suffix("}")
                     .unwrap();
                 let escape_int = u32::from_str_radix(escape, 16).unwrap();
