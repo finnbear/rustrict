@@ -15,6 +15,7 @@ omw
 on my way
 whats happening
 welcome
+wdym
 greetings
 ok bye
 lol bye
@@ -64,13 +65,18 @@ what
 how
 why
 when
+where
 who
 huh
 uh
 sure
 aye
 yes
+yes please
+yes pls
 yup
+yum
+yum yum
 yeah
 cool
 good one
@@ -125,6 +131,7 @@ nice try
 true
 false
 gtg
+facts
 brb
 omg
 afk
@@ -218,6 +225,7 @@ amazing
 brilliant
 f
 oh no
+xp
 need xp
 need exp
 give xp
@@ -256,3 +264,4 @@ im in restricted chat mode
 my chat is restricted
 cant talk
 cannot talk
+lets go
