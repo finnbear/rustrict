@@ -232,6 +232,7 @@ anencephalus
 anes punk
 anga
 angeles punk
+angiospastic
 anicca
 anilla bias
 anilla black
@@ -268,6 +269,7 @@ antenna holes
 antesignanus
 antifascist
 antisex
+antispastic
 ants punk
 anusim
 anusvara
@@ -1602,10 +1604,13 @@ columnists punk
 columns punk
 com mile
 com mille
+com mills
+com mis
 com mix
 com mixe
 comm ie
 comm illegal
+comm is
 comm jean
 comm jee
 comm jef
@@ -1634,13 +1639,26 @@ comm lev
 comm lew
 comm lex
 comm lie
+comm lis
 comm mile
 comm mille
+comm mills
+comm mis
 comm mix
 comm mixe
 comm xerox
 comments punk
-commissioners punk
+commisce
+commise
+commissar
+commission
+commissive
+commissoria
+commissural
+commissure
+commissurotomies
+commissurotomy
+commistion
 commitments punk
 commix
 commixed
@@ -1886,6 +1904,7 @@ cymbals
 cynips
 cynocephalus
 cyphella
+cystospastic
 czech attorn
 czech ink
 czech link
@@ -2338,6 +2357,7 @@ eparchate
 epipedometry
 epiphloedic
 epipubes
+epispastic
 epoophoron
 epornitic
 equilibrator
@@ -2461,6 +2481,7 @@ fi licking
 fibre ast
 fibre east
 fibrofatty
+fideicommiss
 fifing
 fig ger
 figgery
@@ -2888,6 +2909,7 @@ hellward
 hellweed
 helly
 hemiganus
+hemospastic
 hen tail
 hen taiwan
 hen tal
@@ -3248,6 +3270,7 @@ identifies punk
 ideopraxist
 ides punk
 idic
+idiospastic
 idiotcies
 idiotcy
 idiothalamous
@@ -3323,6 +3346,8 @@ inch tier
 include flower
 include generate
 includes punk
+incommiscibility
+incommiscible
 indic
 influences punk
 infraperipherial
@@ -3487,6 +3512,7 @@ kill ike
 kill like
 kill peoples
 killian
+killing peoples
 kin ky
 kinds punk
 kings punk
@@ -5139,6 +5165,7 @@ provinces tyler
 provinces typ
 ps punk
 pseudencephalus
+pseudocommisural
 pseudolabia
 pseudosuicidal
 psoadic
@@ -5890,6 +5917,11 @@ spank met
 spank mexica
 spank mexico
 spank meyer
+spas stick
+spas tic
+spastically
+spasticities
+spasticity
 spattlehoe
 spec chi
 spec ker
@@ -6107,6 +6139,13 @@ talipedic
 talks punk
 tally ho
 tally-ho
+tamp on
+tamp pon
+tamponade
+tamponage
+tamponing
+tamponment
+tampoon
 tanala
 tang ger
 tanks punk
@@ -6910,6 +6949,7 @@ vannus
 varanus
 variadic
 vas hole
+vasospastic
 vedic
 vehicles punk
 velocipedic

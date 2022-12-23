@@ -308,6 +308,16 @@ kill students
 kill ukraine
 kill ukrainian
 kill ukrainians
+killing china
+killing chinese
+killing people
+killing russia
+killing russian
+killing russians
+killing students
+killing ukraine
+killing ukrainian
+killing ukrainians
 kill yourself
 l
 la
@@ -473,6 +483,7 @@ sluts
 slutt(.*)
 sociosexual
 spank me
+spastics
 spics
 spunked
 spunks
@@ -497,6 +508,8 @@ superugly
 swasticas
 swastikas
 t
+tampons
+tamponed
 te
 terrorists
 testicles
