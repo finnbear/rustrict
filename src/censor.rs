@@ -1258,15 +1258,18 @@ mod tests {
         use crate::add_word;
 
         let test_profanity = "thisisafakeprofanityfortesting";
+        let test_profanity_issue_7 = "плохоеслово";
         let test_safe = "thisisafakesafewordfortesting";
 
         // SAFETY: Tests are run serially, so concurrent mutation is avoided.
         unsafe {
             add_word(test_profanity, Type::PROFANE & Type::SEVERE);
+            add_word(test_profanity_issue_7, Type::PROFANE & Type::SEVERE);
             add_word(test_safe, Type::SAFE);
         }
 
         assert!(test_profanity.is(Type::PROFANE & Type::SEVERE));
+        assert!(test_profanity_issue_7.is(Type::PROFANE & Type::SEVERE));
         assert!(test_safe.is(Type::SAFE));
 
         unsafe {

@@ -32,7 +32,9 @@ fn main() {
                     find_char.zip(replace_char).and_then(|(find, replace)| {
                         if replace.is_digit(36) {
                             println!("{find} -> {replace}");
-                            Some((find, replace.to_string()))
+                            let mut replace = replace.to_string();
+                            replace.push(find);
+                            Some((find, replace))
                         } else if find.is_digit(36) {
                             panic!("reversed!");
                             //println!("{replace} -> {find} (REV)");
