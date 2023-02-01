@@ -99,7 +99,22 @@ fn main() {
                 // println!("ESCAPE: {escape} {escape_int}");
                 char::from_u32(escape_int).unwrap()
             };
-            (c, String::from(&line[comma + 1..]))
+
+            use unicode_normalization::UnicodeNormalization;
+            use finl_unicode::categories::{CharacterCategories};
+            let c_string = String::from(c);
+            let c_string_2 = c_string
+                .nfd()
+                .filter(|c| !c.is_mark_nonspacing())
+                .nfc()
+                .collect::<String>();
+
+            if c_string != c_string_2 {
+                println!("Warning (Mn): {c_string} -> {c_string_2}");
+            }
+            assert_eq!(c_string_2.chars().count(), 1);
+
+            (c_string_2.chars().next().unwrap(), String::from(&line[comma + 1..]))
         })
         .for_each(&mut append_replacement);
 

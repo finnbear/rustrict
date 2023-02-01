@@ -3,8 +3,17 @@ use std::env::args;
 
 pub fn main() {
     let input = args().skip(1).collect::<Vec<_>>().join(" ");
+
     trace(&input, false);
     //trace(&input, true);
+
+    use unicode_normalization::UnicodeNormalization;
+    use finl_unicode::categories::{CharacterCategories};
+    println!("Without diacritics: {}", input
+        .nfd()
+        .filter(|c| !c.is_mark_nonspacing())
+        .nfc()
+        .collect::<String>());
 }
 
 pub fn trace(s: &str, ignore_fp: bool) {

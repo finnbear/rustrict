@@ -1,7 +1,7 @@
 [package]
 name = "rustrict"
 authors = ["Finn Bear"]
-version = "0.5.11"
+version = "0.5.12"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/finnbear/rustrict/"
@@ -48,7 +48,7 @@ features = ["censor", "context", "customize", "width"]
 
 [dependencies]
 finl_unicode = "1.2"
-unicode-normalization = {version = "0.1", optional = true}
+unicode-normalization = {version = "0.1.22", optional = true}
 unicode-width = {version = "0.1", optional = true}
 bitflags = {version = "1.3", optional = true}
 lazy_static = {version = "1.4", optional = true}
@@ -69,5 +69,5 @@ walkdir = {version = "2", optional = true}
 rand = "0.8"
 csv = "1.1"
 censor_crate = {package = "censor", version = "0.3.0"}
-rustrict_old = {package = "rustrict", version = "0.5.3"}
+rustrict_old = {package = "rustrict", version = "0.5.11"}
 serial_test = "0.5"
