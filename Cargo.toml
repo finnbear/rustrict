@@ -1,8 +1,8 @@
 [package]
 name = "rustrict"
 authors = ["Finn Bear"]
-version = "0.5.12"
-edition = "2018"
+version = "0.5.13"
+edition = "2021"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/finnbear/rustrict/"
 description = "rustrict is a profanity filter for Rust"
@@ -69,5 +69,5 @@ walkdir = {version = "2", optional = true}
 rand = "0.8"
 csv = "1.1"
 censor_crate = {package = "censor", version = "0.3.0"}
-rustrict_old = {package = "rustrict", version = "0.5.11"}
+rustrict_old = {package = "rustrict", version = "0.5.12"}
 serial_test = "0.5"

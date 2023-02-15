@@ -20,7 +20,7 @@ lazy_static! {
                 (
                     split.next().unwrap(),
                     Type::from_weights(
-                        &[0; Type::WEIGHT_COUNT].map(|_| split.next().unwrap().parse().unwrap()),
+                        &[0; Type::WEIGHT_COUNT].map(|_| split.next().expect(line).parse().unwrap()),
                     ),
                 )
             })
@@ -455,7 +455,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 // a profanity, so that these profanities are detected.
                 //
                 // Not adding a match is mainly an optimization.
-                if !(skippable && replacement.is_none() && !matches!(raw_c, ' ' | '_' | '🖕')) {
+                if !(skippable && replacement.is_none() && !matches!(raw_c, ' ' | '_' | '🖕' | '🍆')) {
                     let begin_camel_case_word = raw_c.is_ascii_uppercase()
                         && self.last.map(|c| !c.is_ascii_uppercase()).unwrap_or(false);
 
@@ -983,6 +983,8 @@ mod tests {
                 .map(|l| (l, false, Some(true))),
         );
 
+        let mut failures = Vec::new();
+
         for (case, any_truth, safe_truth) in cases {
             /*
             #[cfg(debug_assertions)]
@@ -998,9 +1000,9 @@ mod tests {
 
             if any != any_truth {
                 find_detection(case);
-                panic!("FAIL: Predicted {:?} for {}", typ, case);
+                failures.push(format!("FAIL: Predicted {:?} for {}", typ, case));
             }
-            if !any {
+            if !any_truth {
                 // None of the current test cases contain any abusive Unicode characters.
                 assert_eq!(case, case.censor());
             }
@@ -1009,6 +1011,10 @@ mod tests {
                     panic!("FAIL: Predicted safe={} for {}", safe, case);
                 }
             }
+        }
+
+        if !failures.is_empty() {
+            panic!("{failures:?}");
         }
     }
 
