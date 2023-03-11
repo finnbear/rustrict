@@ -47,6 +47,8 @@ fn main() {
         if let Some(c) = char::from_u32(u) {
             let max_width = match c {
                 '🐿' => 20,
+                '𒐫' => 40,
+                '𒈙' => 35,
                 _ => {
                     let max_width = (max_width(c, &fonts) as f32 / 100f32).round() as u16;
                     if max_width > u8::MAX as u16 {

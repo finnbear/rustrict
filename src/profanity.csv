@@ -7,8 +7,12 @@ word,profane,offensive,sexual,mean,evasive
 ࿘,0,2,0,0,0
 ✠,0,1,0,0,0
 🖕,1,0,0,0,1
+🍆,0,0,0,0,1
 🍆💦,1,0,3,0,1
 🍆💦🍑,1,0,3,0,2
+🍆🍑,1,0,3,0,2
+🍆+🍑,1,0,3,0,2
+🍑💦,1,0,0,0,1
 𓂺,0,0,2,0,3
 _l_,1,0,0,0,2
 3==D,0,0,2,0,1
@@ -16,6 +20,7 @@ _l_,1,0,0,0,2
 8==>,0,0,2,0,1
 8==D,0,0,2,0,1
 8==o,0,0,2,0,1
+9/11,0,1,0,0,0
 c==3,0,0,2,0,1
 c==B,0,0,2,0,1
 a mf,1,1,1,0,1
@@ -23,6 +28,7 @@ a negro,0,1,0,0,0
 a latex,0,0,2,0,2
 adlof,0,1,0,0,1
 adolf,0,2,0,0,0
+africans,0,1,0,0,0
 ahole,2,0,1,2,0
 aholes,2,0,1,0,0
 anal,2,0,2,0,0
@@ -33,6 +39,8 @@ aregay,0,2,0,0,0
 arse,2,0,0,0,0
 arsehole,2,0,0,0,0
 ashole,2,0,1,2,0
+asian people,0,1,0,0,0
+asians,0,1,0,0,0
  ass,2,0,1,0,0
 assbanger,2,0,2,0,0
 asseater,2,0,0,2,0
@@ -83,7 +91,9 @@ bishes,0,1,1,0,1
 bitch,0,2,2,0,0
 bitches,0,2,2,0,0
 bitsch,0,2,2,0,2
+black ass,0,2,0,0,0
 blackcock,2,2,2,0,0
+black guy,0,1,0,0,0
 bloody,1,0,0,0,0
 bloddyhell,2,0,0,0,0
 blow me,0,0,2,0,0
@@ -109,6 +119,7 @@ bulshit,2,0,0,0,0
 bullsht,2,0,0,0,1
 bum,1,0,0,1,0
 bumfuck,2,0,0,2,0
+but hole,1,0,0,0,0
 butt,1,0,0,0,0
 buttock,1,0,0,0,0
 buttox,1,0,0,0,2
@@ -134,6 +145,7 @@ chingchangchong,0,2,0,1,0
 chink,0,3,0,0,0
 chupalo,0,0,2,2,0
 chupamela,0,0,2,2,0
+chynk,0,2,0,0,2
 clambamer,1,0,2,0,2
 clamslamer,1,0,2,0,2
 clit,0,0,3,0,0
@@ -185,6 +197,7 @@ dicker,2,0,2,0,1
 dickhead,2,1,2,2,0
 dik,2,0,2,1,1
 dildo,0,0,3,0,0
+dimwit,0,1,0,2,0
 dingleberry,1,0,0,0,0
 dipshit,2,0,0,2,0
 dldo,0,0,3,0,0
@@ -272,6 +285,7 @@ fkn,2,0,2,0,1
 fkuc,2,0,2,0,2
 fkucing,2,0,2,0,2
 flange,0,0,3,0,0
+flikker,0,3,1,0,1
 fock,2,0,2,0,2
 fok,2,0,2,0,3
 fook,2,0,2,0,3
@@ -282,6 +296,7 @@ frick,1,0,0,0,0
 frik,1,0,0,0,1
 frikyou,1,0,0,2,1
 frig,1,0,2,0,0
+fuack,2,0,2,0,2
 fuc,2,0,2,0,0
 fucc,2,0,2,0,1
 fuch,2,0,2,0,2
@@ -308,7 +323,9 @@ fukyou,2,0,2,3,1
 fuq,2,0,2,0,1
 fuqq,2,0,2,0,1
 fuque,2,0,2,0,3
+fycuk,1,0,0,0,1
 fys,2,0,1,2,1
+fyuck,1,0,0,0,1
 gangbang,0,3,0,0,0
 gaay,0,1,0,0,0
 gae,0,1,0,0,1
@@ -328,6 +345,7 @@ gfys,2,0,1,2,1
 ggers,3,3,0,0,0
 getcancer,0,0,0,3,0
 getlost,0,0,0,2,0
+get married,0,0,1,0,0
 ghetto,0,2,0,0,0
 gilipolas,0,0,2,2,0
 gky,0,2,0,2,1
@@ -342,8 +360,12 @@ gunt,0,2,2,0,1
 handjob,0,0,3,0,0
 hangyourself,0,2,0,3,0
 h8,0,0,0,2,1
-haet,0,0,0,2,1
-hate,0,0,0,2,0
+haet,0,0,0,2,2
+hate,0,0,0,2,1
+hate asian,0,2,0,2,0
+hate african,0,2,0,2,0
+hate black,0,2,0,2,0
+hate chinese,0,2,0,2,0
 hator,0,0,0,2,2
 hayt,0,0,0,2,2
 heil hitler,0,3,0,0,0
@@ -425,6 +447,8 @@ killallstudent,3,0,0,0,0
 killaschool,3,0,0,0,0
 killchinese,0,2,0,0,0
 killchina,0,2,0,0,0
+killfamily,0,2,0,0,0
+killmyfamily,0,2,0,0,0
 killmyschool,3,0,0,0,0
 killotherpeople,2,0,0,0,0
 killpeople,2,0,0,0,0
@@ -444,6 +468,7 @@ killingrussia,0,2,0,0,0
 killingrussians,0,2,0,0,0
 killingukraine,0,2,0,0,0
 killingukrainians,0,2,0,0,0
+killyourfamily,0,2,0,3,0
 kkk,0,3,0,0,0
 kkklan,0,3,0,0,0
 kkkmember,0,3,0,0,0
@@ -477,6 +502,8 @@ mailabomb,0,2,0,0,0
 maldito,1,0,0,0,0
 malnacido,0,0,1,2,0
 maricon,0,2,2,0,0
+marry me,0,0,1,0,0
+marry you,0,0,1,0,0
 masacreinhisschool,3,0,0,0,0
 masacreinmyschool,3,0,0,0,0
 masacremyschool,3,0,0,0,0
@@ -551,7 +578,8 @@ nig,2,3,0,0,0
 nigg,2,3,0,0,0
 nigga,2,3,0,0,0
 niger,3,5,0,0,0
-niglet,0,3,0,0,1
+nigler,2,2,0,0,2
+niglet,0,2,0,0,2
 niguh,2,3,0,0,2
 nigr,2,3,0,0,2
 nigs,2,3,0,0,1
@@ -562,6 +590,7 @@ niqq,2,3,0,0,2
 niqr,2,3,0,0,2
 nmsl,0,1,0,2,2
 nolife,0,0,0,2,0
+nood,0,0,2,0,2
 nsdap,0,2,0,0,1
 nude,0,0,3,0,0
 nudes,0,0,3,0,0
@@ -578,6 +607,9 @@ nygga,2,3,0,0,3
 nziger,3,5,0,0,3
 oralsex,0,0,3,0,0
 orgasm,0,0,2,0,0
+osama,0,1,0,0,0
+osamabin,0,1,0,0,0
+osamabinladen,0,1,0,0,0
 peanis,1,0,3,0,1
 peanus,1,0,3,0,1
 penetrator,0,0,1,0,0
@@ -637,13 +669,16 @@ puta madre,2,0,1,0,0
 eresputa,0,0,2,2,0
 queef,0,0,3,0,0
 queer,0,3,0,0,0
-racist,0,0,0,1,0
+racism,0,0,0,1,0
+racist,0,0,0,2,0
+racist little,0,0,0,2,0
 rape,0,0,3,0,0
 rapist,0,0,2,0,0
 rascist,0,0,0,1,1
 rascit,0,0,0,1,2
 rectum,0,0,2,0,0
 recktum,0,0,2,0,2
+reggin,2,2,0,0,3
 reich,0,1,0,0,0
 retard,0,2,0,2,0
 retarded,0,2,0,2,0
@@ -708,9 +743,11 @@ shut ur face,0,0,0,2,1
 shut your face,0,0,0,2,1
 shutup,0,0,0,2,0
 shyt,2,0,0,0,2
-sisy,0,0,0,1,0
+sick my,0,0,2,0,1
+sick your,0,0,2,0,1
 siegheil,0,2,0,0,1
 sieghail,0,2,0,0,2
+sisy,0,0,0,1,0
 skank,0,2,3,0,0
 slut,0,2,2,0,0
 smallD,2,0,2,2,2
@@ -737,10 +774,14 @@ succ,0,0,1,1,1
 sucs,0,0,1,1,1
 suck,0,0,1,1,0
 sucker,0,0,0,2,0
+sucking my,0,0,3,0,0
+sucking me,0,0,3,0,0
+sucking your,0,0,3,0,0
 sucks,0,0,1,1,0
 suckit,0,0,2,2,0
 suckme,0,0,3,0,0
 suckmy,0,0,3,0,0
+suck your,0,0,3,0,0
 suhck,0,0,1,1,2
 suhckme,0,0,3,0,2
 suicidal,1,0,0,0,0
@@ -761,6 +802,7 @@ testical,0,0,3,0,1
 testicle,0,0,3,0,0
 that sob,1,0,1,0,0
 that mf,1,1,1,0,1
+they can die,0,0,0,2,0
 thirdreich,0,2,0,0,0
 this mf,1,1,1,0,1
 threesome,0,0,3,0,0
@@ -853,6 +895,7 @@ you mf,2,1,1,2,1
 you monkey,0,1,0,1,0
 youre hole,0,0,2,0,3
 youremother,0,0,1,1,1
+youre trash,0,0,0,2,0
 your hole,0,0,2,0,2
 yourmother,0,0,1,1,0
 yourmom,0,0,1,1,0

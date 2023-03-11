@@ -455,7 +455,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 // a profanity, so that these profanities are detected.
                 //
                 // Not adding a match is mainly an optimization.
-                if !(skippable && replacement.is_none() && !matches!(raw_c, ' ' | '_' | '🖕' | '🍆')) {
+                if !(skippable && replacement.is_none() && !matches!(raw_c, ' ' | '_' | '🖕' | '🍆' | '🍑')) {
                     let begin_camel_case_word = raw_c.is_ascii_uppercase()
                         && self.last.map(|c| !c.is_ascii_uppercase()).unwrap_or(false);
 

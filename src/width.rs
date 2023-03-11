@@ -102,6 +102,26 @@ mod test {
     }
 
     #[test]
+    pub fn three_em_dash() {
+        assert!(width('⸻') >= 2500);
+    }
+
+    #[test]
+    pub fn lattice() {
+        assert!(width('𒐫') >= 3000);
+    }
+
+    #[test]
+    pub fn cuneiform() {
+        assert!(width('𒈙') >= 3000);
+    }
+
+    #[test]
+    pub fn javanese() {
+        assert!(width('꧅') >= 1500);
+    }
+
+    #[test]
     pub fn emoji() {
         assert_eq!(width_str("😀🐿"), 4);
     }

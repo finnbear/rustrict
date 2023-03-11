@@ -58,6 +58,7 @@ up ahead
 run away
 so long
 peace
+oof
 its been so long
 yawn
 wut
@@ -133,6 +134,7 @@ false
 gtg
 facts
 brb
+bro
 omg
 afk
 gg
@@ -144,6 +146,7 @@ lmao
 hehe
 haha
 hahaha
+hablo espanol
 ha
 very funny
 xd
