@@ -36,6 +36,7 @@ lazy_static! {
     );
 }
 
+/// Efficiently stores profanity, false positives, and safe words.
 #[derive(Clone, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Trie {
@@ -64,7 +65,7 @@ pub(crate) struct Node {
 }
 
 impl Trie {
-    // Empty.
+    /// Empty.
     pub fn new() -> Self {
         Self {
             root: Node {
@@ -80,6 +81,7 @@ impl Trie {
         }
     }
 
+    /// Sets the type of a word.
     pub fn set(&mut self, word: &str, typ: Type) {
         self.add(word, typ, true);
     }

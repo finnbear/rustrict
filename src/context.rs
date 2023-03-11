@@ -485,6 +485,7 @@ impl Default for Context {
     }
 }
 
+/// Communicates why a message was blocked as opposed to merely censored.
 #[derive(Copy, Clone, Debug, PartialEq)]
 #[non_exhaustive]
 pub enum BlockReason {
