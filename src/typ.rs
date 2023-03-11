@@ -3,6 +3,7 @@ use std::fmt::Debug;
 use std::ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, Not};
 
 bitflags! {
+    #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
     struct TypeRepr: u32 {
         const PROFANE   = 0b0_000_000_000_000_000_111;
         const OFFENSIVE = 0b0_000_000_000_000_111_000;
@@ -32,6 +33,7 @@ bitflags! {
 /// For example, the following means profane or at-least moderately mean:
 /// `Type::PROFANE | (Type::MEAN & Type::MODERATE_OR_HIGHER)`
 #[derive(Copy, Clone, Eq, PartialEq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Type(TypeRepr);
 
 const SEVERE_WEIGHT: i8 = 3;

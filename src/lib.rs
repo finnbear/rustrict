@@ -1,6 +1,8 @@
 #![cfg_attr(test, feature(test))]
 
 #[cfg(feature = "censor")]
+pub(crate) mod banned;
+#[cfg(feature = "censor")]
 pub(crate) mod buffer_proxy_iterator;
 #[cfg(feature = "censor")]
 pub(crate) mod censor;
@@ -8,6 +10,8 @@ pub(crate) mod censor;
 pub(crate) mod feature_cell;
 #[cfg(feature = "censor")]
 pub(crate) mod mtch;
+#[cfg(feature = "censor")]
+pub(crate) mod replacements;
 #[cfg(feature = "censor")]
 pub(crate) mod trie;
 #[cfg(feature = "censor")]
@@ -18,6 +22,11 @@ pub(crate) mod context;
 
 #[cfg(feature = "width")]
 pub(crate) mod width;
+
+#[cfg(feature = "censor")]
+pub use replacements::Replacements;
+#[cfg(feature = "censor")]
+pub use trie::Trie;
 
 #[cfg(feature = "width")]
 pub use width::{trim_to_width, width, width_str};

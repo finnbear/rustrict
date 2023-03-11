@@ -7,13 +7,16 @@ pub fn main() {
     trace(&input, false);
     //trace(&input, true);
 
+    use finl_unicode::categories::CharacterCategories;
     use unicode_normalization::UnicodeNormalization;
-    use finl_unicode::categories::{CharacterCategories};
-    println!("Without diacritics: {}", input
-        .nfd()
-        .filter(|c| !c.is_mark_nonspacing())
-        .nfc()
-        .collect::<String>());
+    println!(
+        "Without diacritics: {}",
+        input
+            .nfd()
+            .filter(|c| !c.is_mark_nonspacing())
+            .nfc()
+            .collect::<String>()
+    );
 }
 
 pub fn trace(s: &str, ignore_fp: bool) {

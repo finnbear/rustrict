@@ -100,8 +100,8 @@ fn main() {
                 char::from_u32(escape_int).unwrap()
             };
 
+            use finl_unicode::categories::CharacterCategories;
             use unicode_normalization::UnicodeNormalization;
-            use finl_unicode::categories::{CharacterCategories};
             let c_string = String::from(c);
             let c_string_2 = c_string
                 .nfd()
@@ -114,7 +114,10 @@ fn main() {
             }
             assert_eq!(c_string_2.chars().count(), 1);
 
-            (c_string_2.chars().next().unwrap(), String::from(&line[comma + 1..]))
+            (
+                c_string_2.chars().next().unwrap(),
+                String::from(&line[comma + 1..]),
+            )
         })
         .for_each(&mut append_replacement);
 
