@@ -80,6 +80,8 @@ booby
 boobyalla
 boobyish
 boobyism
+boy friend
+boyfriends
 brain less
 brainlessly
 brainlessness
@@ -245,6 +247,8 @@ ghettoization
 ghettoize
 ghettoizing
 ghettos
+girl friend
+girlfriends
 goddammed
 goddamming
 goddammit
@@ -349,6 +353,7 @@ megalopenis
 mi ger
 micropenis
 mo ron
+mofos
 moronic
 morons
 motherfuck(.*)
