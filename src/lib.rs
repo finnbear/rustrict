@@ -24,6 +24,8 @@ pub(crate) mod context;
 pub(crate) mod width;
 
 #[cfg(feature = "censor")]
+pub use banned::Banned;
+#[cfg(feature = "censor")]
 pub use replacements::Replacements;
 #[cfg(feature = "censor")]
 pub use trie::Trie;
@@ -45,6 +47,7 @@ pub(crate) type Map<K, V> = rustc_hash::FxHashMap<K, V>;
 pub(crate) type Set<V> = rustc_hash::FxHashSet<V>;
 
 #[cfg(feature = "customize")]
+#[allow(deprecated)]
 pub use censor::add_word;
 
 #[cfg(feature = "context")]

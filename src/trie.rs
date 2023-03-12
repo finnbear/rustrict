@@ -81,6 +81,18 @@ impl Trie {
         }
     }
 
+    /// Allows direct mutable access to the global default trie of words.
+    ///
+    /// Prefer the safe API `Censor::with_trie`.
+    ///
+    /// # Safety
+    ///
+    /// You must manually avoid concurrent access/censoring.
+    #[cfg(feature = "customize")]
+    pub unsafe fn customize_default() -> &'static mut Self {
+        TRIE.get_mut()
+    }
+
     /// Sets the type of a word.
     pub fn set(&mut self, word: &str, typ: Type) {
         self.add(word, typ, true);

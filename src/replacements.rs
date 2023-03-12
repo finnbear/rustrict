@@ -1,3 +1,4 @@
+use crate::feature_cell::FeatureCell;
 use crate::Map;
 use arrayvec::ArrayString;
 use lazy_static::lazy_static;
@@ -5,7 +6,7 @@ use std::collections::hash_map::Entry;
 use std::ops::Deref;
 
 lazy_static! {
-    pub(crate) static ref REPLACEMENTS: Replacements = Replacements(
+    pub(crate) static ref REPLACEMENTS: FeatureCell<Replacements> = FeatureCell::new(Replacements(
         include_str!("replacements.csv")
             .lines()
             .filter(|line| !line.is_empty())
@@ -17,7 +18,7 @@ lazy_static! {
                 )
             })
             .collect()
-    );
+    ));
 }
 
 /// Set of possible interpretations for an input character.
@@ -29,7 +30,7 @@ pub struct Replacements(Map<char, ArrayString<12>>);
 
 impl Default for Replacements {
     fn default() -> Self {
-        REPLACEMENTS.deref().clone()
+        REPLACEMENTS.deref().deref().clone()
     }
 }
 
@@ -37,6 +38,18 @@ impl Replacements {
     /// Empty.
     pub fn new() -> Self {
         Self(Default::default())
+    }
+
+    /// Allows direct mutable access to the global default set of replacements.
+    ///
+    /// Prefer the safe API `Censor::with_replacements`.
+    ///
+    /// # Safety
+    ///
+    /// You must manually avoid concurrent access/censoring.
+    #[cfg(feature = "customize")]
+    pub unsafe fn customize_default() -> &'static mut Self {
+        REPLACEMENTS.get_mut()
     }
 
     pub(crate) fn get(&self, src: char) -> Option<&ArrayString<12>> {

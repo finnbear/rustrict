@@ -199,7 +199,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
     ///
     /// At present, [`Type::SPAM`] cannot be censored.
     ///
-    /// The default is [`Type::Inappropriate`].
+    /// The default is [`Type::INAPPROPRIATE`].
     pub fn with_censor_threshold(&mut self, censor_threshold: Type) -> &mut Self {
         self.options.censor_threshold = censor_threshold;
         self
@@ -837,6 +837,8 @@ pub(crate) fn should_skip_censor(string: &str) -> bool {
 /// It is recommended to use all lower-case, which will match both cases. Upper-case characters will
 /// only match upper-case.
 ///
+/// Prefer the safe API `Censor::with_trie`, using a modified `Trie::default()`.
+///
 /// # Warning
 ///
 /// Any profanity words added this way will not support false positives. For example, if you add the word
@@ -847,8 +849,9 @@ pub(crate) fn should_skip_censor(string: &str) -> bool {
 /// This must not be called when the crate is being used in any other way. It is best to call this
 /// from the main thread, near the beginning of the program.
 #[cfg(feature = "customize")]
+#[deprecated = "Use the equivalent Trie::customize_default().set(word, typ) or the safe API Censor::with_trie"]
 pub unsafe fn add_word(word: &str, typ: Type) {
-    TRIE.get_mut().set(word, typ);
+    Trie::customize_default().set(word, typ)
 }
 
 #[cfg(test)]

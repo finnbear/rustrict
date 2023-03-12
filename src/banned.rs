@@ -29,12 +29,20 @@ impl Default for Banned {
     }
 }
 
-// TODO: Export this for users.
-#[allow(unused)]
 impl Banned {
     /// Empty.
     pub fn new() -> Self {
         Self(Default::default())
+    }
+
+    /// Allows direct mutable access to the global default set of banned characters.
+    ///
+    /// # Safety
+    ///
+    /// You must manually avoid concurrent access/censoring.
+    #[cfg(feature = "customize")]
+    pub unsafe fn customize_default() -> &'static mut Self {
+        BANNED.get_mut()
     }
 
     pub(crate) fn contains(&self, c: char) -> bool {

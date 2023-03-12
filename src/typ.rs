@@ -205,7 +205,7 @@ impl Not for Type {
     }
 }
 
-/// Note: Can't impl directly on TypeRepr due to https://github.com/bitflags/bitflags/issues/218
+// Note: Can't impl directly on TypeRepr due to https://github.com/bitflags/bitflags/issues/218
 impl Debug for Type {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         fn description(bits: u32) -> &'static str {
