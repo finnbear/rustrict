@@ -19,7 +19,7 @@ lazy_static! {
 }
 
 /// Set of character to strip from input without replacement.
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Banned(Set<char>);
 

@@ -93,7 +93,17 @@ impl Trie {
         TRIE.get_mut()
     }
 
-    /// Sets the type of a word.
+    /// Adds a word, with the given type. The type can be `Type::SAFE`, or a combination of `Type::PROFANE`,
+    /// `Type::Sexual`, `Type::Offensive`, `Type::Mean`, `Type::Mild`, `Type::Moderate`, and `Type::Severe`,
+    /// but NOT both (can't be safe and unsafe).
+    ///
+    /// It is recommended to use all lower-case, which will match both cases. Upper-case characters will
+    /// only match upper-case.
+    ///
+    /// # Warning
+    ///
+    /// Any profanity words added this way will not support false positives. For example, if you add the word
+    /// "field," you can expect "cornfield" to be detected as well, unless you call `add_word("cornfield", Type::None)`.
     pub fn set(&mut self, word: &str, typ: Type) {
         self.add(word, typ, true);
     }
