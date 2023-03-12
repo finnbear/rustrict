@@ -14,6 +14,12 @@ lazy_static! {
                     .and_then(char::from_u32)
                     .unwrap()
             })
+            // If you care about width, you probably also care about height.
+            .chain(if cfg!(feature = "width") {
+                    ['\u{A9C1}', '\u{A9C2}'].as_slice().into_iter().copied()
+                } else {
+                    [].as_slice().into_iter().copied()
+                })
             .collect()
     ));
 }

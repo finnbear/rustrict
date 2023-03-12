@@ -79,8 +79,8 @@ pub fn trim_to_width(s: &str, mut budget: usize) -> &str {
 
 #[cfg(test)]
 mod test {
-    use crate::width;
     use crate::width::{trim_to_width, width_str};
+    use crate::{width, CensorStr};
     use serial_test::serial;
 
     /*
@@ -135,6 +135,12 @@ mod test {
     pub fn string() {
         //assert_eq!(width_str("abc‱Ǆဪ"), 7);
         assert_eq!(width_str("abc‱Ǆဪ"), 8);
+    }
+
+    #[test]
+    #[serial]
+    pub fn tall() {
+        assert_eq!("a꧁a".censor(), "aa");
     }
 
     #[test]
