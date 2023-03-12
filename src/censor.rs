@@ -1267,6 +1267,7 @@ mod tests {
     #[cfg(feature = "customize")]
     #[test]
     #[serial]
+    #[allow(deprecated)]
     fn customize() {
         use crate::add_word;
 
