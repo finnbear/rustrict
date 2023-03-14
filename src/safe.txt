@@ -113,6 +113,10 @@ follow me
 join
 join me
 join my team
+use team chat
+team chat
+switch to team chat
+go to team chat
 join my fleet
 join my clan
 stop
