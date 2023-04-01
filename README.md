@@ -177,9 +177,14 @@ is used as a dataset. Positive accuracy is the percentage of profanity detected 
 
 [![Build](https://github.com/finnbear/rustrict/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/finnbear/rustrict/actions/workflows/build.yml)
 
-If you make an adjustment that would affect false positives, you will need to run `false_positive_finder`:
-1. Run `./download.sh` to get the required word lists.
-2. Run `cargo run --bin false_positive_finder --release --all-features`
+If you make an adjustment that would affect false positives, such as adding profanity,
+you will need to run `false_positive_finder`:
+1. Run `make downloads` to download the required word lists and dictionaries
+2. Run `make false_positives` to automatically find false positives
+
+If you modify `replacements_extra.csv`, run `make replacements` to rebuild `replacements.csv`.
+
+Finally, run `make test` for a full test or `make test_debug` for a fast test.
 
 ## License
 
