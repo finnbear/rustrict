@@ -24,6 +24,7 @@ assholes
 ates
 ays
 b
+babes
 badasses
 ball sac
 ball sag
@@ -126,6 +127,7 @@ clitoris(.*)
 clitoritis
 clitoromania
 co
+cocaines
 cockbell(.*)
 cockboat(.*)
 cockbrain
@@ -255,6 +257,7 @@ goddammit
 goddamn
 goddamns
 goddams
+gonads
 gringos
 gs
 h

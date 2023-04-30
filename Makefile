@@ -5,16 +5,16 @@ downloads:
     wget -O src/unicode_confusables.txt https://www.unicode.org/Public/security/14.0.0/confusables.txt
 
 false_positives:
-	cargo run --bin false_positive_finder --release --features censor,regex,indicatif,rayon
+	cargo run --bin false_positive_finder --release --features censor,regex,indicatif,rayon,find_false_positives
 
 replacements:
-	cargo run --bin replacement_finder
+	cargo run --bin replacement_finder --features find_replacements
 
 widths:
 	cargo run --bin character_analyzer --release --features imageproc,image,rusttype,walkdir,rayon,unicode-width
 
 test:
-	cargo test --release --features width,serde
+	cargo test --release --features width,serde -- --nocapture
 
 # Skips accuracy analysis so finishes faster.
 test_debug:

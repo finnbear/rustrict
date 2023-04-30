@@ -127,21 +127,21 @@ fn main() {
         })
         .collect();
 
-    let progress = ProgressBar::new((CONCAT_DICTIONARY.len() as u64).pow(2));
+    let progress = ProgressBar::new(CONCAT_DICTIONARY.len() as u64);
     progress.eta();
 
     let false_positives = Mutex::new(false_positives);
 
     CONCAT_DICTIONARY.par_iter().for_each(|word1| {
         for word2 in CONCAT_DICTIONARY.iter() {
-            progress.inc(1);
             if let Some(false_positive) =
-                maybe_false_positive(word1.chars().chain(" ".chars()).chain(word2.chars()))
+                maybe_false_positive(word1.chars().chain(std::iter::once(' ')).chain(word2.chars()))
             {
                 //println!("fp: {}", false_positive);
                 false_positives.lock().unwrap().insert(false_positive);
             }
         }
+        progress.inc(1);
     });
 
     let mut sorted: Vec<_> = false_positives.into_inner().unwrap().into_iter().collect();

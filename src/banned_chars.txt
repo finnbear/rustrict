@@ -8,3 +8,6 @@ U+2066
 U+2067
 U+2068
 U+2069
+
+# Very small Arabic ligature
+U+FC60
