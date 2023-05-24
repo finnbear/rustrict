@@ -326,7 +326,7 @@ impl<I: Iterator<Item = char>> Censor<I> {
     }
 
     fn safe_self_censoring_and_spam_detection(&self) -> Type {
-        let safe = if self.inline.safe {
+        let safe = if self.inline.safe && self.inline.repetitions < 4 {
             Type::SAFE
         } else {
             Type::NONE
@@ -1104,6 +1104,14 @@ mod tests {
                 | Type::SEXUAL & Type::MODERATE_OR_HIGHER
                 | Type::MEAN & Type::SEVERE
         ));
+    }
+
+    #[test]
+    #[serial]
+    fn repetitions_non_safe() {
+        assert!("hello".is(Type::SAFE));
+        assert!("helllo".is(Type::SAFE));
+        assert!("hellllllllo".isnt(Type::SAFE));
     }
 
     #[test]
