@@ -134,9 +134,12 @@ fn main() {
 
     CONCAT_DICTIONARY.par_iter().for_each(|word1| {
         for word2 in CONCAT_DICTIONARY.iter() {
-            if let Some(false_positive) =
-                maybe_false_positive(word1.chars().chain(std::iter::once(' ')).chain(word2.chars()))
-            {
+            if let Some(false_positive) = maybe_false_positive(
+                word1
+                    .chars()
+                    .chain(std::iter::once(' '))
+                    .chain(word2.chars()),
+            ) {
                 //println!("fp: {}", false_positive);
                 false_positives.lock().unwrap().insert(false_positive);
             }

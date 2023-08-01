@@ -48,6 +48,7 @@ impl Replacements {
     ///
     /// You must manually avoid concurrent access/censoring.
     #[cfg(feature = "customize")]
+    #[cfg_attr(doc, doc(cfg(feature = "customize")))]
     pub unsafe fn customize_default() -> &'static mut Self {
         REPLACEMENTS.get_mut()
     }

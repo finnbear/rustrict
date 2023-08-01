@@ -47,6 +47,7 @@ lazy_static::lazy_static! {
 /// to know if your user's text is 10.3X longer per character than you might have expected?).
 ///
 /// Precision is not necessarily 1 milli-`m` (currently, it is 100 milli-`m`'s).
+#[cfg_attr(doc, doc(cfg(feature = "width")))]
 pub fn width(c: char) -> usize {
     let width = match WIDTHS.binary_search_by_key(&c, |&(c, _)| c) {
         Ok(idx) => WIDTHS[idx].1,
@@ -59,6 +60,7 @@ pub fn width(c: char) -> usize {
 /// Convenience method for getting the width, in `m`'s, of an entire string.
 ///
 /// Warning: If the width overflows, the result is undefined (e.g. panic or overflow).
+#[cfg_attr(doc, doc(cfg(feature = "width")))]
 pub fn width_str(s: &str) -> usize {
     s.chars().map(|c| width(c) / 100).sum::<usize>() / 10
 }

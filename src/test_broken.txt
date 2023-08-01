@@ -1,6 +1,7 @@
 # Broken "positive" tests
 blahsh!t
 battlesh!t
+theRapist
 
 # replacement addition
 ебаная

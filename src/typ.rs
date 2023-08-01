@@ -63,13 +63,13 @@ impl Type {
     /// Recommended to enforce this on users who repeatedly evade the filter.
     pub const SAFE: Self = Self(TypeRepr::SAFE);
 
-    /// Not that bad.
+    /// Not that bad. (low severity and/or low confidence)
     pub const MILD: Self = Self(TypeRepr::MILD);
 
-    /// Bad.
+    /// Bad. (moderate severity and/or moderate confidence)
     pub const MODERATE: Self = Self(TypeRepr::MODERATE);
 
-    /// Cover your eyes!
+    /// Cover your eyes! (high severity and/or high confidence)
     pub const SEVERE: Self = Self(TypeRepr::SEVERE);
 
     /// Any level; `Type::MILD`, `Type::MODERATE`, or `Type::SEVERE`.
@@ -78,7 +78,8 @@ impl Type {
     /// Any level in excess of `Type::MILD`.
     pub const MODERATE_OR_HIGHER: Self = Self(TypeRepr::MODERATE_OR_HIGHER);
 
-    /// The default `Type`, meaning profane, offensive, sexual, or severely mean.
+    /// Inappropriate for general audiences (the default `Type`, meaning profane,
+    /// offensive, sexual, or severely mean).
     pub const INAPPROPRIATE: Self = Self(TypeRepr::INAPPROPRIATE);
 
     /// Any type of detection (except SAFE). This will be expanded to cover all future types.

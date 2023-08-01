@@ -1,4 +1,5 @@
 #![cfg_attr(test, feature(test))]
+#![cfg_attr(doc, feature(doc_cfg))]
 
 #[cfg(feature = "censor")]
 pub(crate) mod banned;

@@ -9,6 +9,7 @@ use std::time::{Duration, Instant};
 /// Context is useful for taking moderation actions on a per-user basis i.e. each user would get
 /// their own Context.
 #[derive(Clone)]
+#[cfg_attr(doc, doc(cfg(feature = "context")))]
 pub struct Context {
     history: VecDeque<(String, Instant)>,
     burst_used: u8,
@@ -42,6 +43,7 @@ impl Debug for Context {
 /// Options for customizing `Context::process_with_options`. Always initialize with ..Default::default(),
 /// as new fields may be added in the future.
 #[derive(Clone, Debug)]
+#[cfg_attr(doc, doc(cfg(feature = "context")))]
 pub struct ContextProcessingOptions {
     /// Block messages if the user has been manually muted.
     pub block_if_muted: bool,
@@ -85,6 +87,7 @@ impl Default for ContextProcessingOptions {
 
 /// Options that control rate-limiting.
 #[derive(Clone, Debug)]
+#[cfg_attr(doc, doc(cfg(feature = "context")))]
 pub struct ContextRateLimitOptions {
     /// Minimum time between messages (zero means infinite rate, 2s means 0.5 messages per second).
     pub limit: Duration,
@@ -121,6 +124,7 @@ impl ContextRateLimitOptions {
 
 /// Options that control repetition-limiting.
 #[derive(Clone, Debug)]
+#[cfg_attr(doc, doc(cfg(feature = "context")))]
 pub struct ContextRepetitionLimitOptions {
     /// How many recent strings can be similar before blocking ensues.
     pub limit: u8,
@@ -488,6 +492,7 @@ impl Default for Context {
 /// Communicates why a message was blocked as opposed to merely censored.
 #[derive(Copy, Clone, Debug, PartialEq)]
 #[non_exhaustive]
+#[cfg_attr(doc, doc(cfg(feature = "context")))]
 pub enum BlockReason {
     /// The particular message was *severely* inappropriate, more specifically, `Type`.
     Inappropriate(Type),
