@@ -20,5 +20,8 @@ test:
 test_debug:
 	cargo test
 
+fuzz:
+	cargo fuzz run fuzz
+
 test_customize:
 	cargo test --release --features customize --no-default-features

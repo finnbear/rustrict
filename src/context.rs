@@ -409,6 +409,11 @@ impl Context {
             .unwrap_or(Duration::ZERO)
     }
 
+    /// Returns the instant of the last processed message.
+    pub fn last_message(&self) -> Option<Instant> {
+        self.last_message
+    }
+
     /// Returns the latest instant the user is muted (possibly in the past).
     pub fn muted_until(&self) -> Option<Instant> {
         self.muted_until
