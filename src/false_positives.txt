@@ -270,6 +270,7 @@ aith liter
 aith little
 aith tier
 aiwan ker
+ak hunt
 akshita
 al experience
 al experiencing
@@ -287,6 +288,7 @@ ala blas
 ala holes
 alablaster
 alalunga
+album hole
 alcohate
 aldehydic
 ale experience
@@ -310,6 +312,7 @@ algebra ping
 alia bias
 alien nintendo
 aliening
+alk hunt
 alkanal
 all experience
 all experiencing
@@ -726,6 +729,7 @@ arcubalist
 areas hole
 arena holes
 arguments perm
+ark hunt
 arks perm
 arles billing
 arles bin
@@ -1040,6 +1044,7 @@ awful experiencing
 awful experiment
 awful expert
 awful licking
+awn ker
 ax rated
 axes perm
 ayne ger
@@ -1388,6 +1393,7 @@ bangladesh little
 bangladesh ted
 bangladesh tier
 banig
+bank hunt
 banks perm
 banners perm
 banus
@@ -1716,6 +1722,8 @@ bluebreast
 bluetit
 blushet
 blusht
+bo able
+bo locks
 bo need
 bo nerve
 bo nervous
@@ -1732,9 +1740,8 @@ bol lock
 bol locks
 bol look
 bol looks
-bolloxed
-bolloxes
-bolloxing
+bol ox
+bollox
 bon ed
 bon eric
 bon erik
@@ -1815,6 +1822,7 @@ bool lock
 bool locks
 bool look
 bool looks
+bool ox
 boost little
 boost wats
 boost watts
@@ -1962,6 +1970,7 @@ bul experiencing
 bul experiment
 bul expert
 bulbochaete
+bulk hunt
 bullet cong
 bullet kong
 bullsucker
@@ -2370,6 +2379,7 @@ cisco jones
 cisco ward
 citharoedic
 citizens perm
+ck hunt
 clablaria
 clamcracker
 clarseach
@@ -2402,6 +2412,7 @@ clitoromaniac
 clitter
 close rwanda
 closer
+cloth head
 clubbish
 cntrb
 coarse
@@ -2719,6 +2730,7 @@ copper vert
 copulated
 cords perm
 coriolanus
+cork hunt
 cornballs
 corncracker
 corners perm
@@ -3128,6 +3140,7 @@ depth liter
 depth little
 depth tier
 derek chi
+derek hunt
 derek tion
 derek tions
 derek tum
@@ -3327,9 +3340,11 @@ draughtier
 dregginess
 dreich
 droughtier
+drunk hunt
 dryadic
 duadic
 duces perm
+duckhunting
 duckwife
 ducts perm
 dude flower
@@ -3648,6 +3663,7 @@ erectilities
 eremochaetous
 ericas hole
 ericas strate
+erk hunt
 erns perm
 erotica
 eroticism
@@ -3975,6 +3991,7 @@ fockle
 foggers
 fokker
 foliar
+folk hunt
 folks perm
 follow life
 fonts perm
@@ -3984,6 +4001,7 @@ footballs
 forces perm
 forebreast
 forget lost
+fork hunt
 formational zimb
 formational zinc
 forming ebay
@@ -4132,6 +4150,7 @@ full licking
 functionalizing
 fundic
 funds perm
+funk hunt
 funny ger
 furbish
 furbishes
@@ -4178,6 +4197,7 @@ gaysome
 gazement
 gearset
 geek chi
+geek hunt
 gees perm
 gel experience
 gel experiencing
@@ -4294,6 +4314,7 @@ good dam
 good layer
 good layout
 goodwife
+goodwillies
 goodwives
 goofballs
 goofing
@@ -4465,6 +4486,7 @@ guy jewish
 guys perm
 gymnopaedic
 gynocardic
+gyppo
 h on keyboard
 h tier
 ha attorn
@@ -4503,6 +4525,7 @@ handles blin
 handles perm
 hang ger
 hang yourself
+hank hunt
 hanks perm
 happen as
 happen az
@@ -5133,6 +5156,7 @@ ife late
 ife latter
 ifecks
 igarape
+ik hunt
 il experience
 il experiencing
 il experiment
@@ -5147,6 +5171,7 @@ ile per
 ilia bias
 iliadic
 iliopubic
+ilk hunt
 ill experience
 ill experiencing
 ill experiment
@@ -5273,6 +5298,7 @@ ink ell
 ink els
 ink elvis
 ink est
+ink hunt
 inks perm
 inners perm
 inns eminem
@@ -5345,6 +5371,7 @@ iproniazid
 ir exch
 ira holes
 ira ping
+irk hunt
 irl experience
 irl experiencing
 irl experiment
@@ -5491,6 +5518,7 @@ jungle nine
 jungle nintendo
 jungle peer
 jungle per
+junk hunt
 justments perm
 juvenile nintendo
 ka bronze
@@ -5691,6 +5719,7 @@ landscape nascar
 landscape nasdaq
 lang ger
 lanigerous
+lank hunt
 lanners perm
 laocoon
 laos ama
@@ -7017,6 +7046,7 @@ ogle peer
 ogle per
 oinochoe
 ointments perm
+ok hunt
 okes perm
 oklahannali
 ol experience
@@ -7173,6 +7203,7 @@ overlactate
 overprick
 overweener
 ow lives
+own ker
 owners perm
 owns perm
 ox rated
@@ -7185,6 +7216,7 @@ oxymoron
 oyers perm
 oysterwife
 pa holes
+pa kiss
 pachinko
 pacific killing
 pacific king
@@ -7281,6 +7313,27 @@ packless
 packly
 packs perm
 paddlecock
+paedobaptism
+paedobaptist
+paedogenesis
+paedogenetic
+paedogenic
+paedological
+paedologist
+paedology
+paedometer
+paedometrical
+paedomorphic
+paedomorphism
+paedomorphosis
+paedonymic
+paedonymy
+paedophilia
+paedopsychologist
+paedotribe
+paedotrophic
+paedotrophist
+paedotrophy
 paganalia
 pagina
 pagne ger
@@ -7672,6 +7725,13 @@ pies perm
 piewife
 piggeries
 piggery
+pike eye
+pike ya
+pike ye
+pike yi
+pike yo
+pike yug
+pike yuk
 pillicock
 pillow life
 pills ser
@@ -7738,7 +7798,6 @@ plates perm
 plates test
 platycephalus
 play boys
-play bunny
 play girls
 playboyism
 plemochoe
@@ -7795,6 +7854,7 @@ pope nasdaq
 popedom
 poppycock
 porencephalus
+pork hunt
 porocephalus
 portable nintendo
 porters perm
@@ -7845,6 +7905,7 @@ pp. 6
 pp. 7
 pp. 8
 pp. 9
+ppi key
 practitioners perm
 praeanal
 prairie nintendo
@@ -8523,6 +8584,7 @@ radio fu
 radio of
 radiofrequency
 rafts perm
+rag head
 rag inappropriate
 railers perm
 raises perm
@@ -8596,6 +8658,7 @@ ranch liter
 ranch little
 ranch tier
 ranges perm
+rank hunt
 ranks perm
 ranny ger
 rap ing
@@ -8604,7 +8667,6 @@ rap ling
 rap list
 rap ping
 rap rick
-rapakivi
 rapely
 rapeoil
 rapers
@@ -8660,6 +8722,7 @@ reef luck
 reef rick
 reefing
 reek chi
+reek hunt
 reek tum
 reel cha
 reel che
@@ -9079,6 +9142,7 @@ seconds perm
 sectionalizing
 sects perm
 seek chi
+seek hunt
 seeks
 seem en
 seem men
@@ -9409,6 +9473,7 @@ sixty
 size men
 sizes perm
 sizy
+sk hunt
 skaldic
 skibobs
 skiddycock
@@ -9523,6 +9588,7 @@ soviet cong
 soviet kong
 spackle
 spackling
+spaedom
 spaewife
 span ka
 span kee
@@ -9734,6 +9800,7 @@ spitchcock
 spitscocked
 spizzerinctum
 splay boy
+splay bunny
 splay girl
 spleening
 spleninii
@@ -9757,7 +9824,6 @@ sprightlier
 spunkie
 spunkily
 spunkiness
-spunking
 spunkless
 spunky
 squabbish
@@ -10080,6 +10146,7 @@ sussexman
 sustainable nintendo
 swank
 swanker
+swanks
 swastikaed
 sweenies
 sweetiewife
@@ -10183,6 +10250,7 @@ tamponment
 tampoon
 tanala
 tang ger
+tank hunt
 tanks perm
 tannalbin
 tape nascar
@@ -10485,6 +10553,7 @@ torpedo
 tos ama
 tos perm
 tos ser
+tos sur
 tos zer
 tosh aging
 tosh attorn
@@ -10921,6 +10990,7 @@ travesti ties
 travesti tiles
 treatments perm
 trek chi
+trek hunt
 trek tum
 triadic
 triangle nintendo
@@ -10955,6 +11025,7 @@ trochocephalus
 trollopeanism
 tropacocaine
 trouble nintendo
+trunk hunt
 tsadik
 tscheffkinite
 tubbish
@@ -10973,7 +11044,6 @@ tunnel experience
 tunnel experiencing
 tunnel experiment
 tunnel expert
-tupakihi
 turdetan
 turdidae
 turdiform
@@ -11000,6 +11070,7 @@ tussle
 tussling
 tussuck
 tussucks
+tv vat
 twank
 twanker
 twatchel
@@ -11562,6 +11633,7 @@ wealth tier
 weathercock
 weatherstrippers
 week chi
+week hunt
 weeks perm
 ween er
 ween exercise
@@ -11646,6 +11718,7 @@ whittler
 who or
 who ore
 who re
+who ring
 whole nintendo
 wholesale nintendo
 wi lives
@@ -11675,6 +11748,11 @@ wifing
 wifock
 wiggeries
 wiggery
+will jess
+will jesu
+will leslie
+will less
+will lies
 will life
 will lives
 willow life
@@ -11699,6 +11777,7 @@ with attorn
 with liter
 with little
 with tier
+wk hunt
 wl experience
 wl experiencing
 wl experiment
@@ -11719,6 +11798,7 @@ woodpecker
 woofing
 woollybutt
 words perm
+work hunt
 works perm
 worlds perm
 worst little
@@ -11783,6 +11863,7 @@ yellow man
 yes perm
 yesturday
 yfacks
+york hunt
 your holes
 your mome
 your mother
@@ -11816,6 +11897,9 @@ zilla blas
 zilla holes
 zimentwater
 zip rick
+zoophiles
+zoophiliac
+zoophilies
 zooxanthella
 zope nascar
 zope nasdaq
