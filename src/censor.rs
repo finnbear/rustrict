@@ -1028,7 +1028,7 @@ mod tests {
     #[test]
     #[serial]
     fn censor() {
-        let censored = Censor::from_str("HELLO fučk Shit nigga WORLD!")
+        let censored = Censor::from_str("HELLO fučk Shit nudes WORLD!")
             .with_censor_replacement('#')
             .censor();
 

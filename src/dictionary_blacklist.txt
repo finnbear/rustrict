@@ -5,6 +5,7 @@ hitler(.*)
 niggard(.*)
 (.*)nigger(.*)
 (.*)prostitut(.*)
+(.*)sexual(.*)
 (.*)vagina(.*)
 a holes
 ab
@@ -278,6 +279,7 @@ goddams
 gonads
 gringos
 gs
+gyppo
 h
 hand job
 hater
@@ -369,6 +371,7 @@ lapcock
 lc
 ld
 le
+lemon party
 lepers
 les
 lesbia
@@ -384,18 +387,23 @@ loss ser
 love slavery
 lowlifes
 m
+male squirting
 masochists
 masturbate(.*)
 maya sol
 meat beating
 megalopenis
+menstruates
+menstruations
 mi ger
 micropenis
+missionary position
 mo ron
 mofos
 molestations
 molesters
 molestors
+molests
 moronic
 morons
 motherfuck(.*)
@@ -443,6 +451,7 @@ nut case
 nut job
 nut jobs
 nv
+nymphos
 o
 ob
 obs
@@ -463,10 +472,13 @@ pean is
 pean nis
 peckers
 pedophil(.*)
+penetrates
+penetrations
 penetrators
 penises
 penist
 pennis
+perversions
 perverts
 ph
 (.*)phallus
@@ -484,7 +496,9 @@ playboys
 play bunny
 play girl
 playgirls
+pleasure chest
 po
+pole smoker
 poop(.*)
 porn(.*)
 pornerastic
@@ -496,6 +510,7 @@ pr
 pricks
 private part
 private parts
+prudes
 pseudopregnant
 psychosexual
 pu
@@ -532,7 +547,11 @@ rim job
 rs
 s
 sa
+sadisms
+sadists
+schizos
 school shooting
+scissoring
 screw off
 screw you
 screw yourself
@@ -547,6 +566,7 @@ seminaked
 seminude
 sex(.*)
 sh
+shaved beaver
 shi
 shiite
 shita
@@ -560,6 +580,7 @@ sissy
 sluthood
 sluts
 slutt(.*)
+smegmas
 sociosexual
 sodomites
 sodomitess
@@ -576,6 +597,9 @@ ss
 st
 stillborn
 still born
+strap on
+strappadoes
+strip club
 stripers
 stripper(.*)
 stupider
@@ -634,6 +658,8 @@ unnaked
 unpregnant
 unsexed
 unsexual
+urethras
+urines
 ur mom
 ur moms
 ur mother
@@ -643,6 +669,7 @@ ureterogenital
 urethrogenital
 urethropenile
 urethrosexual
+urinals
 urinogenital
 urinosexual
 urogenital
@@ -650,6 +677,7 @@ v
 vibrators
 virgins
 vixens
+voyeurs
 vulvae
 vulvas
 w
@@ -658,10 +686,14 @@ wank(.*)
 weaner
 weaners
 weenies
+weewees
+weiners
 welchers
+wetbacks
 white power
 white powers
 white trash
+whiteys
 whore(.*)
 wifes
 worldsex
@@ -675,4 +707,5 @@ your mom
 your moms
 ys
 z
+zoophiles
 鸡巴
