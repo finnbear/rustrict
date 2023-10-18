@@ -1,6 +1,8 @@
 abortion(.*)
 (.*)bastard(.*)
+bollox(.*)
 excrement(.*)
+goddamn(.*)
 hitler(.*)
 niggard(.*)
 (.*)nigger(.*)
@@ -21,6 +23,7 @@ anuses
 ap
 apoop
 ar
+areolas
 arses
 as hole
 asshole
@@ -30,11 +33,15 @@ ates
 ays
 b
 babes
+baby batter
 badasses
+ball gag
+ball gravy
 ball sac
 ball sag
 ball sak
 ballsiest
+barely legal
 bastaard
 beaners
 beat meat
@@ -46,6 +53,8 @@ bewhore
 bichy
 big knob
 bints
+big black
+big knockers
 bisexual
 bitchain
 bitchar
@@ -72,6 +81,7 @@ blow mee
 blowcock
 blowjobs
 blueballs
+blue waffle
 bn
 bohunks
 bollocks
@@ -185,6 +195,8 @@ dimwits
 dongs
 douche(.*)
 drag queen
+dry humped
+dry humping
 ds
 dumbcow
 dumber
@@ -223,6 +235,7 @@ fe
 fecks
 fellate
 fellatio(.*)
+female squirting
 fetisheer
 fetisher
 fetishes
@@ -237,6 +250,8 @@ fetishry
 finger you
 fingerings
 flanges
+fondles
+foreskins
 fornicates
 four some
 foursomes
@@ -268,6 +283,7 @@ ghettoization
 ghettoize
 ghettoizing
 ghettos
+gigolos
 girl friend
 girlfriends
 goddammed
@@ -276,8 +292,11 @@ goddammit
 goddamn
 goddamns
 goddams
+golden shower
 gonads
+goo girl
 gringos
+gropes
 gs
 gyppo
 h
@@ -300,6 +319,7 @@ homos
 homosexual
 honkeys
 honkies
+hookahs
 hoo ker
 hook er
 hook ker
@@ -308,9 +328,12 @@ hor ny
 horn ny
 hornyhanded
 hornyhead
+hot carl
+hot chick
 hs
 ht
 husbands
+hymens
 hypersexual
 glizzy
 ic
@@ -329,10 +352,13 @@ jackasses
 jackassification
 jackassism
 jackassness
+jack off
 jerks
+jigaboo
 jigaboos
 jihads
 judens
+jungle bunny
 k
 kaffir
 kaffirs
@@ -481,6 +507,7 @@ pennis
 perversions
 perverts
 ph
+phallic
 (.*)phallus
 picaninny
 piccaninny
@@ -577,6 +604,7 @@ shoot schools
 shut up
 simps
 sissy
+slaves
 sluthood
 sluts
 slutt(.*)
@@ -590,6 +618,7 @@ spastics
 sperma
 sperms
 spics
+spread legs
 spunked
 spunks
 squaws
@@ -648,6 +677,7 @@ under skirt
 under skirts
 underskirts
 undouched
+undressing
 unejaculated
 unfagged
 unfagoted

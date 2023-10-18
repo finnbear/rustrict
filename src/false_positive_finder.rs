@@ -37,7 +37,7 @@ lazy_static! {
         .lines()
         .skip(1)
         // must trim starting spaces, as they don't count when comparing to blacklist.
-        .map(|l| l[..l.find(',').unwrap()].trim_start_matches(' '))
+        .map(|l| l[..l.find(',').expect(l)].trim_start_matches(' '))
         .chain(
             include_str!("dictionary_blacklist.txt")
                 .split("\n")

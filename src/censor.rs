@@ -1030,6 +1030,7 @@ mod tests {
     fn censor() {
         let censored = Censor::from_str("HELLO fučk Shit nudes WORLD!")
             .with_censor_replacement('#')
+            .with_censor_first_character_threshold(Type::SEXUAL & Type::SEVERE)
             .censor();
 
         assert_eq!(censored, "HELLO f### S### ##### WORLD!");
