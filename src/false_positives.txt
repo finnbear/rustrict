@@ -5987,6 +5987,7 @@ impenetration
 impervestigable
 impossible nintendo
 impregnant
+impregnated
 improvements croat
 improvements perm
 imprudency
@@ -10240,6 +10241,7 @@ reichspfennig
 reichstaler
 reichsthaler
 reid lot
+reimpregnate
 rejerk
 rel cha
 rel che
@@ -13255,6 +13257,7 @@ ungropeable
 unhate
 unigravida
 unilabiate
+unimpregnate
 unisex
 unjewish
 unmolest
