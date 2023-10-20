@@ -12,6 +12,8 @@ J,i
 l,i
 L,i
 i,l
+k,c
+K,c
 I,Li
 x,cieu
 X,cieu
@@ -1684,5 +1686,6 @@ B,Bb
 ₺,L
 ₽,P
 ₿,B
+ß,B
 
 \u{0627},li

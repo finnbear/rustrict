@@ -1028,8 +1028,9 @@ mod tests {
     #[test]
     #[serial]
     fn censor() {
-        let censored = Censor::from_str("HELLO fučk Shit nigga WORLD!")
+        let censored = Censor::from_str("HELLO fučk Shit nudes WORLD!")
             .with_censor_replacement('#')
+            .with_censor_first_character_threshold(Type::SEXUAL & Type::SEVERE)
             .censor();
 
         assert_eq!(censored, "HELLO f### S### ##### WORLD!");
@@ -1139,7 +1140,7 @@ mod tests {
             "https://crates.io/crates/rustrict",
             rustrict,
             false, // true,
-            None,  // Some(rustrict_old),
+            None // Some(rustrict_old),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }
