@@ -23,9 +23,13 @@ lazy_static! {
     static ref CONCAT_DICTIONARY: HashSet<&'static str> = include_str!("dictionary_common.txt")
         .lines()
         .filter(|&w| {
-            (w.len() > 3 || VALID_SHORT.contains(w))
-                && !is_blacklisted(w)
-                && is_ignore_fp(w.chars(), true).0 == 0
+            let long_enough = w.len() > 3 || VALID_SHORT.contains(w);
+            let allowed = !is_blacklisted(w);
+            let appropriate = is_ignore_fp(w.chars(), true).0 == 0;
+            //println!("{w} len={long_enough} allow={allowed} appropriate={appropriate}")
+            long_enough
+                && allowed
+                && appropriate
         })
         .collect();
     static ref PROFANITY: Vec<&'static str> = include_str!("profanity.csv")
@@ -38,12 +42,13 @@ lazy_static! {
         .skip(1)
         // must trim starting spaces, as they don't count when comparing to blacklist.
         .map(|l| l[..l.find(',').expect(l)].trim_start_matches(' '))
+        .map(|w| Regex::new(&regex::escape(w)).unwrap())
         .chain(
             include_str!("dictionary_blacklist.txt")
                 .split("\n")
                 .filter(|l| !l.is_empty())
+                .map(|l| Regex::new(l).unwrap())
         )
-        .map(|l| Regex::new(&l.replace("\\", "\\\\")).unwrap())
         .collect();
 }
 
@@ -127,6 +132,8 @@ fn main() {
         })
         .collect();
 
+    progress.finish();
+
     let progress = ProgressBar::new(CONCAT_DICTIONARY.len() as u64);
     progress.eta();
 
@@ -146,6 +153,8 @@ fn main() {
         }
         progress.inc(1);
     });
+
+    progress.finish();
 
     let mut sorted: Vec<_> = false_positives.into_inner().unwrap().into_iter().collect();
     sorted.sort();

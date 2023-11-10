@@ -1,4 +1,4 @@
-use rustrict::Censor;
+use rustrict::{Censor, Type};
 use std::env::args;
 
 pub fn main() {
@@ -22,6 +22,7 @@ pub fn main() {
 pub fn trace(s: &str, ignore_fp: bool) {
     let mut censor = Censor::from_str(s);
     censor.with_ignore_false_positives(ignore_fp);
+    censor.with_censor_threshold(Type::ANY);
     let (censored, analysis) = censor.censor_and_analyze();
     println!(
         "ignore_fp={}, \"{}\" -> \"{}\" ({:?} with {} matches and {} matching characters)",
