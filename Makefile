@@ -1,3 +1,5 @@
+.PHONY: fuzz
+
 downloads:
 	wget -O test.csv https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv
     wget -O src/dictionary.txt https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt

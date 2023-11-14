@@ -7,7 +7,7 @@ word,profane,offensive,sexual,mean,evasive
 ࿘,0,2,0,0,0
 ✠,0,1,0,0,0
 🖕,1,0,0,0,1
-🍆,0,0,0,0,1
+🍆,0,0,1,0,1
 🍆💦,1,0,3,0,1
 🍆💦🍑,1,0,3,0,2
 🍆🍑,1,0,3,0,2
@@ -309,6 +309,7 @@ cumed,0,0,3,0,0
 cumgoblin,0,0,3,0,0
 cumguzler,0,0,3,0,0
 cuming,0,0,3,0,0
+cuminme,0,0,1,0,0
 cumlord,0,0,3,0,0
 cnt,0,2,2,0,1
 cunilingus,0,0,3,0,0
@@ -464,7 +465,10 @@ fcuk,2,0,2,0,2
 fecal,1,0,0,0,0
 feces,1,0,0,0,0
 feck,2,0,2,0,1
+feelmybody,0,0,1,0,1
+feelyourbody,0,0,1,0,1
 feetpics,0,0,1,0,1
+ feggat,0,1,1,0,1
 felch,0,0,1,0,0
 felched,0,0,2,0,0
 felcher,0,0,2,0,0
@@ -1010,7 +1014,9 @@ mutherfk,2,1,2,0,2
 mutherfuck,2,1,2,0,1
 mutherfucker,2,2,2,0,1
 mutherfuk,2,1,2,0,2
+myass,2,0,1,0,0
 mykock,2,0,2,1,2
+mycum,0,0,2,0,0
 mydik,2,0,2,1,2
 my a hole,1,0,1,0,2
 my gash,0,0,1,0,0
@@ -1659,6 +1665,7 @@ you are weird,0,0,0,2,0
 you mf,2,1,1,2,1
 you monkey,0,1,0,1,0
 your adres,0,0,0,0,2
+yourass,2,0,1,0,0
 your gash,0,0,1,0,0
 youre hole,0,0,2,0,3
 youremother,0,0,1,1,1

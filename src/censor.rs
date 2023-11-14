@@ -457,7 +457,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 // Not adding a match is mainly an optimization.
                 if !(skippable
                     && replacement.is_none()
-                    && !matches!(raw_c, ' ' | '_' | '🖕' | '🍆' | '🍑'))
+                    && !self.options.trie.root.children.contains_key(&raw_c))
                 {
                     let begin_camel_case_word = raw_c.is_ascii_uppercase()
                         && self
@@ -1140,7 +1140,7 @@ mod tests {
             "https://crates.io/crates/rustrict",
             rustrict,
             false, // true,
-            None // Some(rustrict_old),
+            None,  // Some(rustrict_old),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }
