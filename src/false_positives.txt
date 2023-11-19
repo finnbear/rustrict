@@ -1276,6 +1276,7 @@ backhoes
 backhooker
 backs croat
 backs perm
+badassed
 badge yest
 bags croat
 bags perm
@@ -4606,6 +4607,8 @@ flexible nine
 flexible nintendo
 flexible peer
 flexible per
+flicked
+flicker
 flicking
 flickr example
 flickr examples
@@ -12745,6 +12748,7 @@ tjurunga
 to heli
 to helicopt
 to helio
+to hello
 to jewish
 to vary
 tobacco ital
