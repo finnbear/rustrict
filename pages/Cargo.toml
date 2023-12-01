@@ -1,0 +1,22 @@
+[package]
+name = "pages"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rustrict = { path = "..", features = ["width"] }
+yew = { version = "0.21", features = ["csr"] }
+
+[dependencies.web-sys]
+version = "0.3"
+features = [
+    'HtmlInputElement',
+    'HtmlTextAreaElement',
+]
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "z"
+panic = "abort"
+strip = "debuginfo"

@@ -5,23 +5,51 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
-          components: rustfmt, clippy
+      - uses: actions/checkout@v3
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
       - name: Data
         run: curl https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv --output test.csv
       - name: Test
         run: cargo test --release --features width
+      - name: Add wasm32 target
+        run: rustup target add wasm32-unknown-unknown
+      - name: Install Trunk
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: trunk
+          version: 0.15.0
+      - name: Build Pages
+        run: cd pages && trunk --config Trunk.prod.toml build --release --filehash=false
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './pages/dist/'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
