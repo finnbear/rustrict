@@ -1,6 +1,11 @@
 # rustrict
 
-`rustrict` is a sophisticated profanity filter for Rust.
+[![Documentation](https://docs.rs/rustrict/badge.svg)](https://docs.rs/rustrict)
+[![crates.io](https://img.shields.io/crates/v/rustrict.svg)](https://crates.io/crates/rustrict)
+[![Build](https://github.com/finnbear/rustrict/actions/workflows/build.yml/badge.svg)](https://github.com/finnbear/rustrict/actions/workflows/build.yml) [Test Page](https://finnbear.github.io/rustrict/)
+
+
+`rustrict` is a profanity filter for Rust.
 
 <sup>Disclaimer: Multiple source files (`.txt`, `.csv`, `.rs` test cases) contain profanity. Viewer discretion is advised.</sup>
 
