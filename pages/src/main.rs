@@ -13,9 +13,12 @@ fn app() -> Html {
                 analysis_element.set_inner_html("N/A");
                 censored_element.set_value("");
             } else {
-                let (censored, analysis) = Censor::from_str(&uncensored).censor_and_analyze();
+                let mut censor = Censor::from_str(&uncensored);
+                let (censored, analysis) = censor.censor_and_analyze();
+                let count = censor.total_matches();
+                let detections = censor.detections();
                 let width = rustrict::width_str(&uncensored);  
-                let result = format!("{analysis:?} (width = {width})");
+                let result = format!("{analysis:?} (width = {width}, count = {count}, detections = {detections:?})");
                 analysis_element.set_inner_html(&result);
                 censored_element.set_value(&censored);
             }

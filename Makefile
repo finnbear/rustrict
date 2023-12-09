@@ -21,6 +21,9 @@ widths:
 test:
 	cargo test --release --features width,serde -- --nocapture
 
+compare:
+	COMPARE=1 make test
+
 # Skips accuracy analysis so finishes faster.
 test_debug:
 	cargo test
