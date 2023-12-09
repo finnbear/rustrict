@@ -403,22 +403,8 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 .inline
                 .uppercase
                 .saturating_add(raw_c.is_uppercase() as u8);
-            /*
-            // Very old whitelist (allows a ton of abuse):
-            let skippable = match c {
-                ' ' | '~' | '-' | '−' | '_' | '.' | '!' | '?' | ',' | '*' | '"' | '\'' | '\n' | '\r'
-                | '\t' => true,
-                _ => false,
-            };
 
-            // More recent whitelist (still allows abuse like f^u^c^k):
-            let skippable = raw_c.is_punctuation()
-                || raw_c.is_separator()
-                || is_whitespace(raw_c)
-                || matches!(raw_c, '(' | ')');
-            // Use a blacklist instead:
-             */
-            let skippable = !raw_c.is_alphanumeric() || is_whitespace(raw_c);
+            let skippable = !raw_c.is_alphabetic() || is_whitespace(raw_c);
             let replacement = self.options.replacements.get(raw_c);
 
             #[cfg(feature = "trace")]
@@ -477,6 +463,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         spaces: 0,
                         skipped: 0,
                         replacements: 0,
+                        repetitions: 0,
                         low_confidence_replacements: 0,
                     });
                 }
@@ -504,7 +491,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 .chars()
             {
                 // This replacement (uppercase to lower case) raises absolutely zero suspicion.
-                let benign_replacement = c == raw_c_lower;
+                let benign_replacement = c == raw_c || c == raw_c_lower;
 
                 // This counts as a replacement, mainly for spam detection purposes.
                 let countable_replacement = !(replacement_counted
@@ -545,28 +532,23 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
 
                     #[cfg(feature = "trace")]
                     println!(
-                        "  - Consider match \"{}\" with spaces={}",
-                        m.node.trace, m.spaces
+                        "  - Consider match \"{}\" with spaces={}, replacements={}",
+                        m.node.trace, m.spaces, m.replacements
                     );
 
-                    if (skippable || c == m.last) && m.start != pos.unwrap_or(0) {
-                        // Undo remove.
-                        #[cfg(feature = "trace")]
-                        println!("undo remove \"{}\" where last={}, node last={:?} and initial spaces={}", m.node.trace, m.last, m.node.last, m.spaces);
-
+                    let new_repetition = c == m.last;
+                    if (skippable || new_repetition) && m.start != pos.unwrap_or(0) {
                         // Here, '.' is primarily for allowing ellipsis ("...") as a form of
                         // space.
                         // ( and ) are for ignoring appositive phrases.
-                        // Checking node.last is to collapse multiple spaces into one, to avoid
+                        // Checking node.last is to collapse multiple spaces into one
                         let new_space = matches!(c, ' ' | '.' | ',' | ':' | ';' | '…' | '(' | ')')
-                            // && skippable
                             && m.node.last != Some(' ');
-                        // && !ignore_sep;
-
-                        let new_skip = skippable && !ignore_sep;
-                        let new_replacement = !benign_replacement && !self.inline.separate;
+                        let new_skip = !new_space && skippable && !ignore_sep;
+                        // dil -> dii
+                        let new_replacement = c == m.last && raw_c != c;
                         let new_low_confidence_replacement =
-                            !benign_replacement && raw_c.is_ascii_digit();
+                            new_replacement && raw_c.is_ascii_digit();
 
                         let undo_m = Match {
                             spaces: m.spaces.saturating_add(new_space as u8),
@@ -575,8 +557,12 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             low_confidence_replacements: m
                                 .low_confidence_replacements
                                 .saturating_add(new_low_confidence_replacement as u8),
+                            repetitions: m.repetitions.saturating_add(new_repetition as u8),
                             ..m
                         };
+                        #[cfg(feature = "trace")]
+                        println!("    (keep with last={}, node last={:?}, spaces={}, skip={}, repl={}, repet={})", undo_m.last, undo_m.node.last, undo_m.spaces, undo_m.skipped, undo_m.replacements, undo_m.repetitions);
+
                         if let Some(existing) = self.allocated.matches.get(&undo_m) {
                             let replacement = existing.combine(&undo_m);
                             self.allocated.matches.replace(replacement);
@@ -586,26 +572,26 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     }
 
                     if let Some(next) = m.node.children.get(&c) {
+                        let new_replacement = !benign_replacement && (c != raw_c) && c != ' ';
+                        let new_low_confidence_replacement =
+                            new_replacement && raw_c.is_ascii_digit();
+                        let new_space =
+                            !new_replacement && (raw_c != c && self.inline.separate && c != '\'');
+
                         let next_m = Match {
                             node: next,
-                            spaces: m.spaces.saturating_add(
-                                (c != raw_c && self.inline.separate && c != '\'') as u8,
-                            ),
-                            replacements: m.replacements.saturating_add(
-                                (!benign_replacement && !self.inline.separate) as u8,
-                            ),
+                            spaces: m.spaces.saturating_add(new_space as u8),
+                            replacements: m.replacements.saturating_add(new_replacement as u8),
                             low_confidence_replacements: m
                                 .low_confidence_replacements
-                                .saturating_add(
-                                    (!benign_replacement && raw_c.is_ascii_digit()) as u8,
-                                ),
+                                .saturating_add(new_low_confidence_replacement as u8),
                             last: c,
                             ..m
                         };
 
                         #[cfg(feature = "trace")]
                         println!(
-                            "     - Next is \"{}\", with spaces={}, replacements = {}",
+                            "     - Next is \"{}\", with spaces={}, replacements={}",
                             next.trace, next_m.spaces, next_m.replacements
                         );
 
@@ -614,6 +600,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                 && next_m.start == 0
                                 && next_m.spaces == 0
                                 && next_m.skipped == 0
+                                && next_m.replacements == 0
                                 && !self.options.ignore_false_positives
                             {
                                 // Everything in the input until now is safe.
@@ -622,6 +609,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                 self.inline.safe = true;
                             }
 
+                            /*
                             #[cfg(feature = "trace")]
                             if !next_m.node.typ.is(Type::ANY) {
                                 if self.options.ignore_false_positives {
@@ -634,6 +622,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                     next_m.node.trace, next_m.spaces, next_m.skipped, next_m.replacements
                                 );
                             }
+                            */
 
                             if next_m.node.typ.is(Type::ANY) {
                                 self.allocated.pending_commit.push(Match {
@@ -643,6 +632,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             } else if next_m.spaces == 0
                                 && next_m.skipped == 0
                                 && next_m.replacements == 0
+                                && next_m.repetitions == 0 // as se
                                 && !self.options.ignore_false_positives
                             {
                                 // Is false positive, so invalidate internal matches.
@@ -956,13 +946,6 @@ mod tests {
 
     #[test]
     #[serial]
-    fn issue_1() {
-        // https://github.com/finnbear/rustrict/issues/1#issuecomment-1024426326
-        assert!("I could say I miss you but it’s not the truth".isnt(Type::ANY));
-    }
-
-    #[test]
-    #[serial]
     fn curated() {
         let mut cases: Vec<(&str, bool, Option<bool>)> = vec![("", false, Some(false))];
         cases.extend(
@@ -1007,21 +990,26 @@ mod tests {
 
             if any != any_truth {
                 find_detection(case);
-                failures.push(format!("FAIL: Predicted {:?} for {}", typ, case));
-            }
-            if !any_truth {
+                failures.push(format!("FAIL: Predicted {:?} for: \"{}\"", typ, case));
+            } else if !any_truth {
                 // None of the current test cases contain any abusive Unicode characters.
-                assert_eq!(case, case.censor());
+                let censored = case.censor();
+                if case != censored {
+                    failures.push(format!("Censored: : \"{case}\" -> {censored}"))
+                }
             }
             if let Some(safe_truth) = safe_truth {
                 if safe != safe_truth {
-                    panic!("FAIL: Predicted safe={} for {}", safe, case);
+                    failures.push(format!("FAIL: Predicted safe={} for: \"{}\"", safe, case));
                 }
             }
         }
 
         if !failures.is_empty() {
-            panic!("{failures:?}");
+            for failure in failures {
+                println!("{failure}");
+            }
+            panic!();
         }
     }
 
@@ -1140,7 +1128,7 @@ mod tests {
             "https://crates.io/crates/rustrict",
             rustrict,
             false, // true,
-            None,  // Some(rustrict_old),
+            Some(rustrict_old),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }

@@ -16,7 +16,7 @@ word,profane,offensive,sexual,mean,evasive
 💋🍆,0,0,3,0,2
 👉👌,0,0,2,0,0
 𓂺,0,0,2,0,3
-_l_,1,0,0,0,2
+_l_,1,0,2,0,1
 (.)(.),0,0,1,0,1
 2g1c,0,0,2,0,1
 2girls1cup,0,0,2,0,1
@@ -50,7 +50,7 @@ aregay,0,2,0,0,0
 areola,0,0,1,0,0
  arsch,1,0,0,0,0
 arschloch,2,0,0,0,0
-arse,2,0,0,0,0
+arse,2,0,0,0,1
 arsehead,2,0,0,2,0
 arsehol,2,0,0,0,0
 arsehole,2,0,0,0,0
@@ -76,6 +76,8 @@ auschwits,0,2,0,0,0
 auschwitz,0,2,0,0,1
 aushwits,0,2,0,0,2
 aushwitz,0,2,0,0,1
+autist,0,1,0,1,0
+autistic,0,1,0,1,0
 autoerotic,0,0,2,0,0
 azov,0,1,0,0,0
  azz,1,0,0,0,1
@@ -159,14 +161,14 @@ bishes,0,1,1,0,1
 bitch,0,2,2,0,0
 bitches,0,2,2,0,0
 bitsch,0,2,2,0,2
-black ass,0,2,0,0,0
+blackass,0,2,0,0,0
 blackcock,2,2,2,0,0
-black people,0,1,0,0,0
-black guy,0,1,0,0,0
-black men,0,1,0,0,0
+blackpeople,0,1,0,0,0
+blackguy,0,1,0,0,0
+blackmen,0,1,0,0,0
 blackmonkey,0,1,0,0,1
 blackmonkies,0,1,0,0,1
-black women,0,1,0,0,0
+blackwomen,0,1,0,0,0
 bloody,1,0,0,0,0
 bloddyhell,2,0,0,0,0
 blow me,0,0,2,0,0
@@ -219,6 +221,7 @@ bumfuck,2,0,0,2,0
 bumhole,1,0,1,0,0
 bungabunga,0,0,1,0,0
 bunghole,2,0,1,2,1
+butchbabe,0,1,2,0,1
 butchdike,0,1,2,0,1
 butchdyke,0,1,3,0,0
 but hole,1,0,0,0,0
@@ -273,7 +276,7 @@ chynk,0,2,0,0,2
 clambamer,1,0,2,0,2
 clamslamer,1,0,2,0,2
 clevelandsteamer,0,0,2,0,1
-clit,0,0,3,0,0
+ clit,0,0,2,0,1
 clothhead,0,1,0,0,0
 clunge,2,0,3,0,2
 cocaine,1,0,0,0,0
@@ -289,6 +292,8 @@ comebucket,0,1,1,0,1
 commie,0,2,0,0,0
 commis,0,2,0,0,0
 commit die,1,2,0,3,0,2
+coming on u,0,0,1,0,1
+comingonyou,0,0,1,0,1
 comitsuicide,1,2,0,3,0
 condom,0,0,2,0,0
 connard,1,0,0,2,0
@@ -322,6 +327,7 @@ cumguzler,0,0,3,0,0
 cuming,0,0,3,0,0
 cuminme,0,0,1,0,0
 cumlord,0,0,3,0,0
+cumshot,0,0,3,0,0
 cnt,0,2,2,0,1
 cunilingus,0,0,3,0,0
 cunt,0,2,2,0,0
@@ -332,6 +338,7 @@ cykablyat,1,1,2,1,0
 dafuq,2,0,0,0,1
 dammit,1,0,0,0,0
 damn,1,0,0,0,0
+damnit,1,0,0,0,0
 darkie,0,1,0,0,0
 dawgiestyle,0,0,2,0,1
 dawgystyle,0,0,2,0,1
@@ -352,7 +359,7 @@ deeznuts,0,0,1,0,0
 deeznoots,0,0,1,0,1
 deflower,0,0,2,0,0
 degenerate,0,0,0,1,0
-dego,0,2,0,0,0
+ dego,0,2,0,0,0
 dendrophilia,0,0,1,0,0
 dic,2,0,2,1,1
 dicc,2,0,2,1,1
@@ -362,7 +369,7 @@ dickhead,2,1,2,2,0
 dieinahole,0,1,0,3,0
 dik,2,0,2,1,1
 dildo,0,0,3,0,0
-diligaf,1,0,0,0,0
+diligaf,1,0,0,0,1
 dimwit,0,1,0,2,0
 dingleberry,1,0,0,0,0
 dipship,0,0,1,0,1
@@ -371,7 +378,7 @@ diqinmy,1,0,2,0,1
 dirtypillows,0,0,1,0,1
 dirtysanchez,0,0,1,0,0
 diz nut,1,0,0,0,2
-dldo,0,0,3,0,0
+dldo,0,0,2,0,2
 doggin,0,0,1,0,0
 dogging,0,0,1,0,1
 dogiestyle,0,0,2,0,1
@@ -406,6 +413,8 @@ dumbase,1,0,0,1,1
 dumbass,2,0,0,2,0
 dyke,2,2,2,0,0
 eat dog,0,1,0,0,0
+ eat my,0,0,0,0,1
+ eat ur,0,0,0,0,1
 ecchi,0,0,2,0,0
  eff,2,0,2,0,1
 effing,2,0,2,0,1
@@ -415,6 +424,7 @@ encule,2,0,0,0,0
 end your life,0,2,0,0,1
 enfoire,2,0,2,2,0
 erection,0,0,2,0,0
+erectman,0,0,2,0,1
 erotic,0,0,2,0,0
 eunuch,0,0,1,0,0
 excrement,1,0,0,0,0
@@ -475,6 +485,7 @@ fcker,2,0,0,2,1
 fckin,2,0,2,0,1
 fcking,2,0,2,0,1
 fcks,2,0,0,0,1
+fckyou,2,0,0,0,1
 fcuk,2,0,2,0,2
 fecal,1,0,0,0,0
 feces,1,0,0,0,0
@@ -507,7 +518,7 @@ fickdich,1,0,1,0,0
  ficke,1,0,1,0,0
 ficking,2,0,2,0,2
  figging,0,0,2,0,0
-fing,1,0,1,0,1
+ fing,1,0,1,0,1
 fingerbang,0,0,2,0,1
 finger u,0,0,2,0,1
 fingeryou,0,0,2,0,0
@@ -516,8 +527,8 @@ fis de put,2,0,2,3,1
 fisdepute,2,0,2,3,0
 fis put,2,0,2,3,1
 fisting,0,0,1,0,0
-fk,2,0,2,0,1
-fkc,2,0,2,0,1
+ fk,2,0,2,0,2
+fkc,2,0,2,0,2
 fkcing,2,0,2,0,2
 fkd,2,0,2,0,1
 fked,2,0,2,0,1
@@ -538,10 +549,14 @@ f.o.a.d,1,0,0,1,1
 fock,2,0,2,0,2
 fok,2,0,2,0,3
 fondle,0,0,1,0,0
-fook,2,0,2,0,3
+fook,2,0,2,0,2
+fooked,2,0,2,0,2
+fooker,2,0,2,0,2
+fooking,2,0,2,0,2
 footjob,0,0,1,0,1
 foreskin,0,0,1,0,0
 fornicate,0,0,2,0,0
+ fotze,0,1,1,0,0
 foursome,0,0,3,0,0
 freak,0,0,0,2,0
 freesex,0,0,3,0,0
@@ -561,6 +576,10 @@ fuahcking,2,0,2,0,2
 fubar,1,0,0,0,0
 fuc,2,0,2,0,0
 fucc,2,0,2,0,1
+fucca,2,0,2,0,1
+fucced,2,0,2,0,1
+fuccer,2,0,2,0,1
+fuccing,2,0,2,0,1
 fuch,2,0,2,0,2
 fucing,2,0,2,0,2
 fuck,2,0,2,0,0
@@ -587,6 +606,11 @@ fukk,2,0,2,0,1
 fuked,2,0,2,0,2
 fuker,2,0,0,2,2
 fukc,2,0,2,0,2
+fukca,2,0,2,0,1
+fukcas,2,0,2,0,1
+fukced,2,0,2,0,1
+fukcer,2,0,2,0,1
+fukcing,2,0,2,0,1
 fukin,2,0,2,0,1
 fukyou,2,0,2,3,1
 furburger,0,0,2,0,1
@@ -622,6 +646,7 @@ gaywomen,0,0,1,0,0
 gayness,0,1,1,0,0
 gays,0,1,1,0,0
 gaywad,0,1,1,1,0
+gayy,0,1,1,0,0
 gazjew,0,3,0,0,2
 gasalljew,0,3,0,0,0
 gazalljew,0,3,0,0,2
@@ -660,6 +685,7 @@ gky,0,2,0,2,1
 glans,0,0,1,0,0
 glizy,0,0,2,0,2
 gnagbang,0,2,0,0,2
+godamn,1,1,0,0,0
 goddam,1,1,0,0,0
 godamit,1,1,0,0,0
 go farm cotton,0,1,0,0,0
@@ -678,7 +704,7 @@ grope,0,0,1,0,0
 groped,0,0,1,0,0
 groping,0,0,1,0,0
 grostulation,0,0,1,0,0
- gspot,0,0,1,0,0
+ gspot,0,0,1,0,1
 gun to school,3,0,0,0,0
 gun at school,3,0,0,0,0
 gunt,0,2,2,0,1
@@ -692,12 +718,14 @@ h8,0,0,0,2,1
 haet,0,0,0,2,2
 hardcoresex,0,0,2,0,0
 hate,0,0,0,2,1
-hate asian,0,2,0,2,0
-hate african,0,2,0,2,0
-hate black,0,2,0,2,0
-hate chinese,0,2,0,2,0
+hater,0,0,0,1,0
+hateasian,0,2,0,2,0
+hateafrican,0,2,0,2,0
+hateblack,0,2,0,2,0
+hatechinese,0,2,0,2,0
+hategingers,0,2,0,0,0
 hate mexi,0,1,0,1,0
-hate mexican,0,1,0,1,0
+hatemexican,0,1,0,1,0
 hator,0,0,0,2,2
 havesex,0,0,2,0,0
 hayt,0,0,0,2,2
@@ -709,9 +737,11 @@ hell,1,0,0,0,0
 hentai,0,0,3,0,0
 her ashes,0,1,0,0,0
 her bob,0,0,3,0,0
-herpes,0,0,1,0,0
+herrivateplace,0,0,1,0,1
+herprivates,0,0,1,0,1
 her gash,0,0,1,0,0
 heroin,1,0,0,0,0
+herpes,0,0,1,0,0
 heshe,0,0,2,0,0
 hifler,0,1,0,0,2
 hijacker,0,1,0,0,0
@@ -719,6 +749,8 @@ hijo de perra,0,0,1,2,0
 hijo de puta,0,0,1,2,0
 hilter,0,2,0,0,2
 his ashes,0,1,0,0,0
+hisrivateplace,0,0,1,0,1
+hisprivates,0,0,1,0,1
 hisseaman,0,0,1,0,2
 hisseamen,0,0,1,0,2
 hitker,0,1,0,0,1
@@ -728,11 +760,11 @@ hitler,0,2,0,0,0
 hitlr,0,2,0,0,2
 hiv,0,0,1,0,0
 hivaids,0,0,2,0,0
-ho,0,2,1,0,0
-hoar,0,3,2,0,0
+ ho,0,2,1,0,1
+hoar,0,3,2,0,2
 hobag,0,1,1,0,1
-hoe,0,2,1,0,0
-hoes,0,2,1,0,0
+hoe,0,2,1,0,2
+hoes,0,2,1,0,2
 holestufer,0,1,2,0,1
 holocast,0,2,0,0,1
 holocaust,0,2,0,0,0
@@ -752,7 +784,9 @@ hopeyoudie,0,0,0,3,0
 horney,0,0,2,0,1
  horni,0,0,1,0,0
 horniest,0,0,2,0,0
+ hornpub,0,0,2,0,2
 horny,0,0,3,0,0
+ h()rny,0,0,1,0,1
 horseshit,2,0,0,0,0
 hosejob,0,0,2,0,0
 hotcarl,0,0,2,0,1
@@ -767,6 +801,7 @@ huejass,2,0,1,0,2
 huevon,1,0,0,1,0
 humped,0,0,1,0,0
 humping,0,0,1,0,0
+hugecum,0,0,2,0,0
 hughjanus,2,0,0,0,2
 hump jo mama,0,0,2,2,2
 hump yo mama,0,0,2,2,1
@@ -787,6 +822,7 @@ i climax,0,0,1,0,0
 idiot,0,0,0,1,0
 ifkdurmum,2,2,3,2,2
 igger,3,3,0,0,0
+i have ED,0,0,1,0,1
 imbecil,0,0,0,2,0
 impregnate,0,0,1,0,0
 incel,0,1,2,1,0
@@ -829,6 +865,7 @@ jublies,0,0,1,0,1
 joder,2,0,2,0,0
 juden,0,1,0,0,1
 juggs,0,0,1,0,1
+juicybut,1,0,0,0,1
 jump off a,0,1,0,1,0
 jumpofabridge,0,1,0,2,0
 jumpoutawindow,0,1,0,2,0
@@ -840,6 +877,7 @@ khunt,0,1,1,0,1
 kiddiefidl,0,0,3,0,1
 kiddyfidl,0,0,3,0,1
 kike,0,2,0,0,0
+kilthyself,0,2,0,3,2
 kilyoself,0,2,0,3,2
 kilyoslef,0,2,0,3,2
 kilyouself,0,2,0,3,2
@@ -905,7 +943,10 @@ kondom,0,0,1,0,1
 kondum,0,0,1,0,1
 krap,1,0,0,0,1
 kraut,0,1,0,0,0
+kuklukan,0,3,0,0,2
+kukluklan,0,3,0,0,1
 kuklux,0,3,0,0,0
+kukluxkan,0,3,0,0,1
 kukluxklan,0,3,0,0,0
  kum,0,0,3,0,1
 kunilingus,0,0,3,0,1
@@ -940,6 +981,7 @@ libido,0,0,2,0,0
 lick my,0,0,1,0,1
 ligger,2,2,0,0,1
 ligma,0,0,0,1,0
+ligmaball,0,0,2,0,1
 likecoc,0,0,1,0,0
 like monkey,0,1,0,2,1
 like a monkey,0,1,0,2,1
@@ -1007,14 +1049,19 @@ mgger,1,1,0,0,1
 mierda,2,0,0,0,0
 migga,2,3,0,0,2
 miger,2,5,0,0,2
+mikehawk,2,0,2,0,2
 mikeock,2,0,2,1,2
 milf,0,0,1,0,0
+milfhunter,0,0,2,0,0
 milkyourmother,0,0,1,2,0
 minesinches,1,0,1,0,1
 minge,0,0,3,0,1
 misionary,0,0,1,0,0
 misionaryposition,0,0,2,0,0
+ moaning,0,0,1,0,1
+ moans,0,0,1,0,1
 mofo,0,1,1,2,1
+mofuk,1,1,0,0,0
 molest,0,0,1,0,0
 molestation,0,0,1,0,0
 molester,0,0,1,0,0
@@ -1044,6 +1091,8 @@ mutherfuck,2,1,2,0,1
 mutherfucker,2,2,2,0,1
 mutherfuk,2,1,2,0,2
 myass,2,0,1,0,0
+myprivateplace,0,0,1,0,1
+myprivates,0,0,1,0,1
 mykock,2,0,2,1,2
 mycum,0,0,2,0,0
 mydik,2,0,2,1,2
@@ -1103,7 +1152,7 @@ nickgur,3,5,0,0,2
 nickher,3,5,0,0,2
 nickker,3,5,0,0,2
 nieger,3,5,0,0,3
-nig,2,3,0,0,0
+nig,1,1,0,0,0
 nigg,2,3,0,0,0
 nigga,2,3,0,0,0
 niggard,0,0,0,0,1
@@ -1151,10 +1200,12 @@ numbnuts,0,0,0,2,0
 nutcase,0,0,0,1,0
 nut in all of u,0,0,3,0,1
 nut in all of you,0,0,3,0,0
+nut inside,0,0,1,0,1
 nut in u,0,0,3,0,1
 nut in you,0,0,3,0,0
 nutjob,0,0,0,1,0
 nutsack,0,0,2,0,0
+ nutte,0,1,1,0,0
 nuzi,0,2,0,0,2
 nyger,3,5,0,0,3
 nygga,2,3,0,0,3
@@ -1338,7 +1389,7 @@ recktum,0,0,2,0,2
 redskins,0,1,0,0,0
 reggin,2,2,0,0,3
 reich,0,1,0,0,0
-renob,0,0,1,0,1
+renob,0,0,1,0,3
 retard,0,2,0,2,0
 retarded,0,2,0,2,0
 retared,0,2,0,2,1
@@ -1417,7 +1468,8 @@ shootupamiddleschool,3,0,0,0,0
 shootupanmiddleschool,3,0,0,0,0
 shootupahighschool,3,0,0,0,0
 shootupanhighschool,3,0,0,0,0
-shove it in,0,0,1,0,0
+shoveitdeep,0,0,1,0,0
+shoveitin,0,0,1,0,0
 shager,0,0,3,0,0
 shaging,0,0,3,0,0
 shagbucket,0,1,1,0,0
@@ -1437,7 +1489,7 @@ shited,2,0,0,0,0
 shiter,2,0,0,2,0
 shithead,2,1,0,2,0
 shemale,0,1,1,0,0
-shet,2,0,0,0,2
+ shet,1,0,0,0,2
 should be burned,0,1,0,0,1
 sht,2,0,0,0,1
 shted,2,0,0,0,1
@@ -1458,6 +1510,7 @@ sisy,0,0,0,1,0
 skanck,0,2,2,0,1
 skank,0,2,3,0,0
 skinflute,0,0,2,0,0
+skinyoualive,0,1,0,0,0
 slanteye,0,2,0,0,0
 slantyeye,0,2,0,0,0
 slave,0,1,0,0,0
@@ -1573,11 +1626,11 @@ ticklmypickl,0,0,2,0,2
 ticklyourpickl,0,0,2,0,2
 tiddy,0,0,2,0,1
 tidies,0,0,2,0,1
-tit,0,0,2,0,0
-tits,0,0,2,0,0
-titty,0,0,2,0,0
-tittie,0,0,2,0,0
-tities,0,0,2,0,0
+tit,0,0,2,0,1
+tits,0,0,2,0,1
+titty,0,0,2,0,1
+tittie,0,0,2,0,2
+tities,0,0,2,0,2
 toesinmymouth,0,0,2,0,1
 toesinyourmouth,0,0,2,0,1
 tohell,1,1,0,2,0
@@ -1590,6 +1643,10 @@ touched a kid,0,0,1,0,0
 touched kids,0,0,1,0,0
 touching a kid,0,0,1,0,0
 touching kids,0,0,1,0,0
+touchherprivate,0,0,1,0,1
+touchhisprivate,0,0,1,0,0
+touchmyprivate,0,0,1,0,1
+touchyourprivate,0,0,1,0,1
 towelhead,0,1,0,0,0
 trailertrash,0,1,0,2,0
 tranie,0,1,1,1,1
@@ -1602,6 +1659,7 @@ tubgirl,0,0,2,0,0
 tuchkids,0,0,1,0,1
 tu madre,0,0,0,1,0
 turd,1,0,0,0,0
+turds,1,0,0,0,0
 turnedmeon,0,0,2,0,0
 turnmeon,0,0,2,0,0
 turnsmeon,0,0,2,0,0
@@ -1670,6 +1728,7 @@ vulva,0,0,3,0,0
 wank,0,0,3,0,0
 wanker,0,0,3,0,0
 wanks,0,0,2,0,0
+want a d in,0,0,1,0,1
 wdnmd,0,2,0,3,2
 weaner,0,0,2,0,2
 weanie,0,0,2,0,2
@@ -1732,6 +1791,8 @@ your hole,0,0,2,0,2
 yourmother,0,0,1,1,0
 yourmom,0,0,1,1,0
 yourmum,0,0,1,1,1
+yourprivateplace,0,0,1,0,1
+yourprivates,0,0,1,0,1
 yomama,0,0,0,1,0
 yo mum,0,0,0,1,1
 yuckfou,2,0,2,3,2

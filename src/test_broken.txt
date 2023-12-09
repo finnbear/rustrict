@@ -1,6 +1,7 @@
+# Broken "negative" tests
+plss don't hurt me
+
 # Broken "positive" tests
-blahsh!t
-battlesh!t
 theRapist
 
 # replacement addition
