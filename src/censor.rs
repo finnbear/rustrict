@@ -116,6 +116,8 @@ struct AllocatedState {
     matches_tmp: Set<Match>,
     /// Where matches are kept after they are complete but may be cancelled due to false positives.
     pending_commit: Vec<Match>,
+    #[cfg(feature = "trace_full")]
+    detections: crate::Map<String, usize>,
 }
 
 impl AllocatedState {
@@ -124,10 +126,14 @@ impl AllocatedState {
             matches,
             matches_tmp,
             pending_commit,
+            #[cfg(feature = "trace_full")]
+            detections,
         } = self;
         matches.clear();
         matches_tmp.clear();
         pending_commit.clear();
+        #[cfg(feature = "trace_full")]
+        detections.clear();
     }
 }
 
@@ -317,6 +323,11 @@ impl<I: Iterator<Item = char>> Censor<I> {
     #[cfg(any(feature = "find_false_positives", feature = "trace"))]
     pub fn total_match_characters(&self) -> usize {
         self.inline.total_match_characters
+    }
+
+    #[cfg(feature = "trace_full")]
+    pub fn detections(&self) -> &crate::Map<String, usize> {
+        &self.allocated.detections
     }
 
     fn ensure_done(&mut self) {
@@ -528,6 +539,15 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 for m in self.allocated.matches_tmp.iter() {
                     let m = m.clone();
 
+                    if m.low_confidence_replacements > 5
+                        || m.skipped > 5
+                        || (m.node.word && m.repetitions > 20)
+                    {
+                        #[cfg(feature = "trace")]
+                        println!("throwing out low confidence match: \"{}\"", m.node.trace);
+                        //continue;
+                    }
+
                     safety_end = safety_end.min(m.start);
 
                     #[cfg(feature = "trace")]
@@ -536,17 +556,19 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         m.node.trace, m.spaces, m.replacements
                     );
 
-                    let new_repetition = c == m.last;
-                    if (skippable || new_repetition) && m.start != pos.unwrap_or(0) {
+                    if (skippable || c == m.last || Some(c) == m.node.last)
+                        && m.start != pos.unwrap_or(0)
+                    {
                         // Here, '.' is primarily for allowing ellipsis ("...") as a form of
                         // space.
                         // ( and ) are for ignoring appositive phrases.
                         // Checking node.last is to collapse multiple spaces into one
                         let new_space = matches!(c, ' ' | '.' | ',' | ':' | ';' | '…' | '(' | ')')
                             && m.node.last != Some(' ');
-                        let new_skip = !new_space && skippable && !ignore_sep;
+                        let new_repetition: bool = !new_space && c == m.last;
+                        let new_skip = !new_space && skippable && !ignore_sep && !new_repetition;
                         // dil -> dii
-                        let new_replacement = c == m.last && raw_c != c;
+                        let new_replacement = c == m.last && raw_c != c && !new_repetition;
                         let new_low_confidence_replacement =
                             new_replacement && raw_c.is_ascii_digit();
 
@@ -558,6 +580,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                                 .low_confidence_replacements
                                 .saturating_add(new_low_confidence_replacement as u8),
                             repetitions: m.repetitions.saturating_add(new_repetition as u8),
+                            last: c,
                             ..m
                         };
                         #[cfg(feature = "trace")]
@@ -664,8 +687,11 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
             let spy = &mut self.buffer;
             let options = &self.options;
             let inline = &mut self.inline;
+            let pending_commit = &mut self.allocated.pending_commit;
+            #[cfg(feature = "trace_full")]
+            let detections = &mut self.allocated.detections;
 
-            self.allocated.pending_commit.retain(|pending| {
+            pending_commit.retain(|pending| {
                 #[cfg(feature = "trace")]
                 println!("Consider whether to cancel pending commit {} with start={} against drain_start={:?}", pending.node.trace, pending.start, drain_start);
 
@@ -692,6 +718,10 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                             inline.match_ptrs ^= pending.node as *const _ as usize;
                             inline.total_matches += 1;
                             inline.total_match_characters += pending.end - pending.start;
+                            #[cfg(feature = "trace_full")]
+                            {
+                                *detections.entry(pending.node.trace.clone()).or_default() += 1;
+                            }
                         }
                     }
                     return false;
@@ -738,6 +768,14 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                     self.inline.match_ptrs ^= pending.node as *const _ as usize;
                     self.inline.total_matches += 1;
                     self.inline.total_match_characters += pending.end - pending.start;
+                    #[cfg(feature = "trace_full")]
+                    {
+                        *self
+                            .allocated
+                            .detections
+                            .entry(pending.node.trace.clone())
+                            .or_default() += 1;
+                    }
                 }
             }
         }
@@ -1128,7 +1166,7 @@ mod tests {
             "https://crates.io/crates/rustrict",
             rustrict,
             false, // true,
-            Some(rustrict_old),
+            Some(rustrict_old as fn(&str) -> bool).filter(|_| std::env::var("COMPARE").is_ok()),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
     }
