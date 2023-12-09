@@ -5,7 +5,7 @@ u,v
 U,V
 v,u
 V,U
-^,v
+^,va
 ^,u
 j,i
 J,i
@@ -1714,5 +1714,16 @@ B,Bb
 º,o
 ¿,i
 ſ,if
+þ,b
+æ,ae
+ſ,f
+ð,od
+đ,od
+ŋ,no
+Þ,P
+Æ,AE
+ẞ,B
+Ŋ,N
+º,o
 
 \u{0627},li
