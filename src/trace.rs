@@ -4,8 +4,8 @@ use std::env::args;
 pub fn main() {
     let input = args().skip(1).collect::<Vec<_>>().join(" ");
 
-    trace(&input, false);
-    //trace(&input, true);
+    //trace(&input, false);
+    trace(&input, true);
 
     use finl_unicode::categories::CharacterCategories;
     use unicode_normalization::UnicodeNormalization;

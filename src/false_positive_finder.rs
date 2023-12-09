@@ -166,7 +166,26 @@ fn main() {
 
     progress.finish();
 
-    let mut sorted: Vec<_> = false_positives.into_inner().unwrap().into_iter().collect();
+    let mut false_positives = false_positives.into_inner().unwrap();
+
+    let clone = false_positives.clone();
+    false_positives.retain(|false_positive| {
+        let baseline = is_ignore_fp(false_positive.chars(), true);
+        for clone in &clone {
+            if false_positive.len() != clone.len()
+                && (false_positive.starts_with(clone) || false_positive.ends_with(clone))
+            {
+                let shorter = is_ignore_fp(clone.chars(), true);
+                if baseline == shorter {
+                    println!("filter out {false_positive} in favor of {clone}");
+                    return false;
+                }
+            }
+        }
+        true
+    });
+
+    let mut sorted: Vec<_> = false_positives.into_iter().collect();
     sorted.sort();
 
     fs::write("src/false_positives.txt", sorted.join("\n")).unwrap();
