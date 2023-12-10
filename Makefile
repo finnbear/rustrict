@@ -19,14 +19,14 @@ widths:
 	cargo run --bin character_analyzer --release --features imageproc,image,rusttype,walkdir,rayon,unicode-width
 
 test:
-	cargo test --release --features width,serde -- --nocapture
+	cargo test --release --features width,pii,serde -- --nocapture
 
 compare:
 	COMPARE=1 make test
 
 # Skips accuracy analysis so finishes faster.
 test_debug:
-	cargo test
+	cargo test --features pii -- --nocapture
 
 fuzz:
 	cargo fuzz run fuzz

@@ -21,6 +21,8 @@ pub(crate) mod typ;
 #[cfg(feature = "context")]
 pub(crate) mod context;
 
+#[cfg(feature = "pii")]
+mod pii;
 #[cfg(feature = "width")]
 pub(crate) mod width;
 
@@ -56,6 +58,9 @@ pub use context::{
     BlockReason, Context, ContextProcessingOptions, ContextRateLimitOptions,
     ContextRepetitionLimitOptions,
 };
+
+#[cfg(feature = "pii")]
+pub use pii::censor_and_analyze_pii;
 
 /// Trims whitespace characters from both ends of a string, according to the definition of
 /// `crate::is_whitespace`.
