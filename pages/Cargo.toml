@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rustrict = { path = "..", features = ["trace_full", "width"] }
+rustrict = { path = "..", features = ["trace_full", "width", "pii"] }
 yew = { version = "0.21", features = ["csr"] }
 
 [dependencies.web-sys]

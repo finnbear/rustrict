@@ -1,12 +1,13 @@
 use web_sys::{HtmlInputElement, window, InputEvent, HtmlTextAreaElement, wasm_bindgen::JsCast};
 use yew::{html, Html, Callback, function_component, TargetCast};
-use rustrict::Censor;
+use rustrict::{Censor, censor_and_analyze_pii};
 
 #[function_component(App)]
 fn app() -> Html {
     let oninput = Callback::from(move |event: InputEvent| {
         if let Some(input) = event.target_dyn_into::<HtmlInputElement>() {
             let uncensored = input.value();
+            let (uncensored, pii) = censor_and_analyze_pii(&uncensored);
             let analysis_element = window().unwrap().document().unwrap().get_element_by_id("analysis").unwrap();
             let censored_element = window().unwrap().document().unwrap().get_element_by_id("censored").unwrap().dyn_into::<HtmlTextAreaElement>().unwrap();
             if uncensored.is_empty() {
@@ -18,7 +19,7 @@ fn app() -> Html {
                 let count = censor.total_matches();
                 let detections = censor.detections();
                 let width = rustrict::width_str(&uncensored);  
-                let result = format!("{analysis:?} (width = {width}, count = {count}, detections = {detections:?})");
+                let result = format!("{analysis:?} (width={width}, count={count}, detections={detections:?}, pii={pii:?})");
                 analysis_element.set_inner_html(&result);
                 censored_element.set_value(&censored);
             }
