@@ -8,6 +8,7 @@ use crate::{is_whitespace, Replacements, Type};
 use std::iter::Filter;
 use std::mem;
 use std::ops::Deref;
+use std::ops::RangeInclusive;
 use std::str::Chars;
 use unicode_normalization::{Decompositions, Recompositions, UnicodeNormalization};
 
@@ -424,8 +425,10 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 raw_c, skippable, replacement
             );
 
+            const BLOCK_ELEMENTS : RangeInclusive<char> = '\u{2580}'..='\u{259F}';
+
             if (!self.inline.separate || self.inline.last == Some(self.options.censor_replacement))
-                && raw_c == self.options.censor_replacement
+                && (raw_c == self.options.censor_replacement || BLOCK_ELEMENTS.contains(&raw_c))
             {
                 // Censor replacement found but not beginning of word.
                 self.inline.self_censoring = self.inline.self_censoring.saturating_add(1);

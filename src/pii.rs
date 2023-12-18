@@ -6,7 +6,7 @@ lazy_static! {
     static ref PHONE : Regex = Regex::new(r#"(\+\d{1,2})?\s*\(?\d{3}\)?[\s\.-]*\d{3}[\s\.-]*\d{4}"#).unwrap();
     static ref IP_ADDRESS : Regex  = Regex::new(r#"(?:[0-9]{1,3}\.){3}[0-9]{1,3}"#).unwrap();
     static ref EMAIL_ADDRESS : Regex = Regex::new(r#"(?i)[a-z0-9_\-]*\s*(@|[\[\(\s]at[\s\)\]])\s*[a-z0-9_\-]*\s*(\.|dot)\s*[a-z]{2,3}"#).unwrap();
-    static ref ADDRESS : Regex = Regex::new(r#"(?i)\d+[ ](?:[A-Za-z0-9\.-]+ ?)+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\.?(\s+#[0-9]{1,5})?"#).unwrap();
+    static ref ADDRESS : Regex = Regex::new(r#"(?i)\d+[ ](?:[A-Za-z0-9\.-]+ )+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\.?(\s+#[0-9]{1,5})?"#).unwrap();
     static ref NAME : Regex = Regex::new(r#"(?i)(real\s)?name\s+is:?\s[a-zA-Z]+(\s[a-zA-z]+)?"#).unwrap();
     static ref URL : Regex = Regex::new(r#"(?i)(https?:?/*)?[a-zA-Z0-9]+\.[a-zA-Z]{2,3}"#).unwrap();
 }
@@ -103,6 +103,7 @@ mod tests {
         {
             assert!(!has_pii(line), "{line}");
         }
+        assert!(!has_pii("123 i have 4"));
     }
 
     #[test]
