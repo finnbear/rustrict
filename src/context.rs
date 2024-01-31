@@ -9,18 +9,19 @@ use std::time::{Duration, Instant};
 /// Context is useful for taking moderation actions on a per-user basis i.e. each user would get
 /// their own Context.
 #[derive(Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(doc, doc(cfg(feature = "context")))]
 pub struct Context {
-    history: VecDeque<(String, Instant)>,
+    history: VecDeque<(String, Time)>,
     burst_used: u8,
     suspicion: u8,
     reports: u8,
     total: u16,
     total_inappropriate: u16,
-    muted_until: Option<Instant>,
-    only_safe_until: Option<Instant>,
-    rate_limited_until: Option<Instant>,
-    last_message: Option<Instant>,
+    muted_until: Option<Time>,
+    only_safe_until: Option<Time>,
+    rate_limited_until: Option<Time>,
+    last_message: Option<Time>,
 }
 
 impl Debug for Context {
@@ -162,13 +163,13 @@ impl Context {
 
     /// Returns None if expired is None or has been reached, resulting in expiry being set to None.
     /// Otherwise, returns duration before expiry.
-    fn remaining_duration(expiry: &mut Option<Instant>, now: Instant) -> Option<Duration> {
+    fn remaining_duration(expiry: &mut Option<Time>, now: Instant) -> Option<Duration> {
         if let Some(time) = *expiry {
-            if now >= time {
+            if now >= time.0 {
                 *expiry = None;
                 None
             } else {
-                Some(time - now)
+                Some(time.0 - now)
             }
         } else {
             None
@@ -191,7 +192,10 @@ impl Context {
         options: &ContextProcessingOptions,
     ) -> Result<String, BlockReason> {
         let now = Instant::now();
-        let elapsed = self.last_message.map(|l| now - l).unwrap_or(Duration::ZERO);
+        let elapsed = self
+            .last_message
+            .map(|l| now.saturating_duration_since(l.0))
+            .unwrap_or(Duration::ZERO);
 
         let suspicion = self.suspicion.max(1).saturating_mul(self.reports.max(1));
 
@@ -272,7 +276,7 @@ impl Context {
         let mut recent_similar = 0;
 
         if let Some(opts) = options.repetition_limit.as_ref() {
-            self.history.retain(|&(_, t)| now - t < opts.memory);
+            self.history.retain(|&(_, t)| now - t.0 < opts.memory);
 
             for (recent_message, _) in &self.history {
                 if strsim::normalized_levenshtein(recent_message, &message)
@@ -296,16 +300,18 @@ impl Context {
         if ((is_kinda_sus && new_suspicion >= 4) || (is_impostor && new_suspicion >= 2))
             && !options.max_safe_timeout.is_zero()
         {
-            if let Some(only_safe_until) =
-                self.only_safe_until
-                    .unwrap_or(now)
-                    .checked_add(if self.reports > 0 {
-                        Duration::from_secs(10 * 60)
-                    } else {
-                        Duration::from_secs(5 * 60)
-                    })
+            if let Some(only_safe_until) = self
+                .only_safe_until
+                .map(|t| t.0)
+                .unwrap_or(now)
+                .checked_add(if self.reports > 0 {
+                    Duration::from_secs(10 * 60)
+                } else {
+                    Duration::from_secs(5 * 60)
+                })
             {
-                self.only_safe_until = Some(only_safe_until.min(now + options.max_safe_timeout));
+                self.only_safe_until =
+                    Some(Time(only_safe_until.min(now + options.max_safe_timeout)));
             }
         }
 
@@ -353,7 +359,7 @@ impl Context {
                 targeted: true,
             })
         } else {
-            self.last_message = Some(now);
+            self.last_message = Some(Time(now));
             if let Some(rate_limit_options) = options.rate_limit.as_ref() {
                 // How many messages does this count for against the rate limit.
                 let rate_limit_messages =
@@ -376,12 +382,15 @@ impl Context {
                             .min(u8::MAX as u128) as u8,
                     )
                 };
-                if let Some(rate_limited_until) =
-                    self.rate_limited_until.unwrap_or(now).checked_add(
+                if let Some(rate_limited_until) = self
+                    .rate_limited_until
+                    .map(|t| t.0)
+                    .unwrap_or(now)
+                    .checked_add(
                         rate_limit_options.limit * (rate_limit_messages + new_suspicion) as u32,
                     )
                 {
-                    self.rate_limited_until = Some(rate_limited_until);
+                    self.rate_limited_until = Some(Time(rate_limited_until));
                 }
             }
             // Forgiveness (minus one suspicion per safe message, and also per minute between messages).
@@ -395,7 +404,7 @@ impl Context {
                     self.history.pop_front();
                 }
 
-                self.history.push_back((message, now));
+                self.history.push_back((message, Time(now)));
             }
 
             Ok(censored)
@@ -405,30 +414,30 @@ impl Context {
     /// Returns how long the user is muted for (possibly [`Duration::ZERO`]).
     pub fn muted_for(&self) -> Duration {
         self.muted_until
-            .map(|muted_until| muted_until.saturating_duration_since(Instant::now()))
+            .map(|muted_until| muted_until.0.saturating_duration_since(Instant::now()))
             .unwrap_or(Duration::ZERO)
     }
 
     /// Returns the instant of the last processed message.
     pub fn last_message(&self) -> Option<Instant> {
-        self.last_message
+        self.last_message.map(|t| t.0)
     }
 
     /// Returns the latest instant the user is muted (possibly in the past).
     pub fn muted_until(&self) -> Option<Instant> {
-        self.muted_until
+        self.muted_until.map(|t| t.0)
     }
 
     /// Returns how long the user is restricted to [`Type::SAFE`] for (possibly [`Duration::ZERO`]).
     pub fn restricted_for(&self) -> Duration {
         self.only_safe_until
-            .map(|restricted_until| restricted_until.saturating_duration_since(Instant::now()))
+            .map(|restricted_until| restricted_until.0.saturating_duration_since(Instant::now()))
             .unwrap_or(Duration::ZERO)
     }
 
     /// Returns the latest instant the user is restricted (possibly in the past).
     pub fn restricted_until(&self) -> Option<Instant> {
-        self.only_safe_until
+        self.only_safe_until.map(|t| t.0)
     }
 
     /// Manually mute this user's messages for a duration. Overwrites any previous manual mute.
@@ -440,7 +449,7 @@ impl Context {
     /// Manually mute this user's messages until an instant. Overwrites any previous manual mute.
     /// Passing an instant in the past will therefore un-mute.
     pub fn mute_until(&mut self, instant: Instant) {
-        self.muted_until = Some(instant);
+        self.muted_until = Some(Time(instant));
     }
 
     /// Manually restrict this user's messages to known safe phrases for a duration. Overwrites any
@@ -452,7 +461,7 @@ impl Context {
     /// Manually restrict this user's messages to known safe phrases until an instant. Overwrites any
     /// previous manual restriction. Passing an instant in the past will therefore un-restrict.
     pub fn restrict_until(&mut self, instant: Instant) {
-        self.only_safe_until = Some(instant);
+        self.only_safe_until = Some(Time(instant));
     }
 
     /// Call if another user "reports" this user's message(s). The function of reports is for
@@ -587,6 +596,51 @@ impl Display for FormattedDuration {
         } else {
             write!(f, "{}s", self.0.as_secs().max(1))
         }
+    }
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+struct Time(#[cfg_attr(feature = "serde", serde(with = "approx_instant"))] Instant);
+
+impl Debug for Time {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        Debug::fmt(&self.0, f)
+    }
+}
+
+#[cfg(feature = "serde")]
+mod approx_instant {
+    use serde::{de::Error, Deserialize, Deserializer, Serialize, Serializer};
+    use std::time::{Duration, Instant, SystemTime};
+
+    pub fn serialize<S>(instant: &Instant, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let system_now = SystemTime::now();
+        let instant_now = Instant::now();
+        let approx = system_now - (instant_now - *instant);
+        let millis = approx
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_millis() as u64;
+        millis.serialize(serializer)
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Instant, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let millis = u64::deserialize(deserializer)?;
+        let system_now = SystemTime::now();
+        let de = SystemTime::UNIX_EPOCH
+            .checked_add(Duration::from_millis(millis))
+            .unwrap_or(system_now);
+        let instant_now = Instant::now();
+        let duration = system_now.duration_since(de).map_err(Error::custom)?;
+        let approx = instant_now - duration;
+        Ok(approx)
     }
 }
 
@@ -787,5 +841,13 @@ mod tests {
             ctx.process_with_options(String::from("a﷽"), &opts),
             Ok(String::from("a"))
         );
+    }
+
+    #[test]
+    #[cfg(feature = "serde")]
+    fn serde() {
+        let mut ctx = crate::Context::default();
+        ctx.process("foo".to_string()).unwrap();
+        println!("{}", serde_json::to_string(&ctx).unwrap());
     }
 }

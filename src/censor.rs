@@ -425,7 +425,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                 raw_c, skippable, replacement
             );
 
-            const BLOCK_ELEMENTS : RangeInclusive<char> = '\u{2580}'..='\u{259F}';
+            const BLOCK_ELEMENTS: RangeInclusive<char> = '\u{2580}'..='\u{259F}';
 
             if (!self.inline.separate || self.inline.last == Some(self.options.censor_replacement))
                 && (raw_c == self.options.censor_replacement || BLOCK_ELEMENTS.contains(&raw_c))
