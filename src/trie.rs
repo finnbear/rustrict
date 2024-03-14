@@ -2,7 +2,6 @@ use crate::feature_cell::FeatureCell;
 use crate::Map;
 use crate::Type;
 use lazy_static::lazy_static;
-use std::iter::FromIterator;
 use std::ops::Deref;
 
 lazy_static! {

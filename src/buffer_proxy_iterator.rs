@@ -1,5 +1,4 @@
 use std::collections::VecDeque;
-use std::iter::Iterator;
 use std::ops::RangeInclusive;
 
 /// This iterator buffers characters until they can be determined to be clean of profanity.
