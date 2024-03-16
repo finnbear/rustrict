@@ -620,7 +620,11 @@ mod approx_instant {
     {
         let system_now = SystemTime::now();
         let instant_now = Instant::now();
-        let approx = system_now - (instant_now - *instant);
+        let approx = if instant_now > *instant {
+            system_now - (instant_now - *instant)
+        } else {
+            system_now + (*instant - instant_now)
+        };
         let millis = approx
             .duration_since(SystemTime::UNIX_EPOCH)
             .unwrap_or_default()
@@ -638,8 +642,13 @@ mod approx_instant {
             .checked_add(Duration::from_millis(millis))
             .unwrap_or(system_now);
         let instant_now = Instant::now();
-        let duration = system_now.duration_since(de).map_err(Error::custom)?;
-        let approx = instant_now - duration;
+        let approx = if system_now > de {
+            let duration = system_now.duration_since(de).map_err(Error::custom)?;
+            instant_now - duration
+        } else {
+            let duration = de.duration_since(system_now).map_err(Error::custom)?;
+            instant_now + duration
+        };
         Ok(approx)
     }
 }
@@ -846,8 +855,15 @@ mod tests {
     #[test]
     #[cfg(feature = "serde")]
     fn serde() {
+        use std::time::SystemTime;
+
         let mut ctx = crate::Context::default();
         ctx.process("foo".to_string()).unwrap();
+        ctx.restrict_for(Duration::from_secs(1000));
         println!("{}", serde_json::to_string(&ctx).unwrap());
+        let json = serde_json::to_value(&ctx).unwrap();
+        let only_safe_until = &json["only_safe_until"];
+        let unix = only_safe_until.as_i64().unwrap();
+        assert!(unix > 1000 + SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis() as i64)
     }
 }
