@@ -8,6 +8,10 @@ use std::time::{Duration, Instant};
 
 /// Context is useful for taking moderation actions on a per-user basis i.e. each user would get
 /// their own Context.
+/// 
+/// # Recommendation
+/// 
+/// Use this as a reference implementation e.g. by copying and adapting it.
 #[derive(Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(doc, doc(cfg(feature = "context")))]

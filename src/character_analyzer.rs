@@ -49,6 +49,7 @@ fn main() {
                 '🐿' => 20,
                 '𒐫' => 40,
                 '𒈙' => 35,
+                '༺' | '༻' => 25,
                 _ => {
                     let max_width = (max_width(c, &fonts) as f32 / 100f32).round() as u16;
                     if max_width > u8::MAX as u16 {

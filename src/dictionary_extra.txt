@@ -1,16 +1,21 @@
 #8
 # of
+(until
 2 secs
 3 secs
 4 secs
+45s
 5 secs
 6 secs
 7 secs
 8 secs
 88
 9 secs
+9 is still
 99
 0 secs
+300 bot
+600 bot
 twinkie
 two secs
 three secs
@@ -22,6 +27,7 @@ eight secs
 nine secs
 ten secs
 aboutit
+admit it's
 ain't it
 alt
 an ai
@@ -78,6 +84,7 @@ few secs
 ffa game
 fire cracker
 fire crackers
+forgot it's
 francoitalian
 franco italian
 freakin
@@ -101,6 +108,7 @@ hellen
 hellp
 h on keyboard
 h tier
+hi @Bla
 hi tirp
 ho ho ho
 honkeytonk
@@ -184,6 +192,7 @@ pp. 9
 pussinboots
 puss in boots
 ref'd
+refresh at
 rip
 saturated fat
 shoehorn your
@@ -197,6 +206,7 @@ suicide squad
 superbowlxxx
 tally ho
 tally-ho
+tea the
 test test test
 then i guess
 then talk
@@ -229,6 +239,7 @@ virgin islands
 wassup
 wasn't it
 wouldn't it
+xp or no
 yass
 yesturday
 zenga
