@@ -93,6 +93,13 @@ blue waffle
 bn
 bohunks
 bollocks
+bomb china
+bomb india
+bomb iran
+bomb israel
+bomb palestine
+bomb russia
+bomb ukraine
 bon er
 boners
 bonnering
@@ -133,6 +140,13 @@ bullet vibe
 bullshit(.*)
 bums
 bungholes
+burn china
+burn gaza
+burn israel
+burn jew
+burn jews
+burn palestine
+burn yourself
 but holes
 buttocks
 butts
@@ -215,6 +229,7 @@ dirty pillows
 dirty sanchez
 dongs
 donkey punch
+dog headed
 dog style
 douche(.*)
 drag queen
@@ -403,10 +418,12 @@ kafirs
 kikes
 kill china
 kill chinese
+kill myself
 kill people
 kill russia
 kill russian
 kill russians
+kill self
 kill students
 kill ukraine
 kill ukrainian
@@ -451,6 +468,7 @@ m
 male squirting
 masochists
 massive wood
+master race
 masturbate(.*)
 maya sol
 meat beating
