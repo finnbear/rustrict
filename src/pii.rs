@@ -5,10 +5,10 @@ use std::borrow::Cow;
 lazy_static! {
     static ref PHONE : Regex = Regex::new(r#"(\+\d{1,2})?\s*\(?\d{3}\)?[\s\.-]*\d{3}[\s\.-]*\d{4}"#).unwrap();
     static ref IP_ADDRESS : Regex  = Regex::new(r#"(?:[0-9]{1,3}\.){3}[0-9]{1,3}"#).unwrap();
-    static ref EMAIL_ADDRESS : Regex = Regex::new(r#"(?i)[a-z0-9_\-]{3,}\s*(@|[\[\(\s]at[\s\)\]])\s*[a-z0-9_\-]{5,}\s*(\.|dot)\s*[a-z]{2,3}"#).unwrap();
+    static ref EMAIL_ADDRESS : Regex = Regex::new(r#"(?i)[a-z0-9_\-]{3,}\s*(@|[\[\(\s]at[\s\)\]])\s*[a-z0-9_\-]{5,}\s*(\.|dot)\s*(com|net|org|gov|biz|co|us|ru|uk|de|se|to|tv|io|info|online|site)"#).unwrap();
     //static ref ADDRESS : Regex = Regex::new(r#"(?i)\d+[ ](?:[A-Za-z0-9\.-]+ )+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\.?(\s+#[0-9]{1,5})?"#).unwrap();
     static ref NAME : Regex = Regex::new(r#"(?i)(real\s)?name\s+is:?\s[a-zA-Z]+(\s[a-zA-z]+)?"#).unwrap();
-    static ref URL : Regex = Regex::new(r#"(?i)(https?:?/*)?[a-zA-Z0-9]{4,}\.[a-zA-Z]{2,3}"#).unwrap();
+    static ref URL : Regex = Regex::new(r#"(?i)(https?:?/*)?[a-zA-Z0-9]{4,}\.(com|net|org|gov|biz|co|us|ru|uk|de|se|to|tv|io|info|online|site)"#).unwrap();
 }
 
 /// Returns [`s`] with personally-identifiable information censored out, and a `true` if
@@ -103,7 +103,11 @@ mod tests {
         for line in include_str!("./safe.txt")
             .lines()
             .chain(include_str!("./false_positives.txt").lines())
-            .chain(r#"1234 Have 1234"#.lines())
+            .chain(
+                r#"1234 Have 1234
+            gmail.zzz"#
+                    .lines(),
+            )
         {
             assert!(!has_pii(line), "{line}");
         }

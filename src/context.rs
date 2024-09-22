@@ -8,9 +8,9 @@ use std::time::{Duration, Instant};
 
 /// Context is useful for taking moderation actions on a per-user basis i.e. each user would get
 /// their own Context.
-/// 
+///
 /// # Recommendation
-/// 
+///
 /// Use this as a reference implementation e.g. by copying and adapting it.
 #[derive(Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -868,6 +868,12 @@ mod tests {
         let json = serde_json::to_value(&ctx).unwrap();
         let only_safe_until = &json["only_safe_until"];
         let unix = only_safe_until.as_i64().unwrap();
-        assert!(unix > 1000 + SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis() as i64)
+        assert!(
+            unix > 1000
+                + SystemTime::now()
+                    .duration_since(SystemTime::UNIX_EPOCH)
+                    .unwrap()
+                    .as_millis() as i64
+        )
     }
 }
