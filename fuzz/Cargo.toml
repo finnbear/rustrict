@@ -13,7 +13,7 @@ libfuzzer-sys = "0.4"
 
 [dependencies.rustrict]
 path = ".."
-features = ["width"]
+features = ["pii", "width"]
 
 # Prevent this from interfering with workspaces
 [workspace]

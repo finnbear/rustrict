@@ -59,3 +59,18 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+  fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Install cargo-fuzz
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-fuzz
+          locked: false
+      - name: Fuzz
+        run: RUST_BACKTRACE=1 cargo fuzz run fuzz -- -max_total_time=900
