@@ -58,6 +58,8 @@ pub use context::{
     BlockReason, Context, ContextProcessingOptions, ContextRateLimitOptions,
     ContextRepetitionLimitOptions,
 };
+#[cfg(all(feature = "context", feature = "width"))]
+pub use context::ContextWordBreakOptions;
 
 #[cfg(feature = "pii")]
 pub use pii::censor_and_analyze_pii;
