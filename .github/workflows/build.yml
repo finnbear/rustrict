@@ -39,8 +39,10 @@ jobs:
           components: rustfmt, clippy
       - name: Download Testing Data
         run: curl https://raw.githubusercontent.com/vzhou842/profanity-check/master/profanity_check/data/clean_data.csv --output test.csv
-      - name: Test
-        run: cargo test --release --features width,context
+      - name: Test (context)
+        run: cargo test --release --features context
+      - name: Test (context, width)
+        run: cargo test --release --features context, width
       - name: Add wasm32 target
         run: rustup target add wasm32-unknown-unknown
       - name: Install Trunk

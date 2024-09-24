@@ -589,6 +589,7 @@ impl BlockReason {
                     "Your message was held for severe profanity"
                 }
             }
+            #[cfg(feature = "width")]
             Self::Unbroken(_) => "Part of your message is too wide to display",
             Self::Unsafe { .. } => "You have been temporarily restricted due to profanity/spam",
             Self::Repetitious(_) => "Your message was too similar to recent messages",
