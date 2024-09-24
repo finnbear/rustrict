@@ -1,4 +1,3 @@
-use crate::width::WordBreak;
 use crate::{trim_whitespace, Censor, Type};
 
 use crate::censor::should_skip_censor;
@@ -140,7 +139,7 @@ impl ContextRateLimitOptions {
 #[cfg_attr(doc, doc(cfg(all(feature = "context", feature = "width"))))]
 pub struct ContextWordBreakOptions {
     /// The type of word-breaking used to display the text.
-    pub word_break: WordBreak,
+    pub word_break: crate::width::WordBreak,
     /// The maximum length of an unbreakable part (before the entire message is blocked).
     pub limit: NonZeroUsize,
 }
@@ -149,7 +148,7 @@ pub struct ContextWordBreakOptions {
 impl Default for ContextWordBreakOptions {
     fn default() -> Self {
         Self {
-            word_break: WordBreak::BreakAll,
+            word_break: crate::width::WordBreak::BreakAll,
             limit: NonZeroUsize::new(16).unwrap(),
         }
     }
