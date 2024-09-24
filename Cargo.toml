@@ -1,7 +1,7 @@
 [package]
 name = "rustrict"
 authors = ["Finn Bear"]
-version = "0.7.28"
+version = "0.7.29"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/finnbear/rustrict/"
@@ -37,7 +37,7 @@ default = ["censor", "context"]
 censor = ["arrayvec", "bitflags", "lazy_static", "itertools", "unicode-normalization", "rustc-hash"]
 context = ["censor", "strsim"]
 customize = ["censor"]
-width = ["lazy_static"]
+width = ["lazy_static", "itertools"]
 pii = ["lazy_static", "regex"]
 find_false_positives = ["censor", "regex", "indicatif", "rayon"]
 find_replacements = ["csv"]

@@ -1,3 +1,4 @@
+use crate::is_whitespace;
 use std::str::from_utf8;
 
 const MODE_WIDTH: u8 = 10;
@@ -65,6 +66,60 @@ pub fn width_str(s: &str) -> usize {
     s.chars().map(|c| width(c) / 100).sum::<usize>() / 10
 }
 
+/// How text is expected to be displayed.
+///
+/// Eventually, `BreakWord` will be supported.
+#[derive(Copy, Clone, Debug)]
+#[non_exhaustive]
+pub enum WordBreak {
+    // TODO: BreakWord
+    BreakAll,
+}
+
+/// Like `width_str` but computes the width of the max unbroken (no line break) part of the string.
+///
+/// In certain cases, not even CSS's `word-break: break-all;` (or equivalents) will be able to
+/// break a string, so it's good to know how long the lines might get.
+///
+/// For example, try selecting the following unbroken part: ௌௌௌௌ
+pub fn width_str_max_unbroken(s: &str, _word_break: WordBreak) -> usize {
+    let mut start = 0;
+    break_all_linebreaks(&s)
+        .map(|p| {
+            let unbroken = &s[start..p];
+            start = p;
+            width_str(unbroken.trim_end_matches(is_whitespace))
+        })
+        .max()
+        .unwrap_or(0)
+}
+
+// TODO unicode-linebreak = { version = "0.1.5", optional = true }
+
+fn break_all_linebreaks(s: &str) -> impl Iterator<Item = usize> + '_ {
+    use finl_unicode::categories::{CharacterCategories, MinorCategory};
+
+    use itertools::Itertools;
+    s.char_indices()
+        .tuple_windows()
+        .filter_map(|((_, c1), (p, c2))| {
+            let c1 = c1.get_minor_category();
+            let c2 = c2.get_minor_category();
+            let break_all = !matches!(c1, MinorCategory::Mn | MinorCategory::Mc)
+                && !matches!(c2, MinorCategory::Mn | MinorCategory::Mc);
+            if break_all
+                || [c1, c2]
+                    .into_iter()
+                    .any(|c| matches!(c, MinorCategory::Zs | MinorCategory::Zl))
+            {
+                Some(p)
+            } else {
+                None
+            }
+        })
+        .chain(std::iter::once(s.len()))
+}
+
 /// Trims a string to a maximum number of `m`'s. A budget of 5 would allow five m, or more narrower
 /// characters, or fewer wider characters.
 pub fn trim_to_width(s: &str, mut budget: usize) -> &str {
@@ -81,8 +136,8 @@ pub fn trim_to_width(s: &str, mut budget: usize) -> &str {
 
 #[cfg(test)]
 mod test {
-    use crate::width::{trim_to_width, width_str};
-    use crate::{width, CensorStr};
+    use crate::width::{trim_to_width, width_str, WordBreak};
+    use crate::{width, width_str_max_unbroken, CensorStr};
     use serial_test::serial;
 
     /*
@@ -91,6 +146,23 @@ mod test {
         assert_eq!(width('i'), 600);
     }
      */
+
+    #[test]
+    pub fn unbroken() {
+        let tests = [
+            ("", 0),
+            ("m", 1),
+            ("mm", 1),
+            ("m m", 1),
+            ("m     m", 1),
+            ("mm m", 1),
+            ("m mm", 1),
+            ("m;m", 1),
+        ];
+        for (s, w) in tests {
+            assert_eq!(width_str_max_unbroken(s, WordBreak::BreakAll), w, "{s} {w}");
+        }
+    }
 
     #[test]
     pub fn m() {
@@ -121,6 +193,15 @@ mod test {
     #[test]
     pub fn javanese() {
         assert!(width('꧅') >= 1500);
+    }
+
+    #[test]
+    pub fn tamil() {
+        assert_eq!(
+            width_str_max_unbroken("abc ௌௌௌௌ def", WordBreak::BreakAll),
+            10
+        );
+        assert_eq!(width_str_max_unbroken("abc ௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌௌ", WordBreak::BreakAll), 345);
     }
 
     #[test]

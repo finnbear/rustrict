@@ -1,3 +1,4 @@
+use crate::width::WordBreak;
 use crate::{trim_whitespace, Censor, Type};
 
 use crate::censor::should_skip_censor;
@@ -49,6 +50,7 @@ impl Debug for Context {
 /// as new fields may be added in the future.
 #[derive(Clone, Debug)]
 #[cfg_attr(doc, doc(cfg(feature = "context")))]
+#[non_exhaustive]
 pub struct ContextProcessingOptions {
     /// Block messages if the user has been manually muted.
     pub block_if_muted: bool,
@@ -63,6 +65,9 @@ pub struct ContextProcessingOptions {
     ///
     /// Messages will be trimmed to fit.
     pub character_limit: Option<NonZeroUsize>,
+    /// Ensure word-break will work on the message.
+    #[cfg(feature = "width")]
+    pub word_break: Option<ContextWordBreakOptions>,
     /// Rate-limiting options.
     pub rate_limit: Option<ContextRateLimitOptions>,
     /// Block messages if they are very similar to this many previous message.
@@ -83,6 +88,8 @@ impl Default for ContextProcessingOptions {
             safe_mode_until: None,
             character_limit: Some(NonZeroUsize::new(2048).unwrap()),
             rate_limit: Some(ContextRateLimitOptions::default()),
+            #[cfg(feature = "width")]
+            word_break: Some(ContextWordBreakOptions::default()),
             repetition_limit: Some(ContextRepetitionLimitOptions::default()),
             max_safe_timeout: Duration::from_secs(30 * 60),
             trim_whitespace: true,
@@ -123,6 +130,27 @@ impl ContextRateLimitOptions {
             limit: Duration::from_secs(10),
             burst: 2,
             character_limit: Some(NonZeroU16::new(10).unwrap()),
+        }
+    }
+}
+
+/// Options that ensure word break will be possible.
+#[derive(Clone, Debug)]
+#[cfg(feature = "width")]
+#[cfg_attr(doc, doc(cfg(all(feature = "context", feature = "width"))))]
+pub struct ContextWordBreakOptions {
+    /// The type of word-breaking used to display the text.
+    pub word_break: WordBreak,
+    /// The maximum length of an unbreakable part (before the entire message is blocked).
+    pub limit: NonZeroUsize,
+}
+
+#[cfg(feature = "width")]
+impl Default for ContextWordBreakOptions {
+    fn default() -> Self {
+        Self {
+            word_break: WordBreak::BreakAll,
+            limit: NonZeroUsize::new(16).unwrap(),
         }
     }
 }
@@ -250,6 +278,16 @@ impl Context {
 
         if options.trim_whitespace {
             censored_str = trim_whitespace(censored_str);
+        }
+
+        #[cfg(feature = "width")]
+        {
+            if let Some(word_break) = &options.word_break {
+                let max = crate::width::width_str_max_unbroken(censored_str, word_break.word_break);
+                if max > word_break.limit.get() {
+                    return Err(BlockReason::Unbroken(max));
+                }
+            }
         }
 
         if censored_str.len() < censored.len() {
@@ -514,6 +552,9 @@ impl Default for Context {
 pub enum BlockReason {
     /// The particular message was *severely* inappropriate, more specifically, `Type`.
     Inappropriate(Type),
+    #[cfg(feature = "width")]
+    /// There was an unbroken part of the string of this length, exceeding the limit.
+    Unbroken(usize),
     /// Recent messages were generally inappropriate, and this message isn't on the safe list.
     /// Alternatively, if targeted is false, safe mode was configured globally.
     /// Try again after `Duration`.
@@ -537,7 +578,18 @@ impl BlockReason {
     /// default warning to send to the user.
     pub fn generic_str(self) -> &'static str {
         match self {
-            Self::Inappropriate(_) => "Your message was held for severe profanity",
+            Self::Inappropriate(typ) => {
+                if typ.is(Type::OFFENSIVE) {
+                    "Your message was held for being highly offensive"
+                } else if typ.is(Type::SEXUAL) {
+                    "Your message was held for being overly sexual"
+                } else if typ.is(Type::MEAN) {
+                    "Your message was held for being overly mean"
+                } else {
+                    "Your message was held for severe profanity"
+                }
+            }
+            Self::Unbroken(_) => "Part of your message is too wide to display",
             Self::Unsafe { .. } => "You have been temporarily restricted due to profanity/spam",
             Self::Repetitious(_) => "Your message was too similar to recent messages",
             Self::Spam(_) => "You have been temporarily muted due to excessive frequency",
@@ -556,15 +608,6 @@ impl BlockReason {
     /// muted for).
     pub fn contextual_string(self) -> String {
         match self {
-            Self::Inappropriate(typ) => String::from(if typ.is(Type::OFFENSIVE) {
-                "Your message was held for being highly offensive"
-            } else if typ.is(Type::SEXUAL) {
-                "Your message was held for being overly sexual"
-            } else if typ.is(Type::MEAN) {
-                "Your message was held for being overly mean"
-            } else {
-                "Your message was held for severe profanity"
-            }),
             Self::Unsafe {
                 remaining,
                 targeted: true,
@@ -584,7 +627,7 @@ impl BlockReason {
                 FormattedDuration(dur)
             ),
             Self::Muted(dur) => format!("You have been muted for {}", FormattedDuration(dur)),
-            _ => String::from(self.generic_str()),
+            _ => self.generic_str().to_owned(),
         }
     }
 }
@@ -836,11 +879,17 @@ mod tests {
     #[test]
     #[cfg(feature = "width")]
     fn character_limit() {
-        use crate::{BlockReason, Context, ContextProcessingOptions};
+        use crate::{
+            context::ContextWordBreakOptions, BlockReason, Context, ContextProcessingOptions,
+        };
         let mut ctx = Context::new();
 
         let opts = ContextProcessingOptions {
             character_limit: Some(NonZeroUsize::new(5).unwrap()),
+            word_break: Some(ContextWordBreakOptions {
+                word_break: crate::width::WordBreak::BreakAll,
+                limit: NonZeroUsize::new(5).unwrap(),
+            }),
             ..Default::default()
         };
 
@@ -849,10 +898,23 @@ mod tests {
             Ok(String::from("abcde"))
         );
 
-        #[cfg(feature = "width")]
         assert_eq!(
             ctx.process_with_options(String::from("a﷽"), &opts),
             Ok(String::from("a"))
+        );
+
+        let opts = ContextProcessingOptions {
+            character_limit: Some(NonZeroUsize::new(20).unwrap()),
+            word_break: Some(ContextWordBreakOptions {
+                word_break: crate::width::WordBreak::BreakAll,
+                limit: NonZeroUsize::new(5).unwrap(),
+            }),
+            ..Default::default()
+        };
+
+        assert_eq!(
+            ctx.process_with_options("abc ௌௌௌௌ def".to_owned(), &opts),
+            Err(BlockReason::Unbroken(10))
         );
     }
 

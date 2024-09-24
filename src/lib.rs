@@ -34,7 +34,7 @@ pub use replacements::Replacements;
 pub use trie::Trie;
 
 #[cfg(feature = "width")]
-pub use width::{trim_to_width, width, width_str};
+pub use width::{trim_to_width, width, width_str, width_str_max_unbroken};
 
 #[cfg(feature = "censor")]
 pub use typ::Type;
