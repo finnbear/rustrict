@@ -1,6 +1,6 @@
 use web_sys::{HtmlInputElement, window, InputEvent, HtmlTextAreaElement, wasm_bindgen::JsCast};
 use yew::{html, Html, Callback, function_component, TargetCast};
-use rustrict::{Censor, censor_and_analyze_pii};
+use rustrict::{censor_and_analyze_pii, Censor, WordBreak};
 
 #[function_component(App)]
 fn app() -> Html {
@@ -18,8 +18,9 @@ fn app() -> Html {
                 let (censored, analysis) = censor.censor_and_analyze();
                 let count = censor.total_matches();
                 let detections = censor.detections();
-                let width = rustrict::width_str(&uncensored);  
-                let result = format!("{analysis:?} (width={width}, count={count}, detections={detections:?}, pii={pii:?})");
+                let width = rustrict::width_str(&uncensored);
+                let max_unbroken = rustrict::width_str_max_unbroken(&uncensored, WordBreak::BreakAll);
+                let result = format!("{analysis:?} (width={width}, max-unbroken={max_unbroken}, count={count}, detections={detections:?}, pii={pii:?})");
                 analysis_element.set_inner_html(&result);
                 censored_element.set_value(&censored);
             }

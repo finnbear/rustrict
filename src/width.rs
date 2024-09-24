@@ -73,6 +73,7 @@ pub fn width_str(s: &str) -> usize {
 #[non_exhaustive]
 pub enum WordBreak {
     // TODO: BreakWord
+    /// Same as CSS's `word-break: break-all;`.
     BreakAll,
 }
 
