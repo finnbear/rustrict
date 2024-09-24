@@ -9,7 +9,7 @@ fuzz_target!(|data: &[u8]| {
 
         if let Ok(text) = std::str::from_utf8(input) {
             let _ = rustrict::width_str(text);
-            let _ = rustrict::width_str_max_unbroken(text);
+            let _ = rustrict::width_str_max_unbroken(text, rustrict::WordBreak::BreakAll);
             let _ = rustrict::trim_to_width(text, 10);
             let _ = rustrict::censor_and_analyze_pii(text);
 
