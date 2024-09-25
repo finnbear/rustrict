@@ -49,7 +49,6 @@ impl Debug for Context {
 /// as new fields may be added in the future.
 #[derive(Clone, Debug)]
 #[cfg_attr(doc, doc(cfg(feature = "context")))]
-#[non_exhaustive]
 pub struct ContextProcessingOptions {
     /// Block messages if the user has been manually muted.
     pub block_if_muted: bool,
