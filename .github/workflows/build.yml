@@ -49,7 +49,7 @@ jobs:
         uses: baptiste0928/cargo-install@v2
         with:
           crate: trunk
-          version: 0.15.0
+          version: 0.21.1
       - name: Build Pages
         run: cd pages && trunk --config Trunk.prod.toml build --release --filehash=false
       - name: Setup Pages
