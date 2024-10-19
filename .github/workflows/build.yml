@@ -34,7 +34,7 @@ jobs:
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly-2024-09-10
+          toolchain: nightly
           override: true
           components: rustfmt, clippy
       - name: Download Testing Data
