@@ -1163,6 +1163,18 @@ mod tests {
             filter.check(s)
         }
 
+        let mut stfu_filter = stfu_crate::types::OwnedFilter::default();
+        use stfu_crate::word_lists::severity::{MILD, SEVERE, STRONG};
+        stfu_filter.add_slice(&MILD);
+        stfu_filter.add_slice(&STRONG);
+        stfu_filter.add_slice(&SEVERE);
+
+        let stfu = |s: &str| -> bool { stfu_filter.filter_string(s).is_some() };
+
+        fn profane_rs(s: &str) -> bool {
+            profane_rs_crate::contains_profanity(s, false)
+        }
+
         println!("| Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |");
         println!("|-------|----------|-------------------|-------------------|------|");
         print_accuracy(
@@ -1172,12 +1184,19 @@ mod tests {
             Some(rustrict_old as fn(&str) -> bool).filter(|_| std::env::var("COMPARE").is_ok()),
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
+        print_accuracy("https://crates.io/crates/stfu", stfu, false, None);
+        print_accuracy(
+            "https://crates.io/crates/profane-rs",
+            profane_rs,
+            false,
+            None,
+        );
     }
 
     #[allow(dead_code)]
     fn print_accuracy(
         link: &str,
-        checker: fn(&str) -> bool,
+        checker: impl Fn(&str) -> bool,
         find_detections: bool,
         compare_to: Option<fn(&str) -> bool>,
     ) {
@@ -1196,7 +1215,7 @@ mod tests {
 
     #[allow(dead_code)]
     fn accuracy_of(
-        checker: fn(&str) -> bool,
+        checker: impl Fn(&str) -> bool,
         find_detections: bool,
         compare_to: Option<fn(&str) -> bool>,
     ) -> (f32, f32, f32) {

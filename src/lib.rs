@@ -53,13 +53,13 @@ pub(crate) type Set<V> = rustc_hash::FxHashSet<V>;
 #[allow(deprecated)]
 pub use censor::add_word;
 
+#[cfg(all(feature = "context", feature = "width"))]
+pub use context::ContextWordBreakOptions;
 #[cfg(feature = "context")]
 pub use context::{
     BlockReason, Context, ContextProcessingOptions, ContextRateLimitOptions,
     ContextRepetitionLimitOptions,
 };
-#[cfg(all(feature = "context", feature = "width"))]
-pub use context::ContextWordBreakOptions;
 
 #[cfg(feature = "pii")]
 pub use pii::censor_and_analyze_pii;

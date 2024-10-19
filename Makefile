@@ -24,6 +24,9 @@ test:
 compare:
 	COMPARE=1 make test
 
+table:
+	cargo test --release -- accuracy --nocapture
+
 # Skips accuracy analysis so finishes faster.
 test_debug:
 	cargo test --features pii -- --nocapture
