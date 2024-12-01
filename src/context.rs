@@ -516,8 +516,9 @@ impl Context {
         self.reports as usize
     }
 
-    /// Clear suspicion and reports, and automatic mutes (not manual mute or rate limit).
+    /// Clear suspicion, reports, inappropriate counter, and automatic mutes (not manual mute or rate limit).
     pub fn exonerate(&mut self) {
+        self.total_inappropriate = 0;
         self.suspicion = 0;
         self.reports = 0;
         self.only_safe_until = None;
