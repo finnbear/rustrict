@@ -407,7 +407,7 @@ z,sz
 ɶ,DEde
 ɷ,o
 ɸ,Iio
-ɹ,r
+ɹ,rɹ
 ɺ,r
 ɻ,l
 ɼ,cr
@@ -518,7 +518,7 @@ z,sz
 β,Bb
 γ,yγ
 δ,do
-ε,e
+ε,Ee
 ζ,cz
 η,hn
 θ,Oo
@@ -1274,7 +1274,7 @@ z,sz
 რ,mn
 ს,bo
 ტ,o
-უ,co
+უ,cgo
 ფ,ceo
 ქ,bo
 ღ,mno
@@ -1797,7 +1797,7 @@ z,sz
 Ვ,ვ
 Ზ,ზ
 Თ,თ
-Ი,ი
+Ი,Nnuი
 Კ,Bbuკ
 Ლ,ლ
 Მ,მ
@@ -3066,6 +3066,7 @@ z,sz
 ㄎ,Ss
 ㄐ,IYiuy
 ㄕ,Pp
+ㄨ,x
 ㄩ,Uu
 ㄮ,c
 ㅂ,Aa
