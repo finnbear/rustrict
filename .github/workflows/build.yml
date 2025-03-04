@@ -60,7 +60,7 @@ jobs:
           path: './pages/dist/'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
   fuzz:
     runs-on: ubuntu-latest
     steps:
