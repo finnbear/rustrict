@@ -6,6 +6,12 @@ word,profane,offensive,sexual,mean,evasive
 ࿗,0,2,0,0,0
 ࿘,0,2,0,0,0
 ✠,0,1,0,0,0
+ᛋᛋ,0,1,0,0,1
+𒅒,0,1,0,0,1
+𒈔,0,1,0,0,1
+𒅒,0,1,0,0,1
+𒇫,0,1,0,0,1
+𒄆,0,1,0,0,1
 ≬,0,0,2,0,1
 🖕,1,0,0,0,1
 🍆,0,0,1,0,1
@@ -31,15 +37,17 @@ _l_,1,0,2,0,1
 (.)(.),0,0,1,0,1
 (⏝!⏝),0,0,1,0,1
 (‿ˠ‿),0,0,1,0,1
+/Vigga,2,3,0,0,2
+/Vigger,3,5,0,0,2
 /\|igga,2,3,0,0,2
 /\|igger,3,5,0,0,2
  abbiu,1,2,0,0,2
 ɹebbiu,2,3,0,0,2
 ɹǝbbiu,2,3,0,0,2
+ 1488,0,1,0,0,1
 2g1c,0,0,2,0,1
 2girls1cup,0,0,2,0,1
 2 incher,0,0,1,0,1
- 1488,0,2,0,0,0
 3==D,0,0,2,0,1
 3≈≈D,0,0,2,0,1
 3==o,0,0,2,0,1
@@ -64,6 +72,8 @@ c==B,0,0,2,0,1
 c≈≈B,0,0,2,0,1
 abortion,0,0,1,0,0
 acehole,1,0,1,1,1
+actively dating,0,0,1,0,0
+activly dating,0,0,1,0,0
 a mf,1,1,1,0,1
 a negro,0,1,0,0,0
 a latex,0,0,2,0,2
@@ -83,7 +93,10 @@ ahole,2,0,1,2,0
 aholes,2,0,1,0,0
 aholf ditler,0,2,0,0,2
 aligatorbait,0,1,0,0,0
+all kiggas,0,1,0,0,1
 al qassam,0,1,0,0,1
+amciksuiyu,0,0,3,0,1
+amciksuyiu,0,0,3,0,1
 amciksuyu,0,0,3,0,1
 amsuyu,0,0,1,0,1
 anal,2,0,2,0,0
@@ -138,6 +151,8 @@ babe,0,0,1,0,0
 babeland,0,0,2,0,1
 babybatter,0,0,2,0,2
 babydrowner,0,1,0,0,1
+back to the field,0,1,0,0,1
+back to the plantation,0,1,0,0,1
 badass,1,0,0,0,0
 bad lay,0,0,2,1,0
 bafangu chooch,0,0,2,0,0
@@ -228,7 +243,15 @@ blackmen,0,1,0,0,0
 blackmonkey,0,1,0,0,1
 blackmonkies,0,1,0,0,1
 blackwomen,0,1,0,0,0
+blakass,0,2,0,0,1
  blak bick,0,1,1,0,1
+blakcock,2,2,2,0,1
+blakpeople,0,1,0,0,1
+blakguy,0,1,0,0,1
+blakmen,0,1,0,0,1
+blakmonkey,0,1,0,0,1
+blakmonkies,0,1,0,0,1
+blakwomen,0,1,0,0,1
 bloody,1,0,0,0,0
 bloddyhell,2,0,0,0,0
 blow me,0,0,2,0,0
@@ -309,6 +332,7 @@ buttcrack,2,0,1,0,0
 buttock,1,0,0,0,0
 buttox,1,0,0,0,2
 buttpiss,2,0,0,0,1
+buzzoff,0,0,0,1,1
 bra,0,0,1,0,0
 brainless,0,0,0,1,0
 brassiere,0,0,1,0,0
@@ -485,8 +509,10 @@ dipship,0,0,1,0,1
 dipshit,2,0,0,2,0
 diqinmy,1,0,2,0,1
 dirtyjuan,0,0,2,0,1
+dirtymuslim,0,3,0,0,0
 dirtypillows,0,0,1,0,1
 dirtysanchez,0,0,1,0,1
+dixienormus,1,0,2,0,2
 diz nut,1,0,0,0,2
 dldo,0,0,2,0,2
 doggiestyle,0,0,2,0,1
@@ -572,6 +598,7 @@ fagh,2,0,1,2,0
 fagit,0,3,1,0,1
 fagmouth,0,3,1,2,0
 fagot,0,3,1,0,0
+fagrag,0,0,1,0,0
  faig,0,1,1,0,1
 faigs,0,1,1,0,1
 faigt,0,1,1,0,1
@@ -626,6 +653,7 @@ feltcher,0,0,2,0,1
 feltching,0,0,3,0,1
 felate,0,0,3,0,0
 felatio,0,0,3,0,0
+femalebodypart,0,0,2,0,1
 femalesquirting,0,0,2,0,1
 female toes,0,0,2,0,1
 femboy,0,0,1,0,0
@@ -781,9 +809,13 @@ gays,0,1,1,0,0
 gaywad,0,1,1,1,0
 gayy,0,1,1,0,0
 gazjew,0,3,0,0,2
+gasalljevv,0,3,0,0,1
 gasalljew,0,3,0,0,0
+gazalljevv,0,3,0,0,2
 gazalljew,0,3,0,0,2
+gasthejevv,0,3,0,0,2
 gasthejew,0,3,0,0,0
+gazthejevv,0,3,0,0,2
 gazthejew,0,3,0,0,2
 genital,0,0,2,0,0
 genocide,0,1,0,0,0
@@ -818,6 +850,10 @@ girlontop,0,0,1,0,0
 girlsgonewild,0,0,1,0,0
 girlssendme,0,0,1,0,0
 givebirth,0,0,1,0,0
+gavemehead,0,0,2,0,1
+gavemehed,0,0,2,0,2
+givemehead,0,0,2,0,1
+givemehed,0,0,2,0,2
 givingbirth,0,0,1,0,0
 gky,0,2,0,2,1
 glans,0,0,1,0,0
@@ -960,6 +996,7 @@ humped,0,0,1,0,0
 humping,0,0,1,0,0
 hugecum,0,0,2,0,0
 hughjanus,2,0,0,0,2
+ hugh jick,1,0,1,0,2
 humanmilk,0,0,1,0,1
 hump jo mama,0,0,2,2,2
 hump yo mama,0,0,2,2,1
@@ -977,6 +1014,7 @@ hytlr,0,2,0,0,2
 hyuejass,2,0,1,0,2
 gnikcuf,1,0,1,0,1
 gooch,0,0,2,0,0
+icewallowcum,0,0,3,0,2
 i climax,0,0,1,0,0
 igottouched,0,0,1,0,1
 idiot,0,0,0,1,0
@@ -991,6 +1029,7 @@ hairybeaver,0,0,2,0,2
 hairymelon,0,0,1,0,0
 has a black hawk,1,0,1,0,2
 have a black hawk,1,0,1,0,2
+ iHateN,1,1,0,0,0
  ih8ngas,1,2,0,0,3
  ih8ngrs,2,3,0,0,3
  ihatetrans,0,2,0,0,0
@@ -1036,6 +1075,7 @@ jackshit,2,0,0,0,0
 jailbait,0,0,2,0,0
  jap,0,1,0,0,0
 japs,0,1,0,0,0
+jatehews,1,1,0,0,2
 jecoucheravec,0,0,1,0,0
 jerk,0,0,0,1,0
 jerkingoff,0,0,2,1,0
@@ -1132,6 +1172,7 @@ killurfamily,0,2,0,3,1
 killurself,0,2,0,3,1
 killuself,0,2,0,3,1
 killyourfamily,0,2,0,3,0
+killyurself,0,2,0,3,1
  kinbaku,0,0,1,0,0
 kinkster,0,0,2,0,0
 kissahs,1,0,0,1,1
@@ -1181,6 +1222,9 @@ lame botas,0,0,0,1,0
 lapdance,0,0,1,0,0
 lardass,1,1,0,1,0
 lardface,0,1,0,1,0
+ last 2 strokes,0,0,1,0,1
+ last 3 strokes,0,0,1,0,1
+ last 4 strokes,0,0,1,0,1
 leccami,0,0,1,0,0
 lech,0,0,1,0,1
 lemonparty,0,0,1,0,1
@@ -1193,6 +1237,7 @@ lesbian,0,0,2,0,0
 lesbin,0,0,1,0,1
 lesbo,0,0,1,0,1
  letsfak,0,0,2,0,2
+ let them do me,0,0,1,0,1
 lezbo,0,0,2,0,1
 lezzie,0,2,2,2,1
 lezzo,0,2,2,2,1
@@ -1222,6 +1267,7 @@ makeme hard,0,0,1,0,1
 makeyourselfdie,0,2,0,0,2
 makinglove,0,0,2,0,1
 maldito,1,0,0,0,0
+malebodypart,0,0,2,0,1
 malesquirting,0,0,1,0,0
 malnacido,0,0,1,2,0
 manpaste,0,0,1,0,0
@@ -1364,8 +1410,10 @@ naeger,3,5,0,0,2
 naegur,3,5,0,0,2
 nambla,0,0,1,0,0
 Nasi,0,2,0,0,2
-natsee,0,2,0,0,2
+nate higga,2,3,0,0,2
+nate higger,3,5,0,0,2
 national socialist,0,0,0,0,1
+natsee,0,2,0,0,2
 natsoc,0,1,0,0,1
 natzi,0,2,0,0,1
 nawashi,0,0,1,0,0
@@ -1400,6 +1448,10 @@ ngga,2,3,0,0,2
 ngger,3,5,0,0,2
 ngiger,3,5,0,0,3
 ni55a,1,2,0,0,2
+ni55er,3,5,0,0,2
+ni88a,1,2,0,0,2
+ni88er,3,5,0,0,2
+ niager,1,2,0,0,2
 nibba,2,3,0,0,2
 nicca,2,3,0,0,2
 nicga,2,3,0,0,2
@@ -1445,6 +1497,7 @@ niqga,2,3,0,0,2
 niqger,3,5,0,0,2
 niqq,2,3,0,0,2
 niqr,2,3,0,0,2
+nizagermany,0,2,0,0,2
 nmsl,0,1,0,2,2
 nobjockey,0,0,1,0,0
 nobjocky,0,0,1,0,0
@@ -1466,6 +1519,8 @@ nude,0,0,2,0,0
 nudes,0,0,3,0,0
 nuger,2,3,0,1,1
 nudity,0,0,1,0,0
+nukeiran,0,3,0,0,1
+nukeisrael,0,3,0,0,1
 nukeyourhouse,0,1,0,0,1
 numb digger,2,3,0,0,2
 numbnuts,0,0,0,2,0
@@ -1660,6 +1715,7 @@ pube,0,0,3,0,0
 pubescent,0,0,3,0,0
 pubic,0,0,1,0,0
 puck futin,1,0,0,0,1
+puge henis,1,0,2,0,2
 punani,0,0,3,0,2
 punany,0,0,3,0,2
 punk,0,0,0,1,0
@@ -1695,6 +1751,7 @@ rascist,0,0,0,1,1
 rascit,0,0,0,1,2
 raunch,0,0,1,0,0
 raunchy,0,0,1,0,0
+raypist,0,0,2,0,1
  rectal,0,0,1,0,0
 rectum,0,0,2,0,0
 recktum,0,0,2,0,2
@@ -1710,6 +1767,7 @@ retart,0,2,0,2,0
 retarted,0,2,0,2,0
 reversecowgirl,0,0,3,0,0
 rice eater,0,1,0,0,0
+ ride me,0,0,1,0,1
  riding on me,0,0,1,0,1
 rimjaw,0,0,1,0,1
 rimjob,0,0,2,0,1
@@ -1737,6 +1795,7 @@ scank,0,1,1,0,1
 scantily,0,0,1,0,0
 scantilyclad,0,0,2,0,0
 scheiBe,1,0,0,0,0
+schitstain,2,0,0,0,0
 schizo,0,1,0,1,1
 schlampe,0,2,2,0,0
 schlong,1,0,1,0,0
@@ -1808,12 +1867,14 @@ shirtlifter,0,1,1,0,0
 shited,2,0,0,0,0
 shiter,2,0,0,2,0
 shithead,2,1,0,2,0
+shitstain,2,0,0,0,0
 shemale,0,1,1,0,0
  shet,1,0,0,0,2
 she's a barking dog,0,0,0,1,0
 should be burned,0,1,0,0,1
 sht,2,0,0,0,1
 shted,2,0,0,0,1
+shut the f* up,1,0,0,2,1
 shut the f up,1,0,0,2,1
 shut it,0,0,0,2,0
 shut ut,0,0,0,2,1
@@ -1953,6 +2014,7 @@ testies,0,0,1,0,1
 that sob,1,0,1,0,0
 that mf,1,1,1,0,1
 theass,1,0,1,0,0
+the biggest joke,0,0,0,1,0
 the pander,0,0,1,0,1
 they can die,0,0,0,2,0
 thicc,0,0,1,0,0
@@ -1990,8 +2052,12 @@ touching a kid,0,0,1,0,1
 touching kids,0,0,1,0,1
 touching little kids,0,0,1,0,1
 touchherprivate,0,0,1,0,1
+touchhisjohnson,0,0,2,0,2
 touchhisprivate,0,0,1,0,0
+touchhiswilly,0,0,2,0,2
+touchmyjohnson,0,0,2,0,2
 touchmyprivate,0,0,1,0,1
+touchmywilly,0,0,2,0,2
 touchsmallchildren,0,0,1,0,1
 touchsmallkids,0,0,1,0,1
 touchyall,0,0,1,0,1
@@ -2032,6 +2098,7 @@ u motherfu,2,1,1,2,2
 uadidcrocus,0,2,0,0,2
 ufuk,2,0,2,0,2
 ugly,0,0,0,2,0
+uglygigga,2,3,0,2,2
 ukrainedidcrocus,0,2,0,0,2
 unalive,0,1,0,0,0
 uncletom,0,2,0,2,0
@@ -2049,6 +2116,10 @@ upyourass,2,0,2,2,0
 upyourmom,0,0,3,2,0
 urahskicked,1,0,0,2,2
 urethra,0,0,1,0,0
+ u r a boy,0,0,1,0,0
+ u r a girl,0,0,1,0,0
+ u r boy,0,0,1,0,0
+ u r girl,0,0,1,0,0
 urine,1,0,0,0,0
 urinal,1,0,1,0,0
 urmom,0,0,1,1,0
@@ -2084,6 +2155,8 @@ voyeur,0,0,1,0,0
 vulva,0,0,3,0,0
 vvank,0,0,3,0,1
 vvanker,0,0,3,0,1
+wangker,0,0,3,0,1
+wangks,0,0,2,0,1
 wank,0,0,3,0,0
 wanker,0,0,3,0,0
 wanks,0,0,2,0,0
@@ -2094,6 +2167,7 @@ weanie,0,0,2,0,2
 weener,0,0,2,0,1
 weenie,0,0,2,0,1
 weewee,0,0,1,0,0
+weezer,0,0,1,0,1
 weiner,0,0,1,0,0
 welcher,0,0,0,1,0
  wench,0,0,1,0,0
@@ -2155,6 +2229,7 @@ you mf,2,1,1,2,1
 you monkey,0,1,0,1,0
 you mother,0,0,1,1,0
 your adres,0,0,0,0,2
+your a sped,0,1,0,2,1
 yourass,2,0,1,0,0
 your a trans,0,2,2,0,1
 your all trans,0,2,2,0,1
@@ -2162,6 +2237,7 @@ yourchit,1,0,0,2,2
 yourdadleft,0,0,0,2,0
 your gash,0,0,1,0,0
 youre a mistake,0,2,0,3,1
+youre a sped,0,1,0,2,1
 youre a trans,0,2,2,0,1
 youre all trans,0,2,2,0,1
 yourechit,1,0,0,2,2
@@ -2176,6 +2252,7 @@ yourmomleft,0,0,0,2,0
 yourmum,0,0,1,1,1
 yourprivateplace,0,0,1,0,1
 yourprivates,0,0,1,0,1
+your schit,1,0,0,1,1
 yomama,0,0,0,1,0
 yomamasfat,0,1,0,2,1
 yo beach as,1,1,0,2,2

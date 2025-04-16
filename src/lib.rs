@@ -88,9 +88,10 @@ pub fn is_whitespace(c: char) -> bool {
     // https://www.compart.com/en/unicode/U+FFA0
     c.is_whitespace()
         || c.is_other()
+        || c.is_format()
         || matches!(
             c,
-            '\u{115F}' | '\u{1160}' | '\u{2800}' | '\u{3164}' | '\u{FFA0}'
+            '\u{115F}' | '\u{1160}' | '\u{2800}' | '\u{3164}' | '\u{FFA0}' | '\u{FFFC}'
         )
 }
 
@@ -113,7 +114,7 @@ mod tests {
         // Special cases.
         assert_eq!(
             crate::trim_whitespace(
-                "\u{0488}\u{1160}\u{0489}\u{1160}\u{0488}\u{1160}\u{0489}abc\u{0488}\u{0489}"
+                "\u{FFF9}\u{FFFA}\u{FFFB}\u{FFFC}\u{0488}\u{1160}\u{0489}\u{1160}\u{0488}\u{1160}\u{0489}abc\u{0488}\u{0489}"
             ),
             "abc\u{0488}\u{0489}"
         )

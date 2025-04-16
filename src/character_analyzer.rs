@@ -47,7 +47,7 @@ fn main() {
         if let Some(c) = char::from_u32(u) {
             let max_width = match c {
                 '🐿' => 20,
-                '𒐫' => 40,
+                '𒐫' => 80,
                 '𒈙' => 35,
                 '༺' | '༻' => 25,
                 _ => {

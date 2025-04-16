@@ -566,7 +566,7 @@ impl<I: Iterator<Item = char>> Iterator for Censor<I> {
                         // space.
                         // ( and ) are for ignoring appositive phrases.
                         // Checking node.last is to collapse multiple spaces into one
-                        let new_space = matches!(c, ' ' | '.' | ',' | ':' | ';' | '…' | '(' | ')')
+                        let new_space = matches!(c, ' ' | '.' | ',' | ':' | ';' | '…' | '(' | ')' | '_' | '-')
                             && m.node.last != Some(' ');
                         let new_repetition: bool = !new_space && c == m.last;
                         let new_skip = !new_space && skippable && !ignore_sep && !new_repetition;
