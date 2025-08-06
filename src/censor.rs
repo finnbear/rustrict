@@ -1171,10 +1171,6 @@ mod tests {
 
         let stfu = |s: &str| -> bool { stfu_filter.filter_string(s).is_some() };
 
-        fn profane_rs(s: &str) -> bool {
-            profane_rs_crate::contains_profanity(s, false)
-        }
-
         println!("| Crate | Accuracy | Positive Accuracy | Negative Accuracy | Time |");
         println!("|-------|----------|-------------------|-------------------|------|");
         print_accuracy(
@@ -1185,12 +1181,6 @@ mod tests {
         );
         print_accuracy("https://crates.io/crates/censor", censor, false, None);
         print_accuracy("https://crates.io/crates/stfu", stfu, false, None);
-        print_accuracy(
-            "https://crates.io/crates/profane-rs",
-            profane_rs,
-            false,
-            None,
-        );
     }
 
     #[allow(dead_code)]
