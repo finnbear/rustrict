@@ -8,7 +8,7 @@ lazy_static! {
     static ref EMAIL_ADDRESS : Regex = Regex::new(r#"(?i)[a-z0-9_\-]{3,}\s*(@|[\[\(\s]at[\s\)\]])\s*[a-z0-9_\-]{5,}\s*(\.|dot)\s*(com|net|org|gov|biz|co|us|ru|uk|de|se|to|tv|io|info|online|site)"#).unwrap();
     //static ref ADDRESS : Regex = Regex::new(r#"(?i)\d+[ ](?:[A-Za-z0-9\.-]+ )+(?:Avenue|Lane|Road|Boulevard|Drive|Street|Ave|Dr|Rd|Blvd|Ln|St)\.?(\s+#[0-9]{1,5})?"#).unwrap();
     static ref NAME : Regex = Regex::new(r#"(?i)(real\s)?name\s+is:?\s[a-zA-Z]+(\s[a-zA-z]+)?"#).unwrap();
-    static ref URL : Regex = Regex::new(r#"(?i)(https?:?/*)?[a-zA-Z0-9]{3,}\.(com|net|org|gov|biz|co|us|ru|uk|de|se|to|tv|io|info|online|site|link)"#).unwrap();
+    static ref URL : Regex = Regex::new(r#"(?i)(https?:?/*)?[a-zA-Z0-9]{3,}\.(com|net|org|gov|biz|co|us|ru|cc|uk|de|se|to|tv|io|gg|info|online|site|link)"#).unwrap();
 }
 
 /// Returns [`s`] with personally-identifiable information censored out, and a `true` if

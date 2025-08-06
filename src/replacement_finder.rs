@@ -47,10 +47,11 @@ fn main() {
         })
         .for_each(&mut append_replacement);
 
-    include_str!("unicode_fonts.txt")
+    include_str!("unicode_fonts.csv")
         .lines()
         .filter(|line| !line.is_empty())
         .for_each(|line| {
+            let (case, line) = line.split_once(',').unwrap();
             let chars: Vec<_> = line.chars().collect();
 
             if chars.len() != 26 {
@@ -63,7 +64,15 @@ fn main() {
                     continue;
                 }
 
-                append_replacement((c, String::from_utf8(vec![b'a' + i as u8]).unwrap()))
+                let lowercase = b'a' + i as u8;
+                let mut bytes = vec![lowercase];
+                if case == "u" {
+                    let uppercase = lowercase.to_ascii_uppercase();
+                    bytes.push(uppercase);
+                } else {
+                    assert_eq!(case, "l");
+                }
+                append_replacement((c, String::from_utf8(bytes).unwrap()))
             }
         });
 

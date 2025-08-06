@@ -91,7 +91,7 @@ pub fn is_whitespace(c: char) -> bool {
         || c.is_format()
         || matches!(
             c,
-            '\u{115F}' | '\u{1160}' | '\u{2800}' | '\u{3164}' | '\u{FFA0}' | '\u{FFFC}'
+            '\u{115F}' | '\u{1160}' | '\u{20DD}' | '\u{2800}' | '\u{3164}' | '\u{FFA0}' | '\u{FFFC}'
         )
 }
 
