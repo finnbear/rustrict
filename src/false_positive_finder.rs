@@ -14,7 +14,7 @@ lazy_static! {
         .chain(include_str!("dictionary_extra.txt").split('\n'))
         .chain(include_str!("dictionary_common.txt").lines())
         .chain(include_str!("dictionary_common_valid_short.txt").lines())
-        .filter(|&word| !word.is_empty() && !is_blacklisted(word))
+        .filter(|&word| !word.is_empty() && !is_blocklisted(word))
         .collect();
     static ref VALID_SHORT: HashSet<&'static str> =
         include_str!("dictionary_common_valid_short.txt")
@@ -27,7 +27,7 @@ lazy_static! {
         .lines())
         .filter(|&w| {
             let long_enough = w.len() > 3 || VALID_SHORT.contains(w);
-            let allowed = !is_blacklisted(w);
+            let allowed = !is_blocklisted(w);
             long_enough
                 && allowed
         })
@@ -37,14 +37,14 @@ lazy_static! {
         .skip(1)
         .map(|l| &l[..l.find(',').unwrap()])
         .collect();
-    static ref BLACKLIST: Vec<Regex> = include_str!("profanity.csv")
+    static ref BLOCKLIST: Vec<Regex> = include_str!("profanity.csv")
         .lines()
         .skip(1)
-        // must trim starting spaces, as they don't count when comparing to blacklist.
+        // must trim starting spaces, as they don't count when comparing to blocklist.
         .map(|l| l[..l.find(',').expect(l)].trim_start_matches(' '))
         .map(|w| Regex::new(&regex::escape(w)).unwrap())
         .chain(
-            include_str!("dictionary_blacklist.txt")
+            include_str!("dictionary_blocklist.txt")
                 .split("\n")
                 .filter(|l| !l.is_empty())
                 .map(|l| Regex::new(l).unwrap())
@@ -76,7 +76,7 @@ fn maybe_false_positive<C: Iterator<Item = char> + Clone>(
         let word: String = word.collect();
         let word = &word[..];
 
-        if is_blacklisted(word) {
+        if is_blocklisted(word) {
             return None;
         }
 
@@ -111,7 +111,7 @@ fn maybe_false_positive<C: Iterator<Item = char> + Clone>(
                 );
                 if subslice_matches >= baseline
                     && first_match_ptr == baseline_first_match_ptr
-                    && !is_blacklisted(sub_slice)
+                    && !is_blocklisted(sub_slice)
                 {
                     shortest_subslice = sub_slice;
                 }
@@ -193,8 +193,8 @@ fn main() {
     //println!("{:?}", sorted);
 }
 
-fn is_blacklisted(phrase: &str) -> bool {
-    BLACKLIST.iter().any(|p| {
+fn is_blocklisted(phrase: &str) -> bool {
+    BLOCKLIST.iter().any(|p| {
         p.find(phrase)
             .map(|m| m.start() == 0 && m.end() == phrase.len())
             .unwrap_or(false)
