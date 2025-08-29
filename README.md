@@ -22,7 +22,7 @@
   - Accents (like "pÓöp")
   - Bidirectional Unicode ([related reading](https://blog.rust-lang.org/2021/11/01/cve-2021-42574.html))
   - Self-censoring (like "f*ck")
-  - Safe phrase list for known bad actors]
+  - Safe phrase [list](https://github.com/finnbear/rustrict/blob/master/src/safe.txt) for known bad actors
   - Censors invalid Unicode characters
   - Battle-tested in [Mk48.io](https://mk48.io)
 - Resistant to false positives
