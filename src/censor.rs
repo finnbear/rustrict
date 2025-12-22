@@ -164,10 +164,12 @@ impl<I: Iterator<Item = char>> Censor<I> {
         fn filter_char(c: &char) -> bool {
             use finl_unicode::categories::{CharacterCategories, MinorCategory};
             let category = c.get_minor_category();
+            // Preserve Japanese dakuten/handakuten so kana aren't turned into their unvoiced forms.
+            let preserve_japanese = matches!(*c, '\u{3099}' | '\u{309A}');
             let nok = matches!(
                 category,
                 MinorCategory::Cn | MinorCategory::Co | MinorCategory::Mn
-            );
+            ) && !preserve_japanese;
 
             !(nok || BANNED.deref().deref().contains(*c))
         }
@@ -1273,6 +1275,15 @@ mod tests {
             "🥞",
             std::str::from_utf8(&[240, 159, 165, 158]).unwrap().censor()
         );
+    }
+
+    #[test]
+    #[serial]
+    fn japanese_diacritics_preserved() {
+        assert_eq!("パピプペポ", "パピプペポ".censor());
+        assert_eq!("バビブベボ", "バビブベボ".censor());
+        assert_eq!("ぱぴぷぺぽ", "ぱぴぷぺぽ".censor());
+        assert_eq!("ばびぶべぼ", "ばびぶべぼ".censor());
     }
 
     #[test]
