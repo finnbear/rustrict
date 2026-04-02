@@ -36,7 +36,7 @@ lazy_static! {
 }
 
 /// Efficiently stores profanity, false positives, and safe words.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Trie {
     pub(crate) root: Node,
@@ -48,7 +48,7 @@ impl Default for Trie {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub(crate) struct Node {
     pub children: Map<char, Node>,

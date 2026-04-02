@@ -24,7 +24,7 @@ lazy_static! {
 /// Set of possible interpretations for an input character.
 ///
 /// For example, `A` can be replaced with `a` so the word `apple` matches `Apple`.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Replacements(Map<char, ArrayString<12>>);
 

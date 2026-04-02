@@ -25,6 +25,7 @@ pub struct Censor<I: Iterator<Item = char>> {
     allocated: AllocatedState,
 }
 
+#[derive(Debug, PartialEq)]
 struct Options {
     trie: &'static Trie,
     replacements: &'static Replacements,
