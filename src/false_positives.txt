@@ -494,9 +494,7 @@ allow life
 allow lifestyle
 allow lifetime
 almochoden
-alo ser
 alo vary
-alo zer
 alpha illus
 altered skins
 alumni ger
@@ -996,9 +994,7 @@ apnic until
 apnic untitled
 apnic unto
 apocryphate
-apollo ser
 apollo vary
-apollo zer
 app
 appetizement
 apple assured
@@ -3618,9 +3614,7 @@ caribbean exercise
 caribbean nerve
 caribbean nervous
 caribbean xerox
-carlo ser
 carlo vary
-carlo zer
 carnifexes
 carpinus
 carpsucker
@@ -7809,9 +7803,7 @@ hellman
 hellness
 hello
 hello beaches
-hello ser
 hello vary
-hello zer
 hellp
 hellroot
 hellship
@@ -9367,7 +9359,6 @@ involves hit
 involves lut
 involves perm
 involves seeks
-io ser
 io vary
 iolite
 ions cumulative
@@ -9378,16 +9369,12 @@ ions lut
 ions perm
 ions seeks
 ios cumulative
-ios er
-ios exercise
 ios ext
 ios hilt
 ios hit
 ios lut
 ios perm
 ios seeks
-ios ser
-ios zer
 ip anti
 ip peru
 ip public
@@ -10985,17 +10972,12 @@ loose rya
 loose xerox
 looser
 los cumulative
-los er
-los exercise
 los ext
 los hilt
 los hit
 los lut
 los perm
 los seeks
-los ser
-los xerox
-los zer
 lose er
 lose exercise
 lose rabbi
@@ -12160,6 +12142,7 @@ negrito
 negritude
 negro
 negroidal
+nerdy
 neslave
 nestful
 netherlandic
@@ -12659,8 +12642,6 @@ oles hit
 oles lut
 oles perm
 oles seeks
-olio ser
-olio zer
 olympiadic
 om linge
 omers cumulative
@@ -13861,9 +13842,7 @@ policies seeks
 pollenigerous
 pollening
 pollinigerous
-polo ser
 polo vary
-polo zer
 polyadic
 polyspermal
 polyspermatous
@@ -17062,9 +17041,7 @@ soldiers perm
 soldiers seeks
 solidated someone
 sollar
-solo ser
 solo vary
-solo zer
 somalia bomb
 sombra
 something hote
