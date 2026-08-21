@@ -132,6 +132,27 @@ If you want to add custom profanities or safe words, enable the `customize` feat
 }
 ```
 
+Digit-heavy text, like zip codes, can cause false positives via digit-to-letter substitutions (e.g. `9` → `g`, `0` → `o`). Zip codes obviously aren't a censor target, but got hit in practice in a chat bot's gas price feature which included zip code lookup. You can remove specific mappings from the default `Replacements` table:
+
+
+```rust
+#[cfg(feature = "customize")]
+{
+    use rustrict::Replacements;
+
+    // SAFETY: call once, synchronously, before any concurrent access to censoring
+    // (e.g. at startup, before spawning any tasks that censor text).
+    unsafe {
+        let replacements = Replacements::customize_default();
+        replacements.remove('9', 'g');
+        replacements.remove('0', 'o');
+        // ...repeat for any substitution causing false positives in your use-case.
+    }
+}
+```
+
+See [`examples/leetspeak_replacements.rs`](examples/leetspeak_replacements.rs) for a runnable version.
+
 If your use-case is chat moderation, and you store data on a per-user basis, you can use `rustrict::Context` as a reference implementation:
 
 ```rust

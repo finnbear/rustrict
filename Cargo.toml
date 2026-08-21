@@ -37,6 +37,11 @@ name = "add_profanity"
 path = "src/add_profanity.rs"
 required-features = ["regex"]
 
+[[example]]
+name = "leetspeak_replacements"
+path = "examples/leetspeak_replacements.rs"
+required-features = ["customize"]
+
 [features]
 default = ["censor", "context"]
 censor = ["arrayvec", "bitflags", "lazy_static", "itertools", "unicode-normalization", "rustc-hash"]
